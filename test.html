@@ -61,20 +61,27 @@ function getParameterByName(name, url) {
     return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
+        int a=getParameterByName('a');
+        int b=getParameterByName('b');
+        int c=getParameterByName('c');
+        int d=getParameterByName('d');
+        int width=getParameterByName('width');
+        int height=getParameterByName('height');
+        console.log(a+" "+b+" "+c+" "+d+" "+width+" "+height);
       function drawChart() {
         var data = google.visualization.arrayToDataTable([
           ['Year','Temperature'],
-          ['00:00-06:00',  27],
-          ['06:00-12:00',  23],
-          ['12:00-18:00',  22],
-          ['18:00-24:00',  11]
+          ['00:00-06:00',  a],
+          ['06:00-12:00',  b],
+          ['12:00-18:00',  c],
+          ['18:00-24:00',  d]
         ]);
 
         var options = {
           title: 'Weather raport',
           hAxis: {title: 'Year',  titleTextStyle: {color: '#333'}},
-           width : 400,
-          height: 250,
+           width : width,
+          height: height,
           vAxis: {minValue: 0}
         };
 
