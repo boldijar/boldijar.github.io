@@ -135,6 +135,20 @@
         </div>
         <div class="row">
           <div class="col-md-4 col-sm-6 portfolio-item">
+            <a class="portfolio-link" data-toggle="modal" href="#portfolio_iot">
+              <div class="portfolio-hover">
+                <div class="portfolio-hover-content">
+                  <i class="fa fa-plus fa-3x"></i>
+                </div>
+              </div>
+              <img class="img-fluid" src="img/iot_0.jpg" alt="">
+            </a>
+            <div class="portfolio-caption">
+              <h4>IOT App</h4>
+              <p class="text-muted">Internet of things. With Raspberry Pi</p>
+            </div>
+          </div>
+          <div class="col-md-4 col-sm-6 portfolio-item">
             <a class="portfolio-link" data-toggle="modal" href="#portfolio_menu">
               <div class="portfolio-hover">
                 <div class="portfolio-hover-content">
@@ -453,6 +467,37 @@
 
     <!-- Portfolio Modals -->
 
+    <div class="portfolio-modal modal fade" id="portfolio_iot" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="close-modal" data-dismiss="modal">
+            <div class="lr">
+              <div class="rl"></div>
+            </div>
+          </div>
+          <div class="container">
+            <div class="row">
+              <div class="col-lg-8 mx-auto">
+                <div class="modal-body">
+                  <!-- Project Details Go Here -->
+                  <h2>IOT App</h2>
+                  <p class="item-intro text-muted">Internet of Things android app</p>
+                  <img class="img-fluid d-block mx-auto" src="img/iot.jpg" alt="">
+                  <p>This project was made at Hacksociety Hackathon. We had 2 tasks, one of them was to keep the user notified when someone knock's at his door, and the other one, was to turn off / on a LED as the temperature was higher or lower than an fixed value. We used Raspberry Pi 3, Python for the backend, and android for the app. We won the 1st place. In the and our app will get a push notification from firebase clud messaging when the vibration sensor that was mounted at the door activates and the user could open via the notification a live camera preview from the webcam. And you can access a log of who knocked at the door anytime from the app. (Time + picture of person) Also, you can change the LED color from the app, and see the temperature status from the temperature and humidity sensor, and also from the current city. (from some weather API).</p>
+                  <ul class="list-inline">
+                    <li>Date: November 2017</li>
+                    <li>Technologies used: Python, Flask, Android, Room, Firebase</li>
+                  </ul>
+                  <button class="btn btn-primary" data-dismiss="modal" type="button">
+                    <i class="fa fa-times"></i>
+                    Close Project</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- Modal 1 -->
     <div class="portfolio-modal modal fade" id="portfolio_menu" tabindex="-1" role="dialog" aria-hidden="true">
       <div class="modal-dialog">
@@ -480,7 +525,7 @@
                   <img class="img-fluid d-block mx-auto" src="img/menu_1.png" alt="">
                   <img class="img-fluid d-block mx-auto" src="img/menu_2.png" alt="">
                   <img class="img-fluid d-block mx-auto" src="img/menu_3.png" alt="">
-                
+
                   <button class="btn btn-primary" data-dismiss="modal" type="button">
                     <i class="fa fa-times"></i>
                     Close Project</button>
