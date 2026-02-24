@@ -1,0 +1,195 @@
+{
+  "title": "El après-ski y el pastelito",
+  "titleTranslation": "The après-ski and the little pastry",
+  "level": "A2",
+  "language": "es",
+  "thumbnail": {
+    "filename": "apres_ski_pastel_thumbnail_snow_mountains.png",
+    "generation_prompt": "Snowy mountains in Romania, snowboarder in the distance, winter sun, peaceful ski resort."
+  },
+  "tags": [
+    {
+      "name": "Grammar",
+      "description": "Past tense (pretérito indefinido, imperfecto), simple connectors, expressing likes and decisions"
+    },
+    {
+      "name": "Vocabulary",
+      "description": "Snow, mountains, directions, food, places"
+    },
+    {
+      "name": "Themes",
+      "description": "Snowboarding, après-ski, finding your way, making memories"
+    }
+  ],
+  "content": [
+    {
+      "type": "sentence",
+      "text": "Una vez fui a hacer snowboard a las montañas de Rumanía.",
+      "translation": "Once I went snowboarding in the mountains of Romania."
+    },
+    {
+      "type": "sentence",
+      "text": "Sabía que hay un après-ski en medio de la pista con pastelitos.",
+      "translation": "I knew there is an après-ski in the middle of the slope with little pastries.",
+      "highlights": [
+        {
+          "startIndex": 17,
+          "endIndex": 26,
+          "text": "après-ski",
+          "glossaryKey": "après-ski"
+        },
+        {
+          "startIndex": 52,
+          "endIndex": 62,
+          "text": "pastelitos",
+          "glossaryKey": "pastelitos"
+        }
+      ]
+    },
+    {
+      "type": "sentence",
+      "text": "No sabíamos cómo llegar pero al final alguien nos dijo el camino.",
+      "translation": "We didn't know how to get there but in the end someone told us the way."
+    },
+    {
+      "type": "image",
+      "filename": "apres_ski_pastel_mountains_slope.png",
+      "generation_prompt": "Snowboarder looking at a mountain slope in Romanian mountains, winter, looking for the way, snow and trees."
+    },
+    {
+      "type": "sentence",
+      "text": "Encontramos el lugar y bajamos por esa pista.",
+      "translation": "We found the place and went down that slope."
+    },
+    {
+      "type": "sentence",
+      "text": "En una parte la pista era muy empinada y corta.",
+      "translation": "In one part the slope was very steep and short.",
+      "highlights": [
+        {
+          "startIndex": 30,
+          "endIndex": 38,
+          "text": "empinada",
+          "glossaryKey": "empinada"
+        }
+      ]
+    },
+    {
+      "type": "sentence",
+      "text": "Después a la derecha la pista iba más lento y no daba miedo.",
+      "translation": "Then to the right the slope went slower and it wasn't scary.",
+      "highlights": [
+        {
+          "startIndex": 49,
+          "endIndex": 59,
+          "text": "daba miedo",
+          "glossaryKey": "daba miedo"
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "filename": "apres_ski_pastel_steep_section.png",
+      "generation_prompt": "Steep short section of a ski slope then easing to the right, snow, winter, dynamic but not scary."
+    },
+    {
+      "type": "sentence",
+      "text": "¡Era genial!",
+      "translation": "It was great!"
+    },
+    {
+      "type": "sentence",
+      "text": "Llegamos al après-ski pero ya no tenían pastelitos.",
+      "translation": "We arrived at the après-ski but they didn't have little pastries anymore."
+    },
+    {
+      "type": "sentence",
+      "text": "Decidimos que ese trozo de pista era nuestro pastelito.",
+      "translation": "We decided that that bit of slope was our little pastry.",
+      "highlights": [
+        {
+          "startIndex": 18,
+          "endIndex": 23,
+          "text": "trozo",
+          "glossaryKey": "trozo"
+        },
+        {
+          "startIndex": 45,
+          "endIndex": 54,
+          "text": "pastelito",
+          "glossaryKey": "pastelito"
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "filename": "apres_ski_pastel_bar_arrival.png",
+      "generation_prompt": "Arriving at a cozy après-ski bar in the mountains, no pastries left, friends laughing, winter atmosphere."
+    },
+    {
+      "type": "sentence",
+      "text": "Desde entonces \"ir a por un pastelito\" significa bajar por esa pista.",
+      "translation": "Since then \"going for a little pastry\" means going down that slope.",
+      "highlights": [
+        {
+          "startIndex": 39,
+          "endIndex": 48,
+          "text": "significa",
+          "glossaryKey": "significa"
+        }
+      ]
+    },
+    {
+      "type": "sentence",
+      "text": "Ese recorrido es nuestro pastelito favorito.",
+      "translation": "That run is our favourite little pastry."
+    },
+    {
+      "type": "sentence",
+      "text": "La montaña nos dio algo mejor que un dulce.",
+      "translation": "The mountain gave us something better than a sweet.",
+      "highlights": [
+        {
+          "startIndex": 37,
+          "endIndex": 42,
+          "text": "dulce",
+          "glossaryKey": "dulce"
+        }
+      ]
+    }
+  ],
+  "glossary": {
+    "après-ski": {
+      "translation": "après-ski (after-ski)",
+      "explanation": "Loan word: the bar or place where you go after skiing. Same in English."
+    },
+    "pastelitos": {
+      "translation": "little pastries, small cakes",
+      "explanation": "Plural of 'pastelito'. Diminutive of pastel; common word for small sweet baked goods."
+    },
+    "empinada": {
+      "translation": "steep",
+      "explanation": "Adjective (feminine). 'Una pista empinada' = a steep slope. Masculine: empinado."
+    },
+    "daba miedo": {
+      "translation": "was scary, gave (us) fear",
+      "explanation": "Dar miedo = to be scary. 'No daba miedo' = it wasn't scary. Literally 'it didn't give fear'."
+    },
+    "trozo": {
+      "translation": "piece, bit",
+      "explanation": "Noun (masculine). Un trozo de = a piece of. Un trozo de pista = a section of slope."
+    },
+    "pastelito": {
+      "translation": "little pastry, small cake",
+      "explanation": "Noun (masculine). Diminutive of pastel (-ito). Here used in a fun way: the 'little pastry' is the nice run."
+    },
+    "significa": {
+      "translation": "means",
+      "explanation": "From the verb significar (to mean). 'X significa Y' = X means Y."
+    },
+    "dulce": {
+      "translation": "sweet, candy",
+      "explanation": "Noun (masculine). Un dulce = a sweet. Also adjective: sweet (taste)."
+    }
+  }
+}

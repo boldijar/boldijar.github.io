@@ -1,0 +1,209 @@
+{
+  "title": "El surfista y la scooter en Bali",
+  "titleTranslation": "The surfer and the scooter in Bali",
+  "level": "B1",
+  "language": "es",
+  "thumbnail": {
+    "filename": "bali_scooter_thumbnail_surfer_beach.png",
+    "generation_prompt": "A surfer with a board walking on a tropical beach at sunset, Bali style, warm colors, peaceful mood."
+  },
+  "tags": [
+    {
+      "name": "Grammar",
+      "description": "Past tense (pretérito indefinido and imperfecto), expressing surprise and discovery"
+    },
+    {
+      "name": "Vocabulary",
+      "description": "Travel, transport, directions, daily routines"
+    },
+    {
+      "name": "Themes",
+      "description": "Travel mishaps, cultural differences, driving rules"
+    }
+  ],
+  "content": [
+    {
+      "type": "sentence",
+      "text": "Hace un año fui a Bali para surfear.",
+      "translation": "A year ago I went to Bali to surf."
+    },
+    {
+      "type": "sentence",
+      "text": "Necesitaba un medio de transporte para moverme por la isla.",
+      "translation": "I needed a means of transport to get around the island.",
+      "highlights": [
+        {
+          "startIndex": 14,
+          "endIndex": 33,
+          "text": "medio de transporte",
+          "glossaryKey": "medio de transporte"
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "filename": "bali_scooter_rental_shop.png",
+      "generation_prompt": "Small rental shop in Bali with scooters parked in front, tropical plants, sign in Spanish and English, sunny day."
+    },
+    {
+      "type": "sentence",
+      "text": "Alquilé una scooter cerca de la playa.",
+      "translation": "I rented a scooter near the beach.",
+      "highlights": [
+        {
+          "startIndex": 0,
+          "endIndex": 7,
+          "text": "Alquilé",
+          "glossaryKey": "alquilar"
+        }
+      ]
+    },
+    {
+      "type": "sentence",
+      "text": "El dueño me dio las llaves y un casco, pero no me explicó nada sobre el tráfico.",
+      "translation": "The owner gave me the keys and a helmet, but he didn't explain anything about the traffic."
+    },
+    {
+      "type": "sentence",
+      "text": "Salí a la carretera y empecé a conducir por la derecha, como en mi país.",
+      "translation": "I went out onto the road and started driving on the right, like in my country.",
+      "highlights": [
+        {
+          "startIndex": 44,
+          "endIndex": 54,
+          "text": "la derecha",
+          "glossaryKey": "derecha"
+        }
+      ]
+    },
+    {
+      "type": "sentence",
+      "text": "Nadie me dijo que en Indonesia se conduce por la izquierda.",
+      "translation": "Nobody told me that in Indonesia you drive on the left."
+    },
+    {
+      "type": "sentence",
+      "text": "Los primeros días todo parecía normal.",
+      "translation": "The first few days everything seemed normal."
+    },
+    {
+      "type": "image",
+      "filename": "bali_scooter_street_traffic.png",
+      "generation_prompt": "Busy street in Bali with scooters and cars, tropical setting, local drivers, slight chaos but colorful and lively."
+    },
+    {
+      "type": "sentence",
+      "text": "Iba al surf por la mañana y volvía por la tarde.",
+      "translation": "I used to go surfing in the morning and come back in the afternoon."
+    },
+    {
+      "type": "sentence",
+      "text": "A veces me sentía un poco raro cuando los coches me adelantaban.",
+      "translation": "Sometimes I felt a bit strange when cars overtook me.",
+      "highlights": [
+        {
+          "startIndex": 52,
+          "endIndex": 63,
+          "text": "adelantaban",
+          "glossaryKey": "adelantar"
+        }
+      ]
+    },
+    {
+      "type": "sentence",
+      "text": "Pensaba que los conductores en Bali eran muy atrevidos.",
+      "translation": "I thought the drivers in Bali were very bold."
+    },
+    {
+      "type": "sentence",
+      "text": "Un día un turista me gritó desde su coche: \"¡Estás en el lado equivocado!\"",
+      "translation": "One day a tourist shouted at me from his car: \"You're on the wrong side!\""
+    },
+    {
+      "type": "sentence",
+      "text": "No entendí bien y seguí mi camino.",
+      "translation": "I didn't understand well and continued on my way."
+    },
+    {
+      "type": "sentence",
+      "text": "Al tercer día, otra persona me hizo señas para que me cambiara de carril.",
+      "translation": "On the third day, another person waved at me to change lanes.",
+      "highlights": [
+        {
+          "startIndex": 36,
+          "endIndex": 41,
+          "text": "señas",
+          "glossaryKey": "señas"
+        }
+      ]
+    },
+    {
+      "type": "sentence",
+      "text": "Entonces lo busqué en internet y descubrí la verdad.",
+      "translation": "Then I looked it up on the internet and discovered the truth.",
+      "highlights": [
+        {
+          "startIndex": 33,
+          "endIndex": 41,
+          "text": "descubrí",
+          "glossaryKey": "descubrir"
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "filename": "bali_scooter_surfer_realization.png",
+      "generation_prompt": "Surfer sitting on a scooter at the side of a road, looking at phone with surprised expression, palm trees, Bali, comic relief mood."
+    },
+    {
+      "type": "sentence",
+      "text": "En Indonesia se conduce por la izquierda, igual que en Reino Unido o Japón.",
+      "translation": "In Indonesia you drive on the left, just like in the UK or Japan."
+    },
+    {
+      "type": "sentence",
+      "text": "Yo había estado conduciendo por el lado equivocado durante tres días.",
+      "translation": "I had been driving on the wrong side for three days."
+    },
+    {
+      "type": "sentence",
+      "text": "Menos mal que no pasó nada grave.",
+      "translation": "Thank goodness nothing serious happened."
+    },
+    {
+      "type": "sentence",
+      "text": "Desde entonces siempre pregunto por las normas de circulación cuando viajo.",
+      "translation": "Since then I always ask about the traffic rules when I travel."
+    }
+  ],
+  "glossary": {
+    "medio de transporte": {
+      "translation": "means of transport",
+      "explanation": "Phrase: 'medio' is masculine; use 'un' (a) or 'el' (the). Plural: medios de transporte."
+    },
+    "alquilar": {
+      "translation": "to rent",
+      "explanation": "Regular -ar verb. Past: alquilé (I rented). Same as 'rentar' in some regions."
+    },
+    "derecha": {
+      "translation": "right (side)",
+      "explanation": "Noun (la derecha). 'Por la derecha' = on the right. Opposite: la izquierda (left)."
+    },
+    "izquierda": {
+      "translation": "left (side)",
+      "explanation": "Noun (la izquierda). 'Por la izquierda' = on the left. In Indonesia they drive on the left."
+    },
+    "adelantar": {
+      "translation": "to overtake, pass",
+      "explanation": "Regular -ar verb. 'Me adelantaban' = they were overtaking me (imperfect, repeated action)."
+    },
+    "señas": {
+      "translation": "signs, gestures",
+      "explanation": "Plural of 'seña'. 'Hacer señas' = to wave or gesture (at someone)."
+    },
+    "descubrir": {
+      "translation": "to discover, find out",
+      "explanation": "Regular -ir verb. Past: descubrí. Similar to 'enterarse' (to find out)."
+    }
+  }
+}
