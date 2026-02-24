@@ -163,6 +163,13 @@
     .input-line input::placeholder {
       color: #6e7681;
     }
+    .input-line.disabled input {
+      pointer-events: none;
+      opacity: 0.6;
+    }
+    .input-line.disabled input::placeholder {
+      color: #4a4a4a;
+    }
     .cursor {
       display: inline-block;
       width: 8px;
@@ -289,8 +296,8 @@
 <pre class="line"></pre>
 <pre class="line">LinkedIn  <a class="link" href="https://linkedin.com/in/boldijar" target="_blank" rel="noopener">linkedin.com/in/boldijar</a></pre>
 <pre class="line"></pre>
-        <div class="input-line" id="inputLine">
-          <span class="prompt"><span class="user">boldijar</span><span class="at">@</span><span class="host">macbook</span></span>:<span class="path">~</span>$ <input type="text" id="termInput" autocomplete="off" placeholder="type something and press Enter" />
+        <div class="input-line disabled" id="inputLine">
+          <span class="prompt"><span class="user">boldijar</span><span class="at">@</span><span class="host">macbook</span></span>:<span class="path">~</span>$ <input type="text" id="termInput" autocomplete="off" placeholder="scroll down to type" readonly />
         </div>
       </div>
     </div>
@@ -325,6 +332,30 @@
       var output = document.querySelector('.terminal-output');
       var inputLine = document.getElementById('inputLine');
       var input = document.getElementById('termInput');
+      var terminalBody = document.querySelector('.terminal-body');
+
+      function setScrollTop() {
+        terminalBody.scrollTop = 0;
+      }
+      setScrollTop();
+      requestAnimationFrame(setScrollTop);
+      setTimeout(setScrollTop, 50);
+
+      var scrollThreshold = 80;
+      function checkScroll() {
+        var nearBottom = terminalBody.scrollTop + terminalBody.clientHeight >= terminalBody.scrollHeight - scrollThreshold;
+        if (nearBottom) {
+          inputLine.classList.remove('disabled');
+          input.removeAttribute('readonly');
+          input.placeholder = 'type something and press Enter';
+        } else {
+          inputLine.classList.add('disabled');
+          input.setAttribute('readonly', 'readonly');
+          input.placeholder = 'scroll down to type';
+        }
+      }
+      terminalBody.addEventListener('scroll', checkScroll);
+      checkScroll();
 
       function promptHtml() {
         return '<span class="prompt"><span class="user">boldijar</span><span class="at">@</span><span class="host">macbook</span></span>:<span class="path">~</span>$ ';
@@ -385,8 +416,9 @@
         document.querySelector('.terminal-body').scrollTop = document.querySelector('.terminal-body').scrollHeight;
       });
 
-      input.focus();
-      document.body.addEventListener('click', function () { input.focus(); });
+      document.body.addEventListener('click', function () {
+        if (!input.hasAttribute('readonly')) input.focus();
+      });
     })();
   </script>
 </body>
