@@ -303,6 +303,17 @@
     </div>
   </div>
   <div class="app-windows">
+    <a class="app-window" href="https://github.com/boldijar/boldijar.github.io/blob/master/cv_boldijar_paul_moble_engineer.pdf?raw=true" download="cv_boldijar_paul_moble_engineer.pdf">
+      <div class="title-bar">
+        <span class="btn close"></span>
+        <span class="btn min"></span>
+        <span class="btn max"></span>
+        <span class="title">CV — Boldijar Paul</span>
+      </div>
+      <div class="app-body">
+        <span>download cv</span>
+      </div>
+    </a>
     <a class="app-window" href="cuentito">
       <div class="title-bar">
         <span class="btn close"></span>
@@ -411,9 +422,13 @@
           return;
         }
         var tri = triangle(cmd);
-        if (tri) appendTriangle(tri);
+        if (tri) {
+          appendTriangle(tri);
+          requestAnimationFrame(function () {
+            terminalBody.scrollTop = terminalBody.scrollHeight;
+          });
+        }
         input.value = '';
-        document.querySelector('.terminal-body').scrollTop = document.querySelector('.terminal-body').scrollHeight;
       });
 
       document.body.addEventListener('click', function () {
