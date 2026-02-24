@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Spanish Stories</title>
+  <title>Spanish Stories — Learn Spanish through short stories and songs</title>
+  <meta name="description" content="Learn Spanish through short stories and popular songs. Read or listen at your level (A1–C2). Tap a sentence to see the translation. Use the glossary for vocabulary and slang.">
   <style>
     * { box-sizing: border-box; }
     body { font-family: system-ui, sans-serif; margin: 0; padding: 1.5rem; padding-top: 3rem; background: #f5f5f5; color: #1a1a1a; }
@@ -15,20 +16,23 @@
     body.dark .dark-toggle { background: #333; color: #e0e0e0; }
     body.dark .dark-toggle:hover { background: #555; }
     .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; max-width: 1200px; margin: 0 auto; }
-    .card { display: block; text-decoration: none; color: inherit; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08); transition: transform 0.2s, box-shadow 0.2s; }
+    .card { display: block; text-decoration: none; color: inherit; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.06); transition: transform 0.2s, box-shadow 0.2s; }
     body.dark .card { background: #2d2d2d; }
-    .card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.12); }
+    .card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    body.dark .card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
     .card-bg { position: relative; height: 140px; background-size: cover; background-position: center; background-color: #fff; }
     body.dark .card-bg { background-color: #1a1a1a; }
     .card-bg .level { position: absolute; top: 0.5rem; right: 0.5rem; background: rgba(0,0,0,0.7); color: #fff; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
-    body.dark .card-bg .level { background: rgba(255,255,255,0.2); }
+    body.dark .card-bg .level { background: rgba(255,255,255,0.25); color: #1a1a1a; }
     .card-body { padding: 1rem; }
     .card-title { margin: 0; font-size: 1.05rem; line-height: 1.35; }
     .card-meta { margin-top: 0.25rem; font-size: 0.85rem; color: #666; }
     body.dark .card-meta { color: #aaa; }
-    .card-category { font-size: 0.75rem; color: #888; margin-top: 0.25rem; }
-    body.dark .card-category { color: #888; }
     .error { color: #c00; padding: 1rem; }
+    .hero { margin-bottom: 2rem; max-width: 1200px; margin-left: auto; margin-right: auto; }
+    .hero h1 { margin: 0; font-size: 2.25rem; font-weight: 800; line-height: 1.2; letter-spacing: -0.02em; }
+    .hero p { margin: 0.75rem 0 0; font-size: 1.1rem; color: #555; line-height: 1.5; max-width: 42rem; }
+    body.dark .hero p { color: #aaa; }
   </style>
 </head>
 <body>
@@ -36,9 +40,12 @@
     <svg id="iconSun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
     <svg id="iconMoon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
-  <div class="page-header"><h1>Spanish Stories</h1></div>
+  <div class="hero">
+    <h1>Learn Spanish through short stories and popular songs</h1>
+    <p>Read or listen at your level (A1–C2). Tap a sentence to see the translation. Use the glossary for vocabulary and slang.</p>
+  </div>
   <div id="app"></div>
-  <script>var EMBEDDED_MANIFEST = [{"id": "apres_ski_pastel", "title": "El après-ski y el pastelito", "titleTranslation": "The après-ski and the little pastry", "level": "A2", "thumbnail": "apres_ski_pastel_thumbnail_snow_mountains.png", "category": "Grammar"}, {"id": "azotea_caja_preguntas", "title": "La caja de las preguntas", "titleTranslation": "The box of questions", "level": "C1", "thumbnail": "azotea_caja_preguntas_thumbnail_rooftop.png", "category": "Grammar"}, {"id": "bali_scooter", "title": "El surfista y la scooter en Bali", "titleTranslation": "The surfer and the scooter in Bali", "level": "B1", "thumbnail": "bali_scooter_thumbnail_surfer_beach.png", "category": "Grammar"}];</script>
+  <script>var EMBEDDED_MANIFEST = [{"id": "apres_ski_pastel", "title": "El après-ski y el pastelito", "titleTranslation": "The après-ski and the little pastry", "level": "A2", "thumbnail": "apres_ski_pastel_thumbnail_snow_mountains.png", "category": "Grammar"}, {"id": "azotea_caja_preguntas", "title": "La caja de las preguntas", "titleTranslation": "The box of questions", "level": "C1", "thumbnail": "azotea_caja_preguntas_thumbnail_rooftop.png", "category": "Grammar"}, {"id": "bad_bunny_dtmf", "title": "Bad Bunny - DtMf (DeBÍ TiRAR MáS FOToS)", "titleTranslation": "Bad Bunny - I Should Have Taken More Photos", "level": "B2", "thumbnail": "bad_bunny_dtmf_thumbnail.png", "category": "Grammar"}, {"id": "bali_scooter", "title": "El surfista y la scooter en Bali", "titleTranslation": "The surfer and the scooter in Bali", "level": "B1", "thumbnail": "bali_scooter_thumbnail_surfer_beach.png", "category": "Grammar"}];</script>
   <script>
     (function () {
       var app = document.getElementById('app');
@@ -83,7 +90,6 @@
         html += '<div class="card-bg"' + bgStyle + '><span class="level">' + escapeHtml(level) + '</span></div>';
         html += '<div class="card-body"><h2 class="card-title">' + escapeHtml(title) + '</h2>';
         if (titleTranslation) html += '<p class="card-meta">' + escapeHtml(titleTranslation) + '</p>';
-        if (category) html += '<p class="card-category">' + escapeHtml(category) + '</p>';
         html += '</div></a>';
       });
       app.innerHTML = html + '</div>';
