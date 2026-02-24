@@ -45,7 +45,7 @@
     <p>Read or listen at your level (A1–C2). Tap a sentence to see the translation. Use the glossary for vocabulary and slang.</p>
   </div>
   <div id="app"></div>
-  <script>var EMBEDDED_MANIFEST = [{"id": "apres_ski_pastel", "title": "El après-ski y el pastelito", "titleTranslation": "The après-ski and the little pastry", "level": "A2", "thumbnail": "apres_ski_pastel_thumbnail_snow_mountains.png", "category": "Grammar"}, {"id": "azotea_caja_preguntas", "title": "La caja de las preguntas", "titleTranslation": "The box of questions", "level": "C1", "thumbnail": "azotea_caja_preguntas_thumbnail_rooftop.png", "category": "Grammar"}, {"id": "bad_bunny_dtmf", "title": "Bad Bunny - DtMf (DeBÍ TiRAR MáS FOToS)", "titleTranslation": "Bad Bunny - I Should Have Taken More Photos", "level": "B2", "thumbnail": "bad_bunny_dtmf_thumbnail.png", "category": "Grammar"}, {"id": "bali_scooter", "title": "El surfista y la scooter en Bali", "titleTranslation": "The surfer and the scooter in Bali", "level": "B1", "thumbnail": "bali_scooter_thumbnail_surfer_beach.png", "category": "Grammar"}];</script>
+  <script>var EMBEDDED_MANIFEST = [{"id": "apres_ski_pastel", "slug": "apres-ski-pastel", "title": "El après-ski y el pastelito", "titleTranslation": "The après-ski and the little pastry", "level": "A2", "thumbnail": "apres_ski_pastel_thumbnail_snow_mountains.png", "category": "Grammar"}, {"id": "azotea_caja_preguntas", "slug": "azotea-caja-preguntas", "title": "La caja de las preguntas", "titleTranslation": "The box of questions", "level": "C1", "thumbnail": "azotea_caja_preguntas_thumbnail_rooftop.png", "category": "Grammar"}, {"id": "bad_bunny_dtmf", "slug": "bad-bunny-dtmf", "title": "Bad Bunny - DtMf (DeBÍ TiRAR MáS FOToS)", "titleTranslation": "Bad Bunny - I Should Have Taken More Photos", "level": "B2", "thumbnail": "bad_bunny_dtmf_thumbnail.png", "category": "Grammar"}, {"id": "bali_scooter", "slug": "bali-scooter", "title": "El surfista y la scooter en Bali", "titleTranslation": "The surfer and the scooter in Bali", "level": "B1", "thumbnail": "bali_scooter_thumbnail_surfer_beach.png", "category": "Grammar"}];</script>
   <script>
     (function () {
       var app = document.getElementById('app');
@@ -80,13 +80,13 @@
       var html = '<div class="grid">';
       list.forEach(function (item) {
         var id = item.id || '';
+        var slug = item.slug || id;
         var title = item.title || id;
         var titleTranslation = item.titleTranslation || '';
         var level = item.level || '';
         var thumb = (item.thumbnail && item.thumbnail.trim()) ? ('images/' + item.thumbnail.trim()) : '';
-        var category = item.category || '';
         var bgStyle = thumb ? (' style="background-image: url(\'' + thumb + '\')"') : '';
-        html += '<a class="card" href="story.html?name=' + encodeURIComponent(id) + '">';
+        html += '<a class="card" href="story/' + encodeURIComponent(slug) + '/">';
         html += '<div class="card-bg"' + bgStyle + '><span class="level">' + escapeHtml(level) + '</span></div>';
         html += '<div class="card-body"><h2 class="card-title">' + escapeHtml(title) + '</h2>';
         if (titleTranslation) html += '<p class="card-meta">' + escapeHtml(titleTranslation) + '</p>';
