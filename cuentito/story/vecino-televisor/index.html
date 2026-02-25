@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lo que oía a través de la pared — Spanish Stories</title>
+  <meta name="description" content="Learn Spanish with this C1 story: Lo que oía a través de la pared. Read the text, tap sentences for translation, and use the glossary for vocabulary.">
+  <meta property="og:type" content="article">
+  <meta property="og:image:width" content="500">
+  <meta property="og:image:height" content="500">
+  <meta property="og:title" content="Lo que oía a través de la pared — Spanish Stories">
+  <meta property="og:description" content="Learn Spanish with this C1 story: Lo que oía a través de la pared. Read the text, tap sentences for translation, and use the glossary for vocabulary.">
+  <meta property="og:image" content="https://boldijar.github.io/cuentito/images/vecino_televisor_thumbnail.png">
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: system-ui, sans-serif; max-width: 42rem; margin: 0 auto; padding: 1rem 1.5rem; padding-top: 3rem; line-height: 1.6; color: #1a1a1a; }
+    .dark-toggle { position: fixed; top: 1rem; right: 1rem; width: 2.5rem; height: 2.5rem; padding: 0; border: none; border-radius: 50%; background: #e0e0e0; color: #333; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; }
+    .dark-toggle:hover { background: #ccc; }
+    body.dark .dark-toggle { background: #333; color: #e0e0e0; }
+    body.dark .dark-toggle:hover { background: #555; }
+    header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid #e0e0e0; }
+    h1 { margin: 0; font-size: 1.5rem; }
+    .meta { font-size: 0.9rem; color: #555; }
+    .tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem; }
+    .tag { background: #f0f0f0; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.85rem; }
+    .tag strong { display: block; }
+    .switch-row { display: flex; align-items: center; gap: 0.5rem; }
+    .switch-row label { cursor: pointer; user-select: none; }
+    .content { margin: 1rem 0; }
+    .sentence-block { margin-bottom: 0.5rem; }
+    .sentence-block.show-translation { margin-bottom: 1rem; }
+    .sentence-block.show-translation .translation { display: block; }
+    .sentence-block .translation { display: none; margin-top: 0.25rem; padding-left: 1rem; font-size: 0.95rem; color: #555; border-left: 3px solid #ccc; }
+    .sentence-block .detailed-translation { display: none; margin-top: 0.35rem; padding-left: 1.5rem; font-size: 0.85rem; color: #555; list-style: disc; }
+    .sentence-block.show-translation.show-detailed .detailed-translation { display: block; }
+    .sentence-block .detailed-translation li { margin: 0.2rem 0; }
+    body.dark .sentence-block .detailed-translation { color: #aaa; }
+    .sentence-block .text { cursor: pointer; }
+    .sentence-block .translation { cursor: pointer; }
+    .sentence-block .detailed-translation { cursor: pointer; }
+    .sentence-block .text .hl { background: #fff3cd; padding: 0 2px; border-radius: 2px; }
+    .content img { max-width: 100%; height: auto; display: block; margin: 1rem 0; border-radius: 8px; }
+    .content img.hide { display: none !important; }
+    .glossary { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #e0e0e0; }
+    .glossary h2 { font-size: 1.1rem; margin-bottom: 0.75rem; }
+    .glossary dl { margin: 0; }
+    .glossary dt { font-weight: 600; margin-top: 0.75rem; }
+    .glossary dt:first-child { margin-top: 0; }
+    .glossary dd { margin: 0.25rem 0 0 0; color: #444; font-size: 0.95rem; }
+    body.dark { background: #1a1a1a; color: #e0e0e0; }
+    body.dark header { border-bottom-color: #404040; }
+    body.dark .meta { color: #aaa; }
+    body.dark .tag { background: #2d2d2d; color: #ccc; }
+    body.dark .sentence-block .translation { color: #aaa; border-left-color: #555; }
+    body.dark .sentence-block .text .hl { background: #4a3f1a; color: #f0e6c8; }
+    body.dark .glossary { border-top-color: #404040; }
+    body.dark .glossary h2, body.dark .glossary dt { color: #e8e8e8; }
+    body.dark .glossary dd { color: #aaa; }
+    body.dark .content img:not(.hide) { filter: invert(1); }
+    .back-header { margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid #e8e8e8; }
+    body.dark .back-header { border-bottom-color: #404040; }
+    .back-header a { display: inline-flex; align-items: center; gap: 0.35rem; color: #555; text-decoration: none; font-size: 0.95rem; font-weight: 500; }
+    .back-header a:hover { color: #1a1a1a; }
+    body.dark .back-header a { color: #aaa; }
+    body.dark .back-header a:hover { color: #e0e0e0; }
+    .back-header a svg { flex-shrink: 0; }
+    .error { color: #c00; padding: 2rem; }
+  </style>
+</head>
+<body>
+  <button type="button" class="dark-toggle" id="darkToggle" title="Toggle dark mode" aria-label="Toggle dark mode">
+    <svg id="iconSun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+    <svg id="iconMoon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+  </button>
+  <div class="back-header"><a href="../../index.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Back</a></div>
+  <header>
+    <div><h1 id="title"></h1><p class="meta" id="meta"></p><div class="tags" id="tags"></div></div>
+    <div class="switch-row">
+      <input type="checkbox" id="showTranslations" />
+      <label for="showTranslations">Show translations under sentences</label>
+      <input type="checkbox" id="showDetailedTranslation" />
+      <label for="showDetailedTranslation">Detailed translation</label>
+    </div>
+  </header>
+  <main class="content" id="content"></main>
+  <footer class="glossary" id="glossary"></footer>
+  <script>var EMBEDDED_STORY = {"title": "Lo que oía a través de la pared", "titleTranslation": "What I heard through the wall", "level": "C1", "language": "es", "thumbnail": {"filename": "vecino_televisor_thumbnail.png", "generation_prompt": "Person in a room with ear close to a wall, listening, apartment interior."}, "tags": [{"name": "Grammar", "description": "Subjunctive (dudar, para que, lo que), relative clauses, complex past narrative, conditional nuance"}, {"name": "Vocabulary", "description": "Apartment life, sounds, emotions, social interaction, embarrassment and relief"}, {"name": "Themes", "description": "Misunderstanding, paranoia, neighbor relations, funny twist, everyday suspense"}], "content": [{"type": "sentence", "text": "Vivo en un piso con paredes tan finas que oigo casi todo lo que ocurre al otro lado.", "translation": "I live in a flat with walls so thin that I hear almost everything that happens on the other side.", "detailedTranslation": ["tan finas que — so thin that", "lo que ocurre — what happens (relative)"], "highlights": [{"startIndex": 20, "endIndex": 37, "text": "paredes tan finas", "glossaryKey": "pared fina"}, {"startIndex": 57, "endIndex": 70, "text": "lo que ocurre", "glossaryKey": "lo que ocurre"}]}, {"type": "sentence", "text": "Una noche empecé a oír gritos y algo que sonaba a cristales rotos.", "translation": "One night I started to hear shouts and something that sounded like broken glass.", "detailedTranslation": ["sonaba a — sounded like", "cristales rotos — broken glass"], "highlights": [{"startIndex": 41, "endIndex": 65, "text": "sonaba a cristales rotos", "glossaryKey": "sonar a"}]}, {"type": "sentence", "text": "Luego, silencio absoluto.", "translation": "Then, absolute silence.", "detailedTranslation": []}, {"type": "sentence", "text": "Me quedé despierto preguntándome si debía hacer algo o si me estaría imaginando cosas.", "translation": "I stayed awake wondering whether I ought to do something or whether I was imagining things.", "detailedTranslation": ["preguntándome — wondering (gerund); preguntarse", "debía — I ought to; deber, imperfect"], "highlights": [{"startIndex": 19, "endIndex": 32, "text": "preguntándome", "glossaryKey": "preguntarse"}]}, {"type": "sentence", "text": "Al día siguiente volvió a ocurrir: voces alteradas, un golpe sordo y de nuevo ese silencio inquietante.", "translation": "The next day it happened again: raised voices, a dull thud, and again that unsettling silence.", "detailedTranslation": ["volvió a ocurrir — it happened again", "alteradas — agitated, raised", "golpe sordo — dull thud"], "highlights": [{"startIndex": 17, "endIndex": 33, "text": "volvió a ocurrir", "glossaryKey": "volver a"}, {"startIndex": 82, "endIndex": 102, "text": "silencio inquietante", "glossaryKey": "inquietante"}]}, {"type": "sentence", "text": "No conocía al vecino más que para cruzarnos en el rellano.", "translation": "I didn't know the neighbor except for passing each other on the landing.", "detailedTranslation": ["más que para — only to (no más que = nothing more than)", "rellano — landing (of stairs)"], "highlights": [{"startIndex": 50, "endIndex": 57, "text": "rellano", "glossaryKey": "rellano"}]}, {"type": "sentence", "text": "Empecé a imaginarme lo peor: una discusión que se había ido de las manos, algo peor.", "translation": "I started to imagine the worst: an argument that had got out of hand, something worse.", "detailedTranslation": ["se había ido de las manos — had got out of hand; irse de las manos"], "highlights": [{"startIndex": 47, "endIndex": 72, "text": "se había ido de las manos", "glossaryKey": "irse de las manos"}]}, {"type": "image", "filename": "vecino_televisor_escucha_pared.png", "generation_prompt": "Person at home with ear close to the wall, listening, worried expression, apartment interior."}, {"type": "sentence", "text": "Pasaron tres días así; ya no lograba concentrarme en el trabajo.", "translation": "Three days went by like that; I could no longer manage to concentrate on work.", "detailedTranslation": ["lograba — I managed to; lograr, imperfect", "concentrarme — to concentrate; reflexive"], "highlights": [{"startIndex": 29, "endIndex": 36, "text": "lograba", "glossaryKey": "lograr"}]}, {"type": "sentence", "text": "Me sentía culpable por no actuar, pero también tenía miedo de entrometerme.", "translation": "I felt guilty for not acting, but I was also afraid of sticking my nose in.", "detailedTranslation": ["entrometerme — to interfere, stick my nose in; reflexive"], "highlights": [{"startIndex": 62, "endIndex": 74, "text": "entrometerme", "glossaryKey": "entrometerse"}]}, {"type": "sentence", "text": "No sabía si llamar a la policía o si sería exagerado.", "translation": "I didn't know whether to call the police or whether that would be overkill.", "detailedTranslation": ["sería — would be; conditional of ser", "exagerado — exaggerated, overkill"], "highlights": [{"startIndex": 37, "endIndex": 52, "text": "sería exagerado", "glossaryKey": "exagerado"}]}, {"type": "sentence", "text": "Al final decidí que al menos llamaría al timbre para comprobar que todo estuviera bien.", "translation": "In the end I decided that at least I would ring the doorbell to check that everything was okay.", "detailedTranslation": ["comprobar que + subjunctive — to check that (something is the case)", "estuviera — was; imperfect subjunctive of estar"], "highlights": [{"startIndex": 53, "endIndex": 66, "text": "comprobar que", "glossaryKey": "comprobar"}, {"startIndex": 67, "endIndex": 86, "text": "todo estuviera bien", "glossaryKey": "estar bien"}]}, {"type": "sentence", "text": "Bajé los escaleros con el corazón en un puño.", "translation": "I went down the stairs with my heart in my mouth.", "detailedTranslation": ["con el corazón en un puño — idiom: with one's heart in one's mouth"], "highlights": [{"startIndex": 26, "endIndex": 44, "text": "corazón en un puño", "glossaryKey": "corazón en un puño"}]}, {"type": "image", "filename": "vecino_televisor_ante_puerta.png", "generation_prompt": "Person standing in front of a neighbor's door in an apartment corridor, about to ring the doorbell, tense posture."}, {"type": "sentence", "text": "Llamé al timbre; nadie respondió al principio.", "translation": "I rang the doorbell; no one answered at first.", "detailedTranslation": []}, {"type": "sentence", "text": "Estaba a punto de irme cuando se abrió la puerta.", "translation": "I was about to leave when the door opened.", "detailedTranslation": ["Estaba a punto de — I was about to", "cuando — when"], "highlights": [{"startIndex": 0, "endIndex": 17, "text": "Estaba a punto de", "glossaryKey": "estar a punto de"}]}, {"type": "sentence", "text": "El vecino apareció con una expresión entre sorprendida y molesta.", "translation": "The neighbor appeared with an expression somewhere between surprised and annoyed.", "detailedTranslation": ["entre... y — between... and (figurative)"], "highlights": [{"startIndex": 37, "endIndex": 64, "text": "entre sorprendida y molesta", "glossaryKey": "entre"}]}, {"type": "sentence", "text": "Le expliqué que había oído ruidos y que quería asegurarme de que no pasara nada grave.", "translation": "I explained that I had heard noises and that I wanted to make sure nothing serious was going on.", "detailedTranslation": ["asegurarme de que + subjunctive — to make sure that", "pasara — was happening; subjunctive"], "highlights": [{"startIndex": 47, "endIndex": 64, "text": "asegurarme de que", "glossaryKey": "asegurarse"}, {"startIndex": 65, "endIndex": 85, "text": "no pasara nada grave", "glossaryKey": "no pasar nada"}]}, {"type": "sentence", "text": "Él frunció el ceño y luego se echó a reír.", "translation": "He frowned and then burst out laughing.", "detailedTranslation": ["frunció el ceño — he frowned", "echarse a reír — to burst out laughing"], "highlights": [{"startIndex": 3, "endIndex": 18, "text": "frunció el ceño", "glossaryKey": "fruncir el ceño"}, {"startIndex": 27, "endIndex": 41, "text": "se echó a reír", "glossaryKey": "echarse a reír"}]}, {"type": "sentence", "text": "Me hizo pasar; en el salón, la televisión estaba a todo volumen.", "translation": "He invited me in; in the living room, the TV was at full blast.", "detailedTranslation": ["hacer pasar — to show in, invite in", "a todo volumen — at full volume"], "highlights": [{"startIndex": 0, "endIndex": 13, "text": "Me hizo pasar", "glossaryKey": "hacer pasar"}, {"startIndex": 49, "endIndex": 63, "text": "a todo volumen", "glossaryKey": "a todo volumen"}]}, {"type": "image", "filename": "vecino_televisor_salon_tv.png", "generation_prompt": "Living room with television on, neighbor gesturing toward the TV, another person looking embarrassed or relieved, apartment interior."}, {"type": "sentence", "text": "Era un partido de fútbol: los comentaristas gritaban, la afición rugía y alguien acababa de marcar.", "translation": "It was a football match: the commentators were shouting, the crowd was roaring, and someone had just scored.", "detailedTranslation": ["afición — (here) the crowd, fans", "rugía — was roaring; rugir, imperfect", "acababa de marcar — had just scored; acabar de + infinitive"], "highlights": [{"startIndex": 57, "endIndex": 64, "text": "afición", "glossaryKey": "afición"}, {"startIndex": 81, "endIndex": 98, "text": "acababa de marcar", "glossaryKey": "acabar de"}]}, {"type": "sentence", "text": "Me pidió disculpas por el volumen y confesó que no se había dado cuenta de lo que se oía al otro lado.", "translation": "He apologized for the volume and admitted that he hadn't realised what could be heard on the other side.", "detailedTranslation": ["pedir disculpas — to apologise", "darse cuenta de — to realise", "lo que se oía — what could be heard (passive-like)"], "highlights": [{"startIndex": 0, "endIndex": 18, "text": "Me pidió disculpas", "glossaryKey": "pedir disculpas"}, {"startIndex": 48, "endIndex": 71, "text": "no se había dado cuenta", "glossaryKey": "darse cuenta"}]}, {"type": "sentence", "text": "Salí de allí sintiéndome a la vez aliviado y ridículo.", "translation": "I left feeling both relieved and ridiculous.", "detailedTranslation": ["a la vez — at the same time, both", "sintiéndome — feeling (gerund); sentirse"], "highlights": [{"startIndex": 25, "endIndex": 33, "text": "a la vez", "glossaryKey": "a la vez"}]}, {"type": "sentence", "text": "Desde entonces, cuando oigo gritos a través de la pared, me limito a recordar que el fútbol existe.", "translation": "Since then, when I hear shouts through the wall, I just remind myself that football exists.", "detailedTranslation": ["me limito a — I just (do something); limitarse a + infinitive"], "highlights": [{"startIndex": 57, "endIndex": 68, "text": "me limito a", "glossaryKey": "limitarse a"}]}], "glossary": {"pared fina": {"translation": "thin wall", "explanation": "Paredes finas = thin walls (you hear the neighbours)."}, "lo que ocurre": {"translation": "what happens", "explanation": "Relative clause: lo que + verb = what (the thing that)."}, "sonar a": {"translation": "to sound like", "explanation": "Sonar a + noun: sonaba a cristales = sounded like glass."}, "preguntarse": {"translation": "to wonder", "explanation": "Reflexive; preguntándome si... = wondering whether..."}, "volver a": {"translation": "to (do) again", "explanation": "Volver a + infinitive: volvió a ocurrir = it happened again."}, "inquietante": {"translation": "unsettling, worrying", "explanation": "Adjective; silencio inquietante = unsettling silence."}, "rellano": {"translation": "landing", "explanation": "The flat area between flights of stairs; en el rellano = on the landing."}, "irse de las manos": {"translation": "to get out of hand", "explanation": "Idiom; una discusión que se fue de las manos = an argument that got out of hand."}, "lograr": {"translation": "to manage to", "explanation": "Lograr + infinitive; no lograba concentrarme = I couldn't concentrate."}, "entrometerse": {"translation": "to interfere, stick one's nose in", "explanation": "Reflexive; tener miedo de entrometerme = afraid of interfering."}, "exagerado": {"translation": "exaggerated, overkill", "explanation": "Sería exagerado = it would be overkill."}, "comprobar": {"translation": "to check, verify", "explanation": "Comprobar que + subjunctive = to check that (something is so)."}, "estar bien": {"translation": "to be okay", "explanation": "Todo estuviera bien = that everything was okay (subjunctive after comprobar que)."}, "corazón en un puño": {"translation": "heart in one's mouth", "explanation": "Idiom: con el corazón en un puño = with one's heart in one's mouth."}, "estar a punto de": {"translation": "to be about to", "explanation": "Estar a punto de + infinitive: estaba a punto de irme = I was about to leave."}, "entre": {"translation": "between", "explanation": "Entre sorprendida y molesta = somewhere between surprised and annoyed."}, "asegurarse": {"translation": "to make sure", "explanation": "Asegurarse de que + subjunctive = to make sure that."}, "no pasar nada": {"translation": "nothing (bad) happening", "explanation": "No pasara nada grave = that nothing serious was going on."}, "fruncir el ceño": {"translation": "to frown", "explanation": "Literal: to furrow one's brow."}, "echarse a reír": {"translation": "to burst out laughing", "explanation": "Echarse a + infinitive = to start (doing something) suddenly."}, "hacer pasar": {"translation": "to show in, invite in", "explanation": "Me hizo pasar = he invited me in / showed me in."}, "a todo volumen": {"translation": "at full volume", "explanation": "Estar a todo volumen = to be at full blast."}, "afición": {"translation": "fans, crowd", "explanation": "Here: la afición (football fans); can also mean hobby."}, "acabar de": {"translation": "to have just (done)", "explanation": "Acabar de + infinitive: acababa de marcar = had just scored."}, "pedir disculpas": {"translation": "to apologise", "explanation": "Pedir disculpas por algo = to apologise for something."}, "darse cuenta": {"translation": "to realise", "explanation": "No se había dado cuenta = he hadn't realised."}, "a la vez": {"translation": "at the same time, both", "explanation": "A la vez aliviado y ridículo = both relieved and ridiculous."}, "limitarse a": {"translation": "to just (do), limit oneself to", "explanation": "Limitarse a + infinitive: me limito a recordar = I just remind myself."}}}; var IMAGES_BASE = "../../images/";</script>
+  <script>
+    (function () {
+      function escapeHtml(s) {
+        if (s == null) return '';
+        var div = document.createElement('div');
+        div.textContent = s;
+        return div.innerHTML;
+      }
+      var story = EMBEDDED_STORY;
+      document.getElementById('title').textContent = story.title;
+      document.getElementById('meta').textContent = story.level + ' · ' + (story.language || 'es') + (story.titleTranslation ? ' — ' + story.titleTranslation : '');
+      var tagsHtml = '';
+      if (story.tags && story.tags.length) {
+        story.tags.forEach(function (t) {
+          tagsHtml += '<span class="tag"><strong>' + escapeHtml(t.name) + '</strong> ' + escapeHtml(t.description) + '</span>';
+        });
+      }
+      document.getElementById('tags').innerHTML = tagsHtml || '—';
+      var content = document.getElementById('content');
+      var showTranslations = document.getElementById('showTranslations');
+      var showDetailedTranslation = document.getElementById('showDetailedTranslation');
+      var expandedSentences = new Set();
+      var collapsedSentences = new Set();
+      function renderContent() {
+        var showAll = showTranslations.checked;
+        var showDetailed = showDetailedTranslation.checked;
+        content.innerHTML = '';
+        story.content.forEach(function (item, i) {
+          if (item.type === 'sentence') {
+            var isVisible = showAll ? !collapsedSentences.has(i) : expandedSentences.has(i);
+            var block = document.createElement('div');
+            block.className = 'sentence-block' + (isVisible ? ' show-translation' : '') + (isVisible && showDetailed ? ' show-detailed' : '');
+            block.dataset.sentenceIndex = i;
+            var text = item.text;
+            if (item.highlights && item.highlights.length) {
+              var parts = [];
+              var last = 0;
+              item.highlights.slice().sort(function (a, b) { return a.startIndex - b.startIndex; }).forEach(function (h) {
+                if (h.startIndex > last) parts.push({ type: 'plain', s: text.slice(last, h.startIndex) });
+                parts.push({ type: 'hl', s: text.slice(h.startIndex, h.endIndex) });
+                last = h.endIndex;
+              });
+              if (last < text.length) parts.push({ type: 'plain', s: text.slice(last) });
+              var span = document.createElement('span');
+              span.className = 'text';
+              parts.forEach(function (p) {
+                if (p.type === 'hl') {
+                  var hl = document.createElement('span');
+                  hl.className = 'hl';
+                  hl.textContent = p.s;
+                  span.appendChild(hl);
+                } else { span.appendChild(document.createTextNode(p.s)); }
+              });
+              block.appendChild(span);
+            } else {
+              var span = document.createElement('span');
+              span.className = 'text';
+              span.textContent = text;
+              block.appendChild(span);
+            }
+            var trans = document.createElement('div');
+            trans.className = 'translation';
+            trans.textContent = item.translation || '';
+            block.appendChild(trans);
+            if (item.detailedTranslation && item.detailedTranslation.length) {
+              var ul = document.createElement('ul');
+              ul.className = 'detailed-translation';
+              item.detailedTranslation.forEach(function (bullet) {
+                var li = document.createElement('li');
+                li.textContent = bullet;
+                ul.appendChild(li);
+              });
+              block.appendChild(ul);
+            }
+            content.appendChild(block);
+          } else if (item.type === 'image') {
+            var img = document.createElement('img');
+            img.alt = item.generation_prompt || item.filename;
+            img.loading = 'lazy';
+            img.onerror = function () { this.classList.add('hide'); };
+            img.src = IMAGES_BASE + item.filename;
+            content.appendChild(img);
+          }
+        });
+      }
+      function hideSentence(i) {
+        expandedSentences.delete(i);
+        if (showTranslations.checked) collapsedSentences.add(i);
+      }
+      function isSentenceVisible(i) {
+        var showAll = showTranslations.checked;
+        return showAll ? !collapsedSentences.has(i) : expandedSentences.has(i);
+      }
+      content.addEventListener('click', function (e) {
+        var block = e.target.closest('.sentence-block');
+        if (!block || block.dataset.sentenceIndex === undefined) return;
+        var i = parseInt(block.dataset.sentenceIndex, 10);
+        if (e.target.closest('.translation') || e.target.closest('.detailed-translation')) {
+          hideSentence(i);
+          renderContent();
+        } else if (e.target.closest('.text')) {
+          if (isSentenceVisible(i)) {
+            hideSentence(i);
+          } else {
+            expandedSentences.add(i);
+            collapsedSentences.delete(i);
+          }
+          renderContent();
+        }
+      });
+      showTranslations.addEventListener('change', function () {
+        if (showTranslations.checked) {
+          collapsedSentences.clear();
+        } else {
+          expandedSentences.clear();
+          collapsedSentences.clear();
+        }
+        renderContent();
+      });
+      showDetailedTranslation.addEventListener('change', renderContent);
+      renderContent();
+      var darkToggle = document.getElementById('darkToggle');
+      var iconSun = document.getElementById('iconSun');
+      var iconMoon = document.getElementById('iconMoon');
+      try {
+        if (localStorage.getItem('darkMode') === '1') {
+          document.body.classList.add('dark');
+          iconSun.style.display = 'none';
+          iconMoon.style.display = 'block';
+        } else { iconMoon.style.display = 'none'; }
+      } catch (e) {}
+      darkToggle.addEventListener('click', function () {
+        document.body.classList.toggle('dark');
+        var isDark = document.body.classList.contains('dark');
+        iconSun.style.display = isDark ? 'none' : 'block';
+        iconMoon.style.display = isDark ? 'block' : 'none';
+        try { localStorage.setItem('darkMode', isDark ? '1' : '0'); } catch (e) {}
+      });
+      if (story.glossary && Object.keys(story.glossary).length) {
+        var gEl = document.getElementById('glossary');
+        var gHtml = '<h2>Glossary</h2><dl>';
+        Object.keys(story.glossary).forEach(function (key) {
+          var e = story.glossary[key];
+          gHtml += '<dt>' + escapeHtml(key) + ' — ' + escapeHtml(e.translation) + '</dt><dd>' + escapeHtml(e.explanation) + '</dd>';
+        });
+        gEl.innerHTML = gHtml + '</dl>';
+      }
+    })();
+  </script>
+</body>
+</html>
