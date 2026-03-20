@@ -440,6 +440,20 @@ button.cta-btn {
   }
 }
 
+.home-logo {
+  margin: 0 0 18px;
+  line-height: 0;
+}
+
+.home-logo__img {
+  display: block;
+  width: min(38vw, 152px);
+  height: auto;
+  max-height: 30vh;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 18px rgba(60, 110, 180, 0.18));
+}
+
 .headline {
   margin: 0 0 8px;
   font-size: clamp(1.5rem, 5vw, 1.85rem);
