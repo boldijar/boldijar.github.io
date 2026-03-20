@@ -1,0 +1,603 @@
+{
+  "categories": [
+    {
+      "id": 1,
+      "name": "Mâncare și băutură"
+    },
+    {
+      "id": 2,
+      "name": "Obiecte de zi cu zi"
+    },
+    {
+      "id": 3,
+      "name": "Oameni celebri"
+    },
+    {
+      "id": 4,
+      "name": "Animale"
+    },
+    {
+      "id": 5,
+      "name": "Lucruri abstracte"
+    },
+    {
+      "id": 6,
+      "name": "Țări și orașe"
+    },
+    {
+      "id": 7,
+      "name": "Lucruri obscene"
+    }
+  ],
+  "words": [
+    {
+      "name": "sarmale",
+      "categories": [
+        1
+      ],
+      "hint": "în foi"
+    },
+    {
+      "name": "mămăligă",
+      "categories": [
+        1
+      ],
+      "hint": "nu se sfarmă"
+    },
+    {
+      "name": "smântână",
+      "categories": [
+        1
+      ],
+      "hint": "pe tort"
+    },
+    {
+      "name": "țuică",
+      "categories": [
+        1
+      ],
+      "hint": "miros tare"
+    },
+    {
+      "name": "pâine",
+      "categories": [
+        1,
+        2
+      ],
+      "hint": "coaja"
+    },
+    {
+      "name": "cafea",
+      "categories": [
+        1,
+        2
+      ],
+      "hint": "prăjită"
+    },
+    {
+      "name": "bere",
+      "categories": [
+        1,
+        2
+      ],
+      "hint": "spumă"
+    },
+    {
+      "name": "struguri",
+      "categories": [
+        1
+      ],
+      "hint": "ciorchine"
+    },
+    {
+      "name": "cașcaval",
+      "categories": [
+        1
+      ],
+      "hint": "se topește"
+    },
+    {
+      "name": "papanași",
+      "categories": [
+        1
+      ],
+      "hint": "găuri"
+    },
+    {
+      "name": "ciorbă",
+      "categories": [
+        1
+      ],
+      "hint": "acru"
+    },
+    {
+      "name": "apă minerală",
+      "categories": [
+        1,
+        2
+      ],
+      "hint": "bule"
+    },
+    {
+      "name": "ceai",
+      "categories": [
+        1,
+        2
+      ],
+      "hint": "plic"
+    },
+    {
+      "name": "ciocolată",
+      "categories": [
+        1
+      ],
+      "hint": "tableta"
+    },
+    {
+      "name": "înghețată",
+      "categories": [
+        1
+      ],
+      "hint": "lingurița"
+    },
+    {
+      "name": "telefon",
+      "categories": [
+        2
+      ],
+      "hint": "vibrează"
+    },
+    {
+      "name": "cheie",
+      "categories": [
+        2
+      ],
+      "hint": "zornăit"
+    },
+    {
+      "name": "telecomandă",
+      "categories": [
+        2
+      ],
+      "hint": "de pe canapea"
+    },
+    {
+      "name": "periuță de dinți",
+      "categories": [
+        2
+      ],
+      "hint": "are coadă"
+    },
+    {
+      "name": "prosop",
+      "categories": [
+        2
+      ],
+      "hint": "ud"
+    },
+    {
+      "name": "ochelari",
+      "categories": [
+        2
+      ],
+      "hint": "două cercuri"
+    },
+    {
+      "name": "umbrelă",
+      "categories": [
+        2
+      ],
+      "hint": "os sub pânză"
+    },
+    {
+      "name": "portofel",
+      "categories": [
+        2
+      ],
+      "hint": "valută"
+    },
+    {
+      "name": "încărcător",
+      "categories": [
+        2
+      ],
+      "hint": "fir spiralat"
+    },
+    {
+      "name": "sticlă",
+      "categories": [
+        2,
+        1
+      ],
+      "hint": "transparent"
+    },
+    {
+      "name": "cană",
+      "categories": [
+        2,
+        1
+      ],
+      "hint": "mâner"
+    },
+    {
+      "name": "furculiță",
+      "categories": [
+        2,
+        1
+      ],
+      "hint": "triplu"
+    },
+    {
+      "name": "Mihai Eminescu",
+      "categories": [
+        3
+      ],
+      "hint": "versuri lungi"
+    },
+    {
+      "name": "Gheorghe Hagi",
+      "categories": [
+        3
+      ],
+      "hint": "colțul terenului"
+    },
+    {
+      "name": "Constantin Brâncuși",
+      "categories": [
+        3
+      ],
+      "hint": "formă goală"
+    },
+    {
+      "name": "Nadia Comăneci",
+      "categories": [
+        3
+      ],
+      "hint": "bara"
+    },
+    {
+      "name": "Ion Țiriac",
+      "categories": [
+        3
+      ],
+      "hint": "mingi galbene"
+    },
+    {
+      "name": "Inna",
+      "categories": [
+        3
+      ],
+      "hint": "club"
+    },
+    {
+      "name": "Albert Einstein",
+      "categories": [
+        3
+      ],
+      "hint": "păr creț"
+    },
+    {
+      "name": "Freddie Mercury",
+      "categories": [
+        3
+      ],
+      "hint": "mustață"
+    },
+    {
+      "name": "Beyoncé",
+      "categories": [
+        3
+      ],
+      "hint": "aliniere"
+    },
+    {
+      "name": "Ștefan cel Mare",
+      "categories": [
+        3,
+        6
+      ],
+      "hint": "bătălie"
+    },
+    {
+      "name": "vulpe",
+      "categories": [
+        4
+      ],
+      "hint": "fura"
+    },
+    {
+      "name": "lup",
+      "categories": [
+        4
+      ],
+      "hint": "urlă"
+    },
+    {
+      "name": "urs",
+      "categories": [
+        4
+      ],
+      "hint": "hibernează"
+    },
+    {
+      "name": "bufniță",
+      "categories": [
+        4
+      ],
+      "hint": "noaptea"
+    },
+    {
+      "name": "delfin",
+      "categories": [
+        4
+      ],
+      "hint": "sare"
+    },
+    {
+      "name": "fluture",
+      "categories": [
+        4
+      ],
+      "hint": "foarte ușor"
+    },
+    {
+      "name": "țânțar",
+      "categories": [
+        4,
+        2
+      ],
+      "hint": "țiuie"
+    },
+    {
+      "name": "căprioară",
+      "categories": [
+        4
+      ],
+      "hint": "pete"
+    },
+    {
+      "name": "broască țestoasă",
+      "categories": [
+        4
+      ],
+      "hint": "în cochilie"
+    },
+    {
+      "name": "păianjen",
+      "categories": [
+        4,
+        2
+      ],
+      "hint": "colț"
+    },
+    {
+      "name": "iubire",
+      "categories": [
+        5
+      ],
+      "hint": "fără logică"
+    },
+    {
+      "name": "libertate",
+      "categories": [
+        5
+      ],
+      "hint": "fără gard"
+    },
+    {
+      "name": "frică",
+      "categories": [
+        5
+      ],
+      "hint": "tremur"
+    },
+    {
+      "name": "speranță",
+      "categories": [
+        5
+      ],
+      "hint": "mâine"
+    },
+    {
+      "name": "timp",
+      "categories": [
+        5
+      ],
+      "hint": "nu stă"
+    },
+    {
+      "name": "moștenire",
+      "categories": [
+        5
+      ],
+      "hint": "testament"
+    },
+    {
+      "name": "noroc",
+      "categories": [
+        5
+      ],
+      "hint": "zarul"
+    },
+    {
+      "name": "rușine",
+      "categories": [
+        5,
+        7
+      ],
+      "hint": "fața"
+    },
+    {
+      "name": "adevăr",
+      "categories": [
+        5
+      ],
+      "hint": "doare"
+    },
+    {
+      "name": "vis",
+      "categories": [
+        5
+      ],
+      "hint": "ochii închiși"
+    },
+    {
+      "name": "România",
+      "categories": [
+        6
+      ],
+      "hint": "tricolor"
+    },
+    {
+      "name": "București",
+      "categories": [
+        6
+      ],
+      "hint": "aglomerație"
+    },
+    {
+      "name": "Cluj-Napoca",
+      "categories": [
+        6
+      ],
+      "hint": "studenți"
+    },
+    {
+      "name": "Iași",
+      "categories": [
+        6
+      ],
+      "hint": "copou"
+    },
+    {
+      "name": "Transilvania",
+      "categories": [
+        6
+      ],
+      "hint": "dealuri"
+    },
+    {
+      "name": "Paris",
+      "categories": [
+        6
+      ],
+      "hint": "turn"
+    },
+    {
+      "name": "Tokyo",
+      "categories": [
+        6
+      ],
+      "hint": "răsărit"
+    },
+    {
+      "name": "Dunărea",
+      "categories": [
+        6
+      ],
+      "hint": "curge"
+    },
+    {
+      "name": "Marea Neagră",
+      "categories": [
+        6
+      ],
+      "hint": "nisip"
+    },
+    {
+      "name": "sex",
+      "categories": [
+        7,
+        5
+      ],
+      "hint": "doi"
+    },
+    {
+      "name": "orgasm",
+      "categories": [
+        7,
+        5
+      ],
+      "hint": "vârf"
+    },
+    {
+      "name": "porno",
+      "categories": [
+        7
+      ],
+      "hint": "incognito"
+    },
+    {
+      "name": "țâțe",
+      "categories": [
+        7
+      ],
+      "hint": "sub tricou"
+    },
+    {
+      "name": "cur",
+      "categories": [
+        7
+      ],
+      "hint": "șezut"
+    },
+    {
+      "name": "pulă",
+      "categories": [
+        7
+      ],
+      "hint": "vertical"
+    },
+    {
+      "name": "futut",
+      "categories": [
+        7
+      ],
+      "hint": "injurătură"
+    },
+    {
+      "name": "muie",
+      "categories": [
+        7
+      ],
+      "hint": "vorba urâtă"
+    },
+    {
+      "name": "dildo",
+      "categories": [
+        7,
+        2
+      ],
+      "hint": "silicon"
+    },
+    {
+      "name": "curvă",
+      "categories": [
+        7
+      ],
+      "hint": "multe uși"
+    },
+    {
+      "name": "șantaj sexual",
+      "categories": [
+        7,
+        5
+      ],
+      "hint": "filmare"
+    },
+    {
+      "name": "labă",
+      "categories": [
+        7
+      ],
+      "hint": "singur"
+    },
+    {
+      "name": "sâni",
+      "categories": [
+        7
+      ],
+      "hint": "alăptare"
+    }
+  ]
+}

@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="ro">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Cum se joacă Inpostor — reguli și pași." />
+    <title>Inpostor — Cum funcționează</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page">
+      <div class="shell shell--wide">
+        <header class="topbar">
+          <span class="topbar-spacer" aria-hidden="true"></span>
+          <h1 class="brand brand--game">¿INPOSTOR?</h1>
+          <a href="index.html" class="icon-btn" aria-label="Mergi la joc">
+            <span class="icon-play" aria-hidden="true">▶</span>
+          </a>
+        </header>
+
+        <main class="main main--rules">
+          <h2 class="rules-title">Cum funcționează jocul</h2>
+          <p class="rules-lead">
+            Inpostor e un joc de petrecere, în stilul „cine e mincinosul”: cartofii (majoritatea) primesc același cuvânt secret, iar unul
+            sau mai mulți jucători — <strong>inpostorii</strong> — nu. Scopul cartofilor e să îi prindă; al inpostorilor, să treacă
+            neobservați.
+          </p>
+
+          <ol class="step-list">
+            <li class="step-list__item">
+              <span class="step-list__num" aria-hidden="true">1</span>
+              <div class="step-list__body">
+                <h3 class="step-list__heading">Puneți jucătorii la masă</h3>
+                <p>
+                  Introduceți numele tuturor participanților. Lista rămâne salvată pe dispozitiv, ca data viitoare să nu mai
+                  scrieți totul de la zero.
+                </p>
+              </div>
+            </li>
+            <li class="step-list__item">
+              <span class="step-list__num" aria-hidden="true">2</span>
+              <div class="step-list__body">
+                <h3 class="step-list__heading">Configurați runda (opțional)</h3>
+                <p>
+                  Înainte de start puteți ajusta câteva lucruri: de exemplu <strong>câți inpostori</strong> sunt în joc și
+                  <strong>dacă inpostorii știu între ei</strong> cine mai e „pe aceeași parte”. Nu e obligatoriu — puteți lăsa
+                  setările implicite și să jucați direct.
+                </p>
+              </div>
+            </li>
+            <li class="step-list__item">
+              <span class="step-list__num" aria-hidden="true">3</span>
+              <div class="step-list__body">
+                <h3 class="step-list__heading">Apăsați Start</h3>
+                <p>
+                  Urmează faza în care <strong>telefonul circulă</strong> de la un jucător la altul: fiecare se uită singur la
+                  ecran, vede ce trebuie să știe, apoi trece mai departe dispozitivul, fără să spună cu voce tare ce a văzut.
+                </p>
+              </div>
+            </li>
+            <li class="step-list__item">
+              <span class="step-list__num" aria-hidden="true">4</span>
+              <div class="step-list__body">
+                <h3 class="step-list__heading">Începe runda de indicii</h3>
+                <p>
+                  Pe rând, fiecare spune <strong>un singur cuvânt</strong> legat (în mintea lui) de secretul pe care crede că îl
+                  au toți — dar fără să fie prea evident, ca inpostorul să nu prindă din zbor cuvântul adevărat. Inpostorul
+                  încearcă să pară natural; uneori, în funcție de cum ați configurat jocul, poate primi și un <strong>indiciu
+                  scris</strong> (legat de secret, dar fără a spune cuvântul) ca să nu fie complet în ceață.
+                </p>
+              </div>
+            </li>
+            <li class="step-list__item">
+              <span class="step-list__num" aria-hidden="true">5</span>
+              <div class="step-list__body">
+                <h3 class="step-list__heading">Votul</h3>
+                <p>
+                  După o tură de cuvinte, grupul <strong>votează</strong> cine cred că e inpostorul. Cine primește cele mai multe
+                  voturi <strong>iese din joc</strong> (e eliminat din rundă).
+                </p>
+              </div>
+            </li>
+            <li class="step-list__item">
+              <span class="step-list__num" aria-hidden="true">6</span>
+              <div class="step-list__body">
+                <h3 class="step-list__heading">Tură nouă, alt început</h3>
+                <p>
+                  Se continuă cu o rundă nouă: ordinea se rotește — următorul care începe e cel de <strong>după</strong> jucătorul
+                  care a deschis runda precedentă, ca să fie echitabil pentru toată lumea.
+                </p>
+              </div>
+            </li>
+            <li class="step-list__item">
+              <span class="step-list__num" aria-hidden="true">7</span>
+              <div class="step-list__body">
+                <h3 class="step-list__heading">Sfârșitul jocului</h3>
+                <p>
+                  Partida se termină când <strong>toți inpostorii au fost prinși</strong> (eliminați la vot). Atunci echipa
+                  „cartofilor” a câștigat — sau inpostorii au rezistat până la capăt, depinde cum merge seara voastră.
+                </p>
+              </div>
+            </li>
+          </ol>
+
+          <div class="rules-cta">
+            <a href="index.html" class="cta-btn">Continuă spre joc</a>
+            <p class="rules-cta__hint">Poți citi din nou această pagină oricând din meniul de ajutor de pe ecranul de joc.</p>
+          </div>
+        </main>
+      </div>
+    </div>
+    <!-- Baza de date: același bloc JSON trebuie păstrat în index.html, cum-functioneaza.html și setup.html -->
+    <script id="inpostor-dtb-json" type="application/json">
+{
+  "categories": [
+    {
+      "id": 1,
+      "name": "Mâncare și băutură"
+    },
+    {
+      "id": 2,
+      "name": "Obiecte de zi cu zi"
+    },
+    {
+      "id": 3,
+      "name": "Oameni celebri"
+    },
+    {
+      "id": 4,
+      "name": "Animale"
+    },
+    {
+      "id": 5,
+      "name": "Lucruri abstracte"
+    },
+    {
+      "id": 6,
+      "name": "Țări și orașe"
+    },
+    {
+      "id": 7,
+      "name": "Lucruri obscene"
+    }
+  ],
+  "words": [
+    {
+      "name": "sarmale",
+      "categories": [
+        1
+      ],
+      "hint": "în foi"
+    },
+    {
+      "name": "mămăligă",
+      "categories": [
+        1
+      ],
+      "hint": "nu se sfarmă"
+    },
+    {
+      "name": "smântână",
+      "categories": [
+        1
+      ],
+      "hint": "pe tort"
+    },
+    {
+      "name": "țuică",
+      "categories": [
+        1
+      ],
+      "hint": "miros tare"
+    },
+    {
+      "name": "pâine",
+      "categories": [
+        1,
+        2
+      ],
+      "hint": "coaja"
+    },
+    {
+      "name": "cafea",
+      "categories": [
+        1,
+        2
+      ],
+      "hint": "prăjită"
+    },
+    {
+      "name": "bere",
+      "categories": [
+        1,
+        2
+      ],
+      "hint": "spumă"
+    },
+    {
+      "name": "struguri",
+      "categories": [
+        1
+      ],
+      "hint": "ciorchine"
+    },
+    {
+      "name": "cașcaval",
+      "categories": [
+        1
+      ],
+      "hint": "se topește"
+    },
+    {
+      "name": "papanași",
+      "categories": [
+        1
+      ],
+      "hint": "găuri"
+    },
+    {
+      "name": "ciorbă",
+      "categories": [
+        1
+      ],
+      "hint": "acru"
+    },
+    {
+      "name": "apă minerală",
+      "categories": [
+        1,
+        2
+      ],
+      "hint": "bule"
+    },
+    {
+      "name": "ceai",
+      "categories": [
+        1,
+        2
+      ],
+      "hint": "plic"
+    },
+    {
+      "name": "ciocolată",
+      "categories": [
+        1
+      ],
+      "hint": "tableta"
+    },
+    {
+      "name": "înghețată",
+      "categories": [
+        1
+      ],
+      "hint": "lingurița"
+    },
+    {
+      "name": "telefon",
+      "categories": [
+        2
+      ],
+      "hint": "vibrează"
+    },
+    {
+      "name": "cheie",
+      "categories": [
+        2
+      ],
+      "hint": "zornăit"
+    },
+    {
+      "name": "telecomandă",
+      "categories": [
+        2
+      ],
+      "hint": "de pe canapea"
+    },
+    {
+      "name": "periuță de dinți",
+      "categories": [
+        2
+      ],
+      "hint": "are coadă"
+    },
+    {
+      "name": "prosop",
+      "categories": [
+        2
+      ],
+      "hint": "ud"
+    },
+    {
+      "name": "ochelari",
+      "categories": [
+        2
+      ],
+      "hint": "două cercuri"
+    },
+    {
+      "name": "umbrelă",
+      "categories": [
+        2
+      ],
+      "hint": "os sub pânză"
+    },
+    {
+      "name": "portofel",
+      "categories": [
+        2
+      ],
+      "hint": "valută"
+    },
+    {
+      "name": "încărcător",
+      "categories": [
+        2
+      ],
+      "hint": "fir spiralat"
+    },
+    {
+      "name": "sticlă",
+      "categories": [
+        2,
+        1
+      ],
+      "hint": "transparent"
+    },
+    {
+      "name": "cană",
+      "categories": [
+        2,
+        1
+      ],
+      "hint": "mâner"
+    },
+    {
+      "name": "furculiță",
+      "categories": [
+        2,
+        1
+      ],
+      "hint": "triplu"
+    },
+    {
+      "name": "Mihai Eminescu",
+      "categories": [
+        3
+      ],
+      "hint": "versuri lungi"
+    },
+    {
+      "name": "Gheorghe Hagi",
+      "categories": [
+        3
+      ],
+      "hint": "colțul terenului"
+    },
+    {
+      "name": "Constantin Brâncuși",
+      "categories": [
+        3
+      ],
+      "hint": "formă goală"
+    },
+    {
+      "name": "Nadia Comăneci",
+      "categories": [
+        3
+      ],
+      "hint": "bara"
+    },
+    {
+      "name": "Ion Țiriac",
+      "categories": [
+        3
+      ],
+      "hint": "mingi galbene"
+    },
+    {
+      "name": "Inna",
+      "categories": [
+        3
+      ],
+      "hint": "club"
+    },
+    {
+      "name": "Albert Einstein",
+      "categories": [
+        3
+      ],
+      "hint": "păr creț"
+    },
+    {
+      "name": "Freddie Mercury",
+      "categories": [
+        3
+      ],
+      "hint": "mustață"
+    },
+    {
+      "name": "Beyoncé",
+      "categories": [
+        3
+      ],
+      "hint": "aliniere"
+    },
+    {
+      "name": "Ștefan cel Mare",
+      "categories": [
+        3,
+        6
+      ],
+      "hint": "bătălie"
+    },
+    {
+      "name": "vulpe",
+      "categories": [
+        4
+      ],
+      "hint": "fura"
+    },
+    {
+      "name": "lup",
+      "categories": [
+        4
+      ],
+      "hint": "urlă"
+    },
+    {
+      "name": "urs",
+      "categories": [
+        4
+      ],
+      "hint": "hibernează"
+    },
+    {
+      "name": "bufniță",
+      "categories": [
+        4
+      ],
+      "hint": "noaptea"
+    },
+    {
+      "name": "delfin",
+      "categories": [
+        4
+      ],
+      "hint": "sare"
+    },
+    {
+      "name": "fluture",
+      "categories": [
+        4
+      ],
+      "hint": "foarte ușor"
+    },
+    {
+      "name": "țânțar",
+      "categories": [
+        4,
+        2
+      ],
+      "hint": "țiuie"
+    },
+    {
+      "name": "căprioară",
+      "categories": [
+        4
+      ],
+      "hint": "pete"
+    },
+    {
+      "name": "broască țestoasă",
+      "categories": [
+        4
+      ],
+      "hint": "în cochilie"
+    },
+    {
+      "name": "păianjen",
+      "categories": [
+        4,
+        2
+      ],
+      "hint": "colț"
+    },
+    {
+      "name": "iubire",
+      "categories": [
+        5
+      ],
+      "hint": "fără logică"
+    },
+    {
+      "name": "libertate",
+      "categories": [
+        5
+      ],
+      "hint": "fără gard"
+    },
+    {
+      "name": "frică",
+      "categories": [
+        5
+      ],
+      "hint": "tremur"
+    },
+    {
+      "name": "speranță",
+      "categories": [
+        5
+      ],
+      "hint": "mâine"
+    },
+    {
+      "name": "timp",
+      "categories": [
+        5
+      ],
+      "hint": "nu stă"
+    },
+    {
+      "name": "moștenire",
+      "categories": [
+        5
+      ],
+      "hint": "testament"
+    },
+    {
+      "name": "noroc",
+      "categories": [
+        5
+      ],
+      "hint": "zarul"
+    },
+    {
+      "name": "rușine",
+      "categories": [
+        5,
+        7
+      ],
+      "hint": "fața"
+    },
+    {
+      "name": "adevăr",
+      "categories": [
+        5
+      ],
+      "hint": "doare"
+    },
+    {
+      "name": "vis",
+      "categories": [
+        5
+      ],
+      "hint": "ochii închiși"
+    },
+    {
+      "name": "România",
+      "categories": [
+        6
+      ],
+      "hint": "tricolor"
+    },
+    {
+      "name": "București",
+      "categories": [
+        6
+      ],
+      "hint": "aglomerație"
+    },
+    {
+      "name": "Cluj-Napoca",
+      "categories": [
+        6
+      ],
+      "hint": "studenți"
+    },
+    {
+      "name": "Iași",
+      "categories": [
+        6
+      ],
+      "hint": "copou"
+    },
+    {
+      "name": "Transilvania",
+      "categories": [
+        6
+      ],
+      "hint": "dealuri"
+    },
+    {
+      "name": "Paris",
+      "categories": [
+        6
+      ],
+      "hint": "turn"
+    },
+    {
+      "name": "Tokyo",
+      "categories": [
+        6
+      ],
+      "hint": "răsărit"
+    },
+    {
+      "name": "Dunărea",
+      "categories": [
+        6
+      ],
+      "hint": "curge"
+    },
+    {
+      "name": "Marea Neagră",
+      "categories": [
+        6
+      ],
+      "hint": "nisip"
+    },
+    {
+      "name": "sex",
+      "categories": [
+        7,
+        5
+      ],
+      "hint": "doi"
+    },
+    {
+      "name": "orgasm",
+      "categories": [
+        7,
+        5
+      ],
+      "hint": "vârf"
+    },
+    {
+      "name": "porno",
+      "categories": [
+        7
+      ],
+      "hint": "incognito"
+    },
+    {
+      "name": "țâțe",
+      "categories": [
+        7
+      ],
+      "hint": "sub tricou"
+    },
+    {
+      "name": "cur",
+      "categories": [
+        7
+      ],
+      "hint": "șezut"
+    },
+    {
+      "name": "pulă",
+      "categories": [
+        7
+      ],
+      "hint": "vertical"
+    },
+    {
+      "name": "futut",
+      "categories": [
+        7
+      ],
+      "hint": "injurătură"
+    },
+    {
+      "name": "muie",
+      "categories": [
+        7
+      ],
+      "hint": "vorba urâtă"
+    },
+    {
+      "name": "dildo",
+      "categories": [
+        7,
+        2
+      ],
+      "hint": "silicon"
+    },
+    {
+      "name": "curvă",
+      "categories": [
+        7
+      ],
+      "hint": "multe uși"
+    },
+    {
+      "name": "șantaj sexual",
+      "categories": [
+        7,
+        5
+      ],
+      "hint": "filmare"
+    },
+    {
+      "name": "labă",
+      "categories": [
+        7
+      ],
+      "hint": "singur"
+    },
+    {
+      "name": "sâni",
+      "categories": [
+        7
+      ],
+      "hint": "alăptare"
+    }
+  ]
+}
+    </script>
+    <script>
+      window.INPOSTOR_DTB = (function () {
+        var el = document.getElementById("inpostor-dtb-json");
+        if (!el) return { categories: [], words: [] };
+        try {
+          return JSON.parse(el.textContent);
+        } catch (e) {
+          console.error(e);
+          return { categories: [], words: [] };
+        }
+      })();
+    </script>
+</body>
+</html>

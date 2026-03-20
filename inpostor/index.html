@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="ro">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Inpostor — joc social. Cine te mintește?" />
+    <title>Inpostor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page">
+      <div class="shell shell--app">
+        <div id="panel-home" class="panel panel--active" role="region" aria-label="Ecran principal">
+          <header class="topbar">
+            <button type="button" class="icon-btn" id="btn-open-config" aria-label="Configurare">
+              <svg class="icon-gear" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  fill="currentColor"
+                  d="M12 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7zm7.94-2.56c.04-.32.06-.64.06-.94 0-.32-.02-.64-.06-.96l2.03-1.58a.5.5 0 0 0 .12-.61l-1.92-3.32a.5.5 0 0 0-.59-.22l-2.39.96a7.9 7.9 0 0 0-1.62-.94l-.36-2.54A.5.5 0 0 0 14.02 2h-4.04a.5.5 0 0 0-.49.41l-.36 2.54c-.59.24-1.13.56-1.62.94l-2.39-.96a.5.5 0 0 0-.59.22L2.61 8.41a.5.5 0 0 0 .12.61l2.03 1.58c-.04.32-.06.64-.06.96s.02.62.06.94l-2.03 1.58a.5.5 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.49.38 1.03.7 1.62.94l.36 2.54c.05.24.25.41.49.41h4.04c.24 0 .44-.17.49-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32a.5.5 0 0 0-.12-.61l-2.03-1.58z"
+                />
+              </svg>
+            </button>
+            <h1 class="brand brand--game">¿INPOSTOR?</h1>
+            <a href="cum-functioneaza.html" class="icon-btn" aria-label="Cum funcționează jocul">
+              <span class="icon-q">?</span>
+            </a>
+          </header>
+
+          <main class="main main--home">
+            <h2 class="headline">Adună-ți echipa</h2>
+            <p class="tagline">Cine te mintește??</p>
+
+            <form class="add-form" id="add-form" autocomplete="off">
+              <label class="sr-only" for="player-name">Nume jucător</label>
+              <div class="add-row">
+                <input
+                  id="player-name"
+                  name="player-name"
+                  type="text"
+                  maxlength="40"
+                  placeholder="Introdu numele jucătorului..."
+                  class="add-input"
+                />
+                <button type="submit" class="add-btn">Adaugă</button>
+              </div>
+            </form>
+
+            <section class="players" aria-labelledby="players-heading">
+              <h3 id="players-heading" class="players__title">Jucători</h3>
+              <ul class="player-list" id="player-list"></ul>
+              <p class="players__empty" id="players-empty">Niciun jucător încă. Adaugă cel puțin 3 pentru un joc bun.</p>
+            </section>
+          </main>
+
+          <footer class="shell-footer">
+            <button type="button" class="cta-btn cta-btn--block" id="btn-start">Start</button>
+          </footer>
+        </div>
+
+        <div id="panel-config" class="panel" hidden role="region" aria-label="Configurare joc">
+          <header class="topbar">
+            <span class="topbar-spacer" aria-hidden="true"></span>
+            <h1 class="brand brand--small">Configurare</h1>
+            <button type="button" class="icon-btn" id="btn-config-play" aria-label="Înapoi la ecranul principal">
+              <span class="icon-play" aria-hidden="true">▶</span>
+            </button>
+          </header>
+
+          <main class="main main--config">
+<fieldset class="config-fieldset" id="fieldset-categories">
+              <legend class="config-legend">Categorii de cuvinte</legend>
+              <p class="config-desc">
+                Toate sunt bifate implicit. Debifează ce vrei să excludi — trebuie să rămână cel puțin o categorie
+                bifată.
+              </p>
+              <div class="category-list" id="category-list"></div>
+            </fieldset>
+
+            <div class="config-field">
+              <label class="config-label" for="inpostor-count">Număr inpostori</label>
+              <input type="number" id="inpostor-count" class="config-input-num" min="1" max="16" value="1" />
+            </div>
+
+            <div class="toggle-list">
+              <label class="toggle">
+                <input type="checkbox" id="cfg-hint" checked />
+                <span class="toggle__ui" aria-hidden="true"></span>
+                <span class="toggle__text">Inpostorii primesc indiciu</span>
+              </label>
+              <label class="toggle">
+                <input type="checkbox" id="cfg-see-others" checked />
+                <span class="toggle__ui" aria-hidden="true"></span>
+                <span class="toggle__text">Vezi pe card și colegii inpostori (numele lor)</span>
+              </label>
+              <label class="toggle">
+                <input type="checkbox" id="cfg-full-inpostor" />
+                <span class="toggle__ui" aria-hidden="true"></span>
+                <span class="toggle__text">Poate exista rundă doar cu inpostori</span>
+              </label>
+              <label class="toggle">
+                <input type="checkbox" id="cfg-full-cartof" />
+                <span class="toggle__ui" aria-hidden="true"></span>
+                <span class="toggle__text">Poate exista rundă doar cu cartofi (fără inpostori)</span>
+              </label>
+            </div>
+          </main>
+
+          <footer class="shell-footer shell-footer--muted">
+            <button type="button" class="btn-back" id="btn-config-back">Înapoi</button>
+          </footer>
+        </div>
+
+        <div id="panel-pass" class="panel" hidden role="region" aria-label="Trecerea telefonului">
+          <header class="topbar topbar--balanced">
+            <div class="topbar__side topbar__side--start">
+              <button type="button" class="icon-btn" id="btn-pass-abort" aria-label="Înapoi la ecranul principal">
+                <svg class="icon-chevron-back" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.25"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M15 18l-6-6 6-6"
+                  />
+                </svg>
+              </button>
+            </div>
+            <h1 class="brand brand--game topbar__title">¿INPOSTOR?</h1>
+            <div class="topbar__side topbar__side--end" aria-hidden="true"></div>
+          </header>
+          <main class="main main--pass">
+            <div class="pass-card-wrap" id="pass-card-wrap">
+              <div
+                class="pass-card"
+                id="pass-card"
+                tabindex="0"
+                role="button"
+                aria-label="Ține apăsat cardul ca să îl întorci și să vezi rolul tău"
+              >
+                <div class="pass-card__inner" id="pass-card-inner">
+                  <div class="pass-card__face pass-card__face--front">
+                    <p class="pass-card__name" id="pass-name"></p>
+                    <p class="pass-card__warn" id="pass-warn">
+                      Nu spune cu voce tare ce vezi. Nu le spune celorlalți cuvântul tău.
+                    </p>
+                    <p class="pass-card__flip-hint">Ține apăsat ca să întorci cardul și să vezi ce ești</p>
+                  </div>
+                  <div class="pass-card__face pass-card__face--back">
+                    <p class="pass-card__line pass-card__line--role" id="pass-line-role"></p>
+                    <p class="pass-card__word-lead" id="pass-word-lead" hidden></p>
+                    <p class="pass-card__line pass-card__line--main" id="pass-line-main"></p>
+                    <p class="pass-card__line pass-card__line--extra" id="pass-line-extra" hidden></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </main>
+          <footer class="shell-footer shell-footer--pass">
+            <p class="pass-progress" id="pass-progress"></p>
+            <button type="button" class="cta-btn cta-btn--block" id="btn-pass-next" disabled>
+              Următorul jucător
+            </button>
+          </footer>
+        </div>
+
+        <div id="panel-done" class="panel" hidden role="region" aria-label="Jocul a început">
+          <header class="topbar">
+            <span class="topbar-spacer" aria-hidden="true"></span>
+            <h1 class="brand brand--game">¿INPOSTOR?</h1>
+            <span class="topbar-spacer" aria-hidden="true"></span>
+          </header>
+          <main class="main main--done">
+            <div class="done-content">
+              <p class="done-lead">Jocul a început!</p>
+              <p class="done-intro">Primul vorbește</p>
+              <p class="done-starter-name" id="done-starter-name"></p>
+              <p class="done-hint">
+                Pe rând, spuneți câte un cuvânt legat de ce credeți că e secretul comun — fără să fie prea ușor de ghicit
+                pentru inpostori.
+              </p>
+              <div class="done-reveal" id="done-reveal" hidden>
+                <p class="done-reveal__block">
+                  <span class="done-reveal__label">Cuvânt</span>
+                  <span class="done-reveal__value" id="done-secret-word"></span>
+                </p>
+                <p class="done-reveal__block">
+                  <span class="done-reveal__label">Inpostori</span>
+                  <span class="done-reveal__value" id="done-inpostor-list"></span>
+                </p>
+                <button type="button" class="btn-hide-reveal" id="btn-done-hide-reveal">Ascunde</button>
+              </div>
+            </div>
+          </main>
+          <footer class="shell-footer shell-footer--done">
+            <div class="done-hold-block">
+              <button
+                type="button"
+                class="btn-reveal-hold"
+                id="btn-done-reveal"
+                aria-label="Ține apăsat 5 secunde pentru a dezvălui inpostorii și cuvântul"
+              >
+                <span class="btn-reveal-hold__track" aria-hidden="true">
+                  <span class="btn-reveal-hold__fill" id="btn-done-reveal-fill"></span>
+                </span>
+                <span class="btn-reveal-hold__text">Dezvăluie inpostorul și cuvântul</span>
+              </button>
+              <p class="done-hold-hint">Ține apăsat butonul 5 secunde ca să apară pe ecran.</p>
+            </div>
+            <button type="button" class="cta-btn cta-btn--block" id="btn-done-home">Înapoi acasă</button>
+          </footer>
+        </div>
+      </div>
+
+      <div
+        id="modal-abandon"
+        class="app-modal"
+        hidden
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-abandon-title"
+      >
+        <button type="button" class="app-modal__backdrop" id="modal-abandon-backdrop" aria-label="Închide"></button>
+        <div class="app-modal__panel">
+          <h2 id="modal-abandon-title" class="app-modal__title">Renunți la rundă?</h2>
+          <p class="app-modal__text">
+            Dacă pleci acum, runda se oprește și va trebui să apăsați din nou <strong>Start</strong> ca să începeți de la
+            zero. Numele jucătorilor rămân salvate.
+          </p>
+          <div class="app-modal__actions">
+            <button type="button" class="btn-modal btn-modal--secondary" id="modal-abandon-cancel">Anulează</button>
+            <button type="button" class="btn-modal btn-modal--primary" id="modal-abandon-ok">Da, renunț</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Baza de date: același bloc JSON trebuie păstrat în index.html, cum-functioneaza.html și setup.html -->
+    <script id="inpostor-dtb-json" type="application/json">
+{
+  "categories": [
+    {
+      "id": 1,
+      "name": "Mâncare și băutură"
+    },
+    {
+      "id": 2,
+      "name": "Obiecte de zi cu zi"
+    },
+    {
+      "id": 3,
+      "name": "Oameni celebri"
+    },
+    {
+      "id": 4,
+      "name": "Animale"
+    },
+    {
+      "id": 5,
+      "name": "Lucruri abstracte"
+    },
+    {
+      "id": 6,
+      "name": "Țări și orașe"
+    },
+    {
+      "id": 7,
+      "name": "Lucruri obscene"
+    }
+  ],
+  "words": [
+    {
+      "name": "sarmale",
+      "categories": [
+        1
+      ],
+      "hint": "în foi"
+    },
+    {
+      "name": "mămăligă",
+      "categories": [
+        1
+      ],
+      "hint": "nu se sfarmă"
+    },
+    {
+      "name": "smântână",
+      "categories": [
+        1
+      ],
+      "hint": "pe tort"
+    },
+    {
+      "name": "țuică",
+      "categories": [
+        1
+      ],
+      "hint": "miros tare"
+    },
+    {
+      "name": "pâine",
+      "categories": [
+        1,
+        2
+      ],
+      "hint": "coaja"
+    },
+    {
+      "name": "cafea",
+      "categories": [
+        1,
+        2
+      ],
+      "hint": "prăjită"
+    },
+    {
+      "name": "bere",
+      "categories": [
+        1,
+        2
+      ],
+      "hint": "spumă"
+    },
+    {
+      "name": "struguri",
+      "categories": [
+        1
+      ],
+      "hint": "ciorchine"
+    },
+    {
+      "name": "cașcaval",
+      "categories": [
+        1
+      ],
+      "hint": "se topește"
+    },
+    {
+      "name": "papanași",
+      "categories": [
+        1
+      ],
+      "hint": "găuri"
+    },
+    {
+      "name": "ciorbă",
+      "categories": [
+        1
+      ],
+      "hint": "acru"
+    },
+    {
+      "name": "apă minerală",
+      "categories": [
+        1,
+        2
+      ],
+      "hint": "bule"
+    },
+    {
+      "name": "ceai",
+      "categories": [
+        1,
+        2
+      ],
+      "hint": "plic"
+    },
+    {
+      "name": "ciocolată",
+      "categories": [
+        1
+      ],
+      "hint": "tableta"
+    },
+    {
+      "name": "înghețată",
+      "categories": [
+        1
+      ],
+      "hint": "lingurița"
+    },
+    {
+      "name": "telefon",
+      "categories": [
+        2
+      ],
+      "hint": "vibrează"
+    },
+    {
+      "name": "cheie",
+      "categories": [
+        2
+      ],
+      "hint": "zornăit"
+    },
+    {
+      "name": "telecomandă",
+      "categories": [
+        2
+      ],
+      "hint": "de pe canapea"
+    },
+    {
+      "name": "periuță de dinți",
+      "categories": [
+        2
+      ],
+      "hint": "are coadă"
+    },
+    {
+      "name": "prosop",
+      "categories": [
+        2
+      ],
+      "hint": "ud"
+    },
+    {
+      "name": "ochelari",
+      "categories": [
+        2
+      ],
+      "hint": "două cercuri"
+    },
+    {
+      "name": "umbrelă",
+      "categories": [
+        2
+      ],
+      "hint": "os sub pânză"
+    },
+    {
+      "name": "portofel",
+      "categories": [
+        2
+      ],
+      "hint": "valută"
+    },
+    {
+      "name": "încărcător",
+      "categories": [
+        2
+      ],
+      "hint": "fir spiralat"
+    },
+    {
+      "name": "sticlă",
+      "categories": [
+        2,
+        1
+      ],
+      "hint": "transparent"
+    },
+    {
+      "name": "cană",
+      "categories": [
+        2,
+        1
+      ],
+      "hint": "mâner"
+    },
+    {
+      "name": "furculiță",
+      "categories": [
+        2,
+        1
+      ],
+      "hint": "triplu"
+    },
+    {
+      "name": "Mihai Eminescu",
+      "categories": [
+        3
+      ],
+      "hint": "versuri lungi"
+    },
+    {
+      "name": "Gheorghe Hagi",
+      "categories": [
+        3
+      ],
+      "hint": "colțul terenului"
+    },
+    {
+      "name": "Constantin Brâncuși",
+      "categories": [
+        3
+      ],
+      "hint": "formă goală"
+    },
+    {
+      "name": "Nadia Comăneci",
+      "categories": [
+        3
+      ],
+      "hint": "bara"
+    },
+    {
+      "name": "Ion Țiriac",
+      "categories": [
+        3
+      ],
+      "hint": "mingi galbene"
+    },
+    {
+      "name": "Inna",
+      "categories": [
+        3
+      ],
+      "hint": "club"
+    },
+    {
+      "name": "Albert Einstein",
+      "categories": [
+        3
+      ],
+      "hint": "păr creț"
+    },
+    {
+      "name": "Freddie Mercury",
+      "categories": [
+        3
+      ],
+      "hint": "mustață"
+    },
+    {
+      "name": "Beyoncé",
+      "categories": [
+        3
+      ],
+      "hint": "aliniere"
+    },
+    {
+      "name": "Ștefan cel Mare",
+      "categories": [
+        3,
+        6
+      ],
+      "hint": "bătălie"
+    },
+    {
+      "name": "vulpe",
+      "categories": [
+        4
+      ],
+      "hint": "fura"
+    },
+    {
+      "name": "lup",
+      "categories": [
+        4
+      ],
+      "hint": "urlă"
+    },
+    {
+      "name": "urs",
+      "categories": [
+        4
+      ],
+      "hint": "hibernează"
+    },
+    {
+      "name": "bufniță",
+      "categories": [
+        4
+      ],
+      "hint": "noaptea"
+    },
+    {
+      "name": "delfin",
+      "categories": [
+        4
+      ],
+      "hint": "sare"
+    },
+    {
+      "name": "fluture",
+      "categories": [
+        4
+      ],
+      "hint": "foarte ușor"
+    },
+    {
+      "name": "țânțar",
+      "categories": [
+        4,
+        2
+      ],
+      "hint": "țiuie"
+    },
+    {
+      "name": "căprioară",
+      "categories": [
+        4
+      ],
+      "hint": "pete"
+    },
+    {
+      "name": "broască țestoasă",
+      "categories": [
+        4
+      ],
+      "hint": "în cochilie"
+    },
+    {
+      "name": "păianjen",
+      "categories": [
+        4,
+        2
+      ],
+      "hint": "colț"
+    },
+    {
+      "name": "iubire",
+      "categories": [
+        5
+      ],
+      "hint": "fără logică"
+    },
+    {
+      "name": "libertate",
+      "categories": [
+        5
+      ],
+      "hint": "fără gard"
+    },
+    {
+      "name": "frică",
+      "categories": [
+        5
+      ],
+      "hint": "tremur"
+    },
+    {
+      "name": "speranță",
+      "categories": [
+        5
+      ],
+      "hint": "mâine"
+    },
+    {
+      "name": "timp",
+      "categories": [
+        5
+      ],
+      "hint": "nu stă"
+    },
+    {
+      "name": "moștenire",
+      "categories": [
+        5
+      ],
+      "hint": "testament"
+    },
+    {
+      "name": "noroc",
+      "categories": [
+        5
+      ],
+      "hint": "zarul"
+    },
+    {
+      "name": "rușine",
+      "categories": [
+        5,
+        7
+      ],
+      "hint": "fața"
+    },
+    {
+      "name": "adevăr",
+      "categories": [
+        5
+      ],
+      "hint": "doare"
+    },
+    {
+      "name": "vis",
+      "categories": [
+        5
+      ],
+      "hint": "ochii închiși"
+    },
+    {
+      "name": "România",
+      "categories": [
+        6
+      ],
+      "hint": "tricolor"
+    },
+    {
+      "name": "București",
+      "categories": [
+        6
+      ],
+      "hint": "aglomerație"
+    },
+    {
+      "name": "Cluj-Napoca",
+      "categories": [
+        6
+      ],
+      "hint": "studenți"
+    },
+    {
+      "name": "Iași",
+      "categories": [
+        6
+      ],
+      "hint": "copou"
+    },
+    {
+      "name": "Transilvania",
+      "categories": [
+        6
+      ],
+      "hint": "dealuri"
+    },
+    {
+      "name": "Paris",
+      "categories": [
+        6
+      ],
+      "hint": "turn"
+    },
+    {
+      "name": "Tokyo",
+      "categories": [
+        6
+      ],
+      "hint": "răsărit"
+    },
+    {
+      "name": "Dunărea",
+      "categories": [
+        6
+      ],
+      "hint": "curge"
+    },
+    {
+      "name": "Marea Neagră",
+      "categories": [
+        6
+      ],
+      "hint": "nisip"
+    },
+    {
+      "name": "sex",
+      "categories": [
+        7,
+        5
+      ],
+      "hint": "doi"
+    },
+    {
+      "name": "orgasm",
+      "categories": [
+        7,
+        5
+      ],
+      "hint": "vârf"
+    },
+    {
+      "name": "porno",
+      "categories": [
+        7
+      ],
+      "hint": "incognito"
+    },
+    {
+      "name": "țâțe",
+      "categories": [
+        7
+      ],
+      "hint": "sub tricou"
+    },
+    {
+      "name": "cur",
+      "categories": [
+        7
+      ],
+      "hint": "șezut"
+    },
+    {
+      "name": "pulă",
+      "categories": [
+        7
+      ],
+      "hint": "vertical"
+    },
+    {
+      "name": "futut",
+      "categories": [
+        7
+      ],
+      "hint": "injurătură"
+    },
+    {
+      "name": "muie",
+      "categories": [
+        7
+      ],
+      "hint": "vorba urâtă"
+    },
+    {
+      "name": "dildo",
+      "categories": [
+        7,
+        2
+      ],
+      "hint": "silicon"
+    },
+    {
+      "name": "curvă",
+      "categories": [
+        7
+      ],
+      "hint": "multe uși"
+    },
+    {
+      "name": "șantaj sexual",
+      "categories": [
+        7,
+        5
+      ],
+      "hint": "filmare"
+    },
+    {
+      "name": "labă",
+      "categories": [
+        7
+      ],
+      "hint": "singur"
+    },
+    {
+      "name": "sâni",
+      "categories": [
+        7
+      ],
+      "hint": "alăptare"
+    }
+  ]
+}
+    </script>
+    <script>
+      window.INPOSTOR_DTB = (function () {
+        var el = document.getElementById("inpostor-dtb-json");
+        if (!el) return { categories: [], words: [] };
+        try {
+          return JSON.parse(el.textContent);
+        } catch (e) {
+          console.error(e);
+          return { categories: [], words: [] };
+        }
+      })();
+    </script>
+    <script src="app.js" defer></script>
+  </body>
+</html>
