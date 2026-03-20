@@ -167,7 +167,7 @@ function buildAssignments(players, inpostorSet, secretWord, wordEntry, cfg) {
         name,
         roleLine: "Ești cartof.",
         wordLead: secretWord ? "Cuvântul este:" : null,
-        mainLine: secretWord || "—",
+        mainLine: secretWord || "-",
         extraLine: null,
       };
     }
@@ -528,9 +528,9 @@ function init() {
     document.getElementById("done-starter-name").textContent = starter;
     document.getElementById("done-secret-word").textContent = secretWord
       ? secretWord
-      : "— (nu există cuvânt comun în această rundă)";
+      : "- (nu există cuvânt comun în această rundă)";
     document.getElementById("done-inpostor-list").textContent =
-      inpostorNames.length === 0 ? "Niciunul — toți jucătorii sunt cartofi." : inpostorNames.join(", ");
+      inpostorNames.length === 0 ? "Niciunul, toți jucătorii sunt cartofi." : inpostorNames.join(", ");
 
     document.getElementById("done-reveal").hidden = true;
     resetDoneHoldUi();
