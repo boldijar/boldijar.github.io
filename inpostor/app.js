@@ -157,6 +157,7 @@ function pickInpostorIndices(n, k) {
 function buildAssignments(players, inpostorSet, secretWord, wordEntry, cfg) {
   const inpostorNames = players.filter((_, i) => inpostorSet.has(i));
   const hintText = wordEntryHint(wordEntry);
+  const everyoneInpostor = inpostorNames.length === players.length && players.length > 0;
 
   return players.map((name, i) => {
     const isInpostor = inpostorSet.has(i);
@@ -172,13 +173,10 @@ function buildAssignments(players, inpostorSet, secretWord, wordEntry, cfg) {
       };
     }
 
-    let mainLine = "Nu cunoști cuvântul cartofilor.";
-    if (!secretWord) {
-      mainLine = "Toți sunteți inpostori în această rundă.";
-    }
+    const mainLine = "Nu cunoști cuvântul cartofilor.";
 
     const parts = [];
-    if (cfg.inpostorsSeeOthers && others.length > 0) {
+    if (cfg.inpostorsSeeOthers && others.length > 0 && !everyoneInpostor) {
       parts.push(`Alți inpostori: ${others.join(", ")}.`);
     }
     if (secretWord && cfg.inpostorsGetHint && hintText) {
