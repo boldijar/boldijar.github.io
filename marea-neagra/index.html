@@ -487,28 +487,45 @@ body.theme-bali .footer a:last-of-type {
     (a, b) => `Da! ${a} pana ${b}. Suna pe cineva cu longboard.`,
     (a, b) => `Da. ${a}–${b}. In sfarsit ceva serios.`,
     (a, b) => `Facem. ${a} pana ${b}.`,
+    (a, b) => `${a}–${b}: valuri! Nu glumim.`,
+    (a, b) => `Da, ${a} pana ${b}. Wetsuit-ul tremura de bucurie.`,
+    (a, b) => `Serios acum: ${a}–${b}. Ia tabla si pleaca.`,
+    (a, b) => `Window deschis ${a}–${b}. Instagram-ul iti multumeste.`,
+    (a, b) => `De ${a} la ${b} chiar merita sa te trezesti devreme.`,
   ];
   const YES_FROM_TOMORROW = [
     (b) => `Da! De maine pana ${b}.`,
     (b) => `De maine pana ${b}. Pare bine.`,
     (b) => `Maine incepe. Pana ${b} e ok.`,
+    (b) => `Maine nu mai sta pe plaja cu prosopul. Pana ${b}.`,
+    (b) => `De maine pana ${b} — in sfarsit ceva de surf, nu de stat la soare.`,
+    (b) => `Maine e ziua. Pana ${b} nu te intoarce la cafea.`,
   ];
   const YES_FROM_TODAY = [
     (b) => `Da. De azi pana ${b}.`,
     (b) => `Azi–${b}. Nu amana.`,
     (b) => `De azi pana ${b}. Rar asa.`,
+    (b) => `Azi incepe. Pana ${b} — du cearceaful si tabla.`,
+    (b) => `De azi pana ${b}. Boss-ul poate astepta.`,
+    (b) => `Azi–${b}. Valurile nu asteapta pe nimeni.`,
   ];
   const YES_NEXT_WEEK = [
     "Da. Saptamana viitoare.",
     "Saptamana viitoare. Pana atunci, genuflexiuni.",
     "Da, dar nu acum. Urmatoarea saptamana arata decent.",
     "Lunea viitoare incepe ceva. Rabdare.",
+    "Nu azi, dar saptamana viitoare da. Fa push-up-uri intre timp.",
+    "Valurile vin, dar cu intarziere. Saptamana viitoare.",
   ];
   const YES_SINGLE = [
     "O zi. Una singura. Nu complica.",
     "Da, dar scurt. Foarte scurt.",
     "O fereastra mica. Prinde-o.",
     "Da. O zi. Atat.",
+    "O zi buna. Ca o cafea buna — rara, dar merita.",
+    "Fereastra scurta. Daca n-o prinzi, plangi in dus.",
+    "Da, o zi. Destul cat sa minti ca surf-ezi des.",
+    "O singura zi decenta. Profita inainte sa vina vantul.",
   ];
   const MAYBE = [
     "Poate. Cu salupa langa.",
@@ -517,16 +534,55 @@ body.theme-bali .footer a:last-of-type {
     "Poate. Vantul are pareri.",
     "Incert. Du wetsuit si zen.",
     "Poate cu salupa. Sau cu prieten cu barca.",
+    "Poate. Sau poate doar te uiti si zici «era mai mare ieri».",
+    "Borderline. Ca o relatie complicata — poate merge, poate nu.",
+    "Se misca ceva. Destul pentru story, nu pentru legend.",
+    "Poate. Daca esti optimist si nu te uiti la prognoza de maine.",
+    "Incert. Bodyboard + prieten care zice «merge, am mai vazut mai rau».",
+    "Poate. Valul e acolo, dar si vantul e acolo.",
+    "Borderline. Merita dus wetsuit-ul in masina, nu neaparat in apa.",
+    "Poate. Surf de «am incercat» nu de «am reusit».",
+    "Se misca. Ca Marea Neagra in general — cu speranta.",
+    "Poate. Daca ai 30 de ani si inca crezi in miracole locale.",
+    "Incert. Ca un swipe pe Tinder — poate surprinde.",
+    "Poate cu salupa. Sau cu multa imaginatie.",
+    "Borderline. Perfect pentru «am fost la mare» nu pentru «am prins val».",
+    "Poate. Nu e Bali, dar nici piscina nu e.",
   ];
   const NAH = [
     "Nah.",
     "Nu.",
     "Plansa e mai buna.",
-    "0.3m nu e surf. E zgarda la mal.",
+    "Sub 0.4m nu e surf. E zgarda la mal.",
     "Nu merit. Stai acasa.",
     "Marea e calma. Prea calma.",
     "Nope. Poate la piscina.",
+    "Valurile sunt in concediu.",
+    "Nu. Marea doarme.",
+    "Nah. Chiar si pestii sunt plictisiti.",
+    "Nu. Du-te la mall, e mai agitat acolo.",
+    "Plaja Modern e moderna, valurile nu.",
+    "0.4m? Aia e spuma, nu val.",
+    "Nu. Singurul wipeout e al sperantelor tale.",
+    "Nope. Wetsuit-ul poate sta in dulap.",
+    "Nu merit. Netflix > Marea Neagra azi.",
+    "Valurile au dat ignore la cererea ta.",
+    "Nah. Surf-ul e offline.",
+    "Nu. Chiar si un caine pe plaja s-ar plictisi.",
+    "Marea zice: «poate maine, dragule».",
+    "Nu. Bodyboard-ul plange in garaj.",
+    "Nope. Prognoza zice: prosop, bere, gata.",
+    "Nu. Singura unda e cea din cafeaua ta.",
+    "Nah. Constanța are mare, nu valuri.",
+    "Nu. Du-te la sala. Macar acolo simti ceva.",
+    "Valurile sunt la cumparaturi. Revin altadata.",
+    "Nu. Chiar si o meduza s-ar plictisi.",
+    "Nope. Azi e zi de stat pe prosop, onest.",
+    "Nu. Marea e ca un elevator stricat — nu se misca.",
+    "Nah. Instagram-ul poate astepta.",
   ];
+
+  const WAVE_MIN = 0.4;
 
   function num(v) {
     return typeof v === "number" ? v : null;
@@ -747,37 +803,29 @@ body.theme-bali .footer a:last-of-type {
     return RO_DAYS[new Date(`${isoDate.slice(0, 10)}T12:00:00`).getDay()];
   }
 
-  function seedFrom(daily) {
-    let s = 7;
-    for (const d of daily) {
-      s += Math.round((d.score ?? 0) * 13 + (d.waveHeightMax ?? 0) * 97);
-    }
-    return s;
-  }
-
-  function pick(items, seed, salt = 0) {
-    return items[Math.abs(seed + salt) % items.length];
+  function pickRandom(items) {
+    return items[Math.floor(Math.random() * items.length)];
   }
 
   function hasRealWaves(day) {
-    return (day.waveHeightMax ?? 0) >= 0.5;
+    return (day.waveHeightMax ?? 0) >= WAVE_MIN;
   }
 
   function isGoodDay(day) {
     const wave = day.waveHeightMax ?? 0;
     const wind = day.windSpeedMax ?? 999;
     const score = day.score ?? 0;
-    if (wave < 0.5) return false;
+    if (wave < WAVE_MIN) return false;
     if (wave >= 1.0 && score >= 6 && wind <= 35) return true;
     if (wave >= 0.85 && score >= 5.5 && wind <= 35) return true;
-    if (wave >= 0.5 && score >= 5 && wind <= 38) return true;
+    if (wave >= WAVE_MIN && score >= 5 && wind <= 38) return true;
     return false;
   }
 
   function isMarginalDay(day) {
     const wave = day.waveHeightMax ?? 0;
-    if (wave < 0.35) return false;
-    if (wave < 0.5) return true;
+    if (wave < WAVE_MIN) return false;
+    if (wave < 0.55) return true;
     return hasRealWaves(day) && !isGoodDay(day);
   }
 
@@ -799,30 +847,29 @@ body.theme-bali .footer a:last-of-type {
 
   function computeVerdict(daily) {
     const days = daily.slice(0, 8);
-    const seed = seedFrom(days);
-    if (!days.length) return { text: pick(NAH, seed), tier: "nah" };
+    if (!days.length) return { text: pickRandom(NAH), tier: "nah" };
 
     const realDays = days.filter(hasRealWaves).length;
     const maxWave = Math.max(...days.map((d) => d.waveHeightMax ?? 0));
 
-    if (maxWave < 0.5 || realDays === 0) {
-      return { text: pick(NAH, seed, 1), tier: "nah" };
+    if (maxWave < WAVE_MIN || realDays === 0) {
+      return { text: pickRandom(NAH), tier: "nah" };
     }
 
     const streak = findLongestGoodStreak(days);
     if (streak.len >= 2 && realDays >= 2) {
       const end = dayLabel(days[streak.end].time);
-      if (streak.start === 0) return { text: pick(YES_FROM_TODAY, seed)(end), tier: "yes" };
-      if (streak.start === 1) return { text: pick(YES_FROM_TOMORROW, seed)(end), tier: "yes" };
-      if (streak.start >= 5) return { text: pick(YES_NEXT_WEEK, seed), tier: "yes" };
+      if (streak.start === 0) return { text: pickRandom(YES_FROM_TODAY)(end), tier: "yes" };
+      if (streak.start === 1) return { text: pickRandom(YES_FROM_TOMORROW)(end), tier: "yes" };
+      if (streak.start >= 5) return { text: pickRandom(YES_NEXT_WEEK), tier: "yes" };
       const start = dayLabel(days[streak.start].time);
-      return { text: pick(YES_STREAK, seed)(start, end), tier: "yes" };
+      return { text: pickRandom(YES_STREAK)(start, end), tier: "yes" };
     }
-    if (days.some(isGoodDay)) return { text: pick(YES_SINGLE, seed), tier: "yes" };
-    if (days.some(isMarginalDay) || (maxWave >= 0.35 && maxWave < 0.5)) {
-      return { text: pick(MAYBE, seed), tier: "maybe" };
+    if (days.some(isGoodDay)) return { text: pickRandom(YES_SINGLE), tier: "yes" };
+    if (days.some(isMarginalDay)) {
+      return { text: pickRandom(MAYBE), tier: "maybe" };
     }
-    return { text: pick(NAH, seed, 2), tier: "nah" };
+    return { text: pickRandom(NAH), tier: "nah" };
   }
 
   function isThreeHourSlot(iso) {
