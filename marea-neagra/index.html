@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="ro">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Facem surf la Marea Neagra?</title>
+    <meta name="description" content="Prognoza surf Plaja Modern, Constanta — simplu si direct." />
+    <style>
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: #0a2d5c;
+  color: #fff;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+}
+
+.main {
+  margin: 0 auto;
+  max-width: 88rem;
+  padding: 2rem 1.25rem 2.5rem;
+}
+
+@media (min-width: 640px) {
+  .main {
+    padding: 2rem 2rem 2.5rem;
+  }
+}
+
+.eyebrow {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(125, 211, 252, 0.8);
+}
+
+.title {
+  margin: 1rem 0 0;
+  font-size: clamp(1.875rem, 5vw, 3rem);
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.verdict {
+  margin: 1.25rem 0 0;
+  font-size: clamp(2.25rem, 8vw, 4.5rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.verdict--loading {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.verdict--yes {
+  color: #bae6fd;
+}
+
+.verdict--maybe {
+  color: #fde68a;
+}
+
+.verdict--nah {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.current {
+  margin: 1.5rem 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1rem;
+  align-items: center;
+  font-size: 1rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+@media (min-width: 640px) {
+  .current {
+    font-size: 1.125rem;
+  }
+}
+
+.current strong {
+  color: #fff;
+}
+
+.current .muted {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.current .dot {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.current .score {
+  color: #bae6fd;
+}
+
+.wind-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.wind-arrow {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #7dd3fc;
+}
+
+.days {
+  margin-top: 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.day-title {
+  margin: 0 0 1rem;
+  font-size: clamp(1.125rem, 2.5vw, 1.5rem);
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.day-row {
+  display: flex;
+  gap: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .day-row {
+    gap: 1rem;
+  }
+}
+
+.hour-card {
+  flex: 1;
+  min-width: 7rem;
+  padding: 1.25rem 1rem 1.5rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.06);
+  text-align: center;
+}
+
+@media (min-width: 640px) {
+  .hour-card {
+    min-width: 8.5rem;
+    padding: 1.5rem 1.25rem 1.75rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hour-card {
+    min-width: 9.5rem;
+    padding: 1.75rem 1.25rem 2rem;
+  }
+}
+
+.hour-time {
+  font-size: 1rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+@media (min-width: 640px) {
+  .hour-time {
+    font-size: 1.125rem;
+  }
+}
+
+.hour-wave {
+  margin-top: 0.75rem;
+  font-size: clamp(1.875rem, 4vw, 3rem);
+  font-weight: 900;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.hour-period {
+  margin-top: 0.5rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+@media (min-width: 640px) {
+  .hour-period {
+    font-size: 1.25rem;
+  }
+}
+
+.hour-wind {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+@media (min-width: 640px) {
+  .hour-wind {
+    font-size: 1.125rem;
+  }
+}
+
+.hour-wind .wind-arrow {
+  width: 1.75rem;
+  height: 1.75rem;
+}
+
+.hour-score {
+  margin-top: 1rem;
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  font-weight: 900;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.score--low {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.score--mid {
+  color: #fde68a;
+}
+
+.score--ok {
+  color: #bae6fd;
+}
+
+.score--good {
+  color: #6ee7b7;
+}
+
+.score--empty {
+  color: rgba(255, 255, 255, 0.25);
+}
+
+.footer {
+  margin-top: 3.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  text-align: center;
+}
+
+.footer p {
+  margin: 0 auto;
+  max-width: 42rem;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+@media (min-width: 640px) {
+  .footer p {
+    font-size: 1rem;
+  }
+}
+
+.footer a {
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+}
+
+.footer a:hover {
+  color: #fff;
+}
+
+.footer a:last-of-type {
+  color: rgba(186, 230, 253, 0.8);
+}
+
+.error {
+  color: #fca5a5;
+}
+
+.escape-wrap {
+  margin-top: 1rem;
+}
+
+.escape-btn {
+  appearance: none;
+  cursor: pointer;
+  padding: 0.45rem 0.95rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 0.75rem;
+  font-weight: 700;
+  font-family: inherit;
+  transition: color 0.15s, background 0.15s, border-color 0.15s;
+}
+
+.escape-btn:hover {
+  color: rgba(255, 255, 255, 0.88);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+body.theme-bali {
+  background: linear-gradient(165deg, #0c4a44 0%, #155e50 45%, #1a472a 100%);
+}
+
+body.theme-bali .eyebrow {
+  color: rgba(253, 186, 116, 0.9);
+}
+
+body.theme-bali .verdict--yes {
+  color: #fef08a;
+}
+
+body.theme-bali .verdict--maybe {
+  color: #fdba74;
+}
+
+body.theme-bali .current .score {
+  color: #5eead4;
+}
+
+body.theme-bali .wind-arrow {
+  color: #2dd4bf;
+}
+
+body.theme-bali .hour-card {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+body.theme-bali .score--ok {
+  color: #5eead4;
+}
+
+body.theme-bali .score--good {
+  color: #86efac;
+}
+
+body.theme-bali .footer a:last-of-type {
+  color: rgba(94, 234, 212, 0.85);
+}
+
+
+    </style>
+  </head>
+  <body>
+    <main id="app" class="main">
+      <p class="eyebrow" id="eyebrow">Plaja Modern · Constanta</p>
+      <h1 class="title" id="title">Facem surf la Marea Neagra?</h1>
+      <p id="verdict" class="verdict verdict--loading">Se incarca...</p>
+      <div id="escape-wrap" class="escape-wrap" hidden>
+        <button type="button" id="escape-btn" class="escape-btn">Vrei sa vezi cum sunt valurile in Bali?</button>
+      </div>
+      <div id="reality-wrap" class="escape-wrap" hidden>
+        <button type="button" id="reality-btn" class="escape-btn">Inapoi la realitate</button>
+      </div>
+      <p id="current" class="current"></p>
+      <div id="days" class="days"></div>
+      <footer class="footer">
+        <p>
+          Scris cu dor de surf de
+          <a href="https://www.linkedin.com/in/boldijar" target="_blank" rel="noopener noreferrer">Paul</a>
+          folosind
+          <a href="https://open-meteo.com/en/docs/marine-weather-api" target="_blank" rel="noopener noreferrer">Open-Meteo Marine</a>,
+          <a href="https://open-meteo.com/en/docs" target="_blank" rel="noopener noreferrer">Open-Meteo Weather</a>.
+          Daca iti place si ai chef,
+          <a href="https://buymeacoffee.com/bolnizar" target="_blank" rel="noopener noreferrer">ia-mi o cafea</a>.
+        </p>
+      </footer>
+    </main>
+    <script>
+/* eslint-disable no-unused-vars */
+(function () {
+  "use strict";
+
+  const BLACK_SEA_SCORING = {
+    offshoreWind: 270,
+    idealSwellDirection: 45,
+    swellDirectionScores: [
+      { maxDelta: 30, score: 10 },
+      { maxDelta: 60, score: 7 },
+      { maxDelta: 120, score: 4 },
+      { maxDelta: 180, score: 2 },
+    ],
+    windDirectionScores: [
+      { maxDelta: 30, score: 10 },
+      { maxDelta: 70, score: 6 },
+      { maxDelta: 120, score: 3 },
+      { maxDelta: 180, score: 1 },
+    ],
+  };
+
+  const BALI_SCORING = {
+    weights: { size: 0.2, period: 0.15, cleanliness: 0.15, wind: 0.25, swellDirection: 0.25 },
+    offshoreWind: 90,
+    idealSwellDirection: 210,
+    sizeRange: { tooSmall: 0.5, idealMin: 1, idealMax: 2, tooBig: 3 },
+    swellDirectionScores: [
+      { maxDelta: 20, score: 10 },
+      { maxDelta: 45, score: 7 },
+      { maxDelta: 90, score: 4 },
+      { maxDelta: 180, score: 2 },
+    ],
+    windDirectionScores: [
+      { maxDelta: 25, score: 10 },
+      { maxDelta: 60, score: 6 },
+      { maxDelta: 120, score: 3 },
+      { maxDelta: 180, score: 1 },
+    ],
+    shelterFactor: 1,
+  };
+
+  const LOCATIONS = {
+    blacksea: {
+      id: "blacksea",
+      eyebrow: "Plaja Modern · Constanta",
+      title: "Facem surf la Marea Neagra?",
+      latitude: 44.1809304,
+      longitude: 28.6563829,
+      timezone: "Europe/Bucharest",
+      theme: "",
+    },
+    bali: {
+      id: "bali",
+      eyebrow: "Batu Bolong · Canggu, Bali",
+      title: "Asa arata valurile in Bali.",
+      latitude: -8.65,
+      longitude: 115.132,
+      timezone: "Asia/Makassar",
+      theme: "theme-bali",
+      scoring: BALI_SCORING,
+    },
+  };
+
+  let activeLocation = LOCATIONS.blacksea;
+
+  const FORECAST_DAYS = 8;
+  const MARINE_URL = "https://marine-api.open-meteo.com/v1/marine";
+  const WEATHER_URL = "https://api.open-meteo.com/v1/forecast";
+
+  const RO_DAYS = [
+    "Duminica",
+    "Luni",
+    "Marti",
+    "Miercuri",
+    "Joi",
+    "Vineri",
+    "Sambata",
+  ];
+
+  const COMPASS = [
+    "N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE",
+    "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW",
+  ];
+
+  const YES_STREAK = [
+    (a, b) => `Da. De ${a} pana ${b}.`,
+    (a, b) => `Merge. ${a}–${b}, cum rar prindem.`,
+    (a, b) => `Da! ${a} pana ${b}. Suna pe cineva cu longboard.`,
+    (a, b) => `Da. ${a}–${b}. In sfarsit ceva serios.`,
+    (a, b) => `Facem. ${a} pana ${b}.`,
+  ];
+  const YES_FROM_TOMORROW = [
+    (b) => `Da! De maine pana ${b}.`,
+    (b) => `De maine pana ${b}. Pare bine.`,
+    (b) => `Maine incepe. Pana ${b} e ok.`,
+  ];
+  const YES_FROM_TODAY = [
+    (b) => `Da. De azi pana ${b}.`,
+    (b) => `Azi–${b}. Nu amana.`,
+    (b) => `De azi pana ${b}. Rar asa.`,
+  ];
+  const YES_NEXT_WEEK = [
+    "Da. Saptamana viitoare.",
+    "Saptamana viitoare. Pana atunci, genuflexiuni.",
+    "Da, dar nu acum. Urmatoarea saptamana arata decent.",
+    "Lunea viitoare incepe ceva. Rabdare.",
+  ];
+  const YES_SINGLE = [
+    "O zi. Una singura. Nu complica.",
+    "Da, dar scurt. Foarte scurt.",
+    "O fereastra mica. Prinde-o.",
+    "Da. O zi. Atat.",
+  ];
+  const MAYBE = [
+    "Poate. Cu salupa langa.",
+    "Borderline. Bodyboard si sperante.",
+    "Se misca ceva. Destul cat sa te lasi tentat.",
+    "Poate. Vantul are pareri.",
+    "Incert. Du wetsuit si zen.",
+    "Poate cu salupa. Sau cu prieten cu barca.",
+  ];
+  const NAH = [
+    "Nah.",
+    "Nu.",
+    "Plansa e mai buna.",
+    "0.3m nu e surf. E zgarda la mal.",
+    "Nu merit. Stai acasa.",
+    "Marea e calma. Prea calma.",
+    "Nope. Poate la piscina.",
+  ];
+
+  function num(v) {
+    return typeof v === "number" ? v : null;
+  }
+
+  function arr(data, key) {
+    return data[key] ?? [];
+  }
+
+  function angularDifference(a, b) {
+    return Math.abs(((a - b + 180) % 360) - 180);
+  }
+
+  function degreesToCompass(degrees) {
+    const normalized = ((degrees % 360) + 360) % 360;
+    return COMPASS[Math.round(normalized / 22.5) % 16];
+  }
+
+  function formatHeight(meters) {
+    return `${meters.toFixed(1)} m`;
+  }
+
+  function formatWind(speedKmh) {
+    return `${speedKmh.toFixed(0)} km/h`;
+  }
+
+  function formatHourRo(iso) {
+    return new Date(iso).toLocaleTimeString("ro-RO", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  }
+
+  function formatRoDate(iso) {
+    const d = new Date(`${iso.slice(0, 10)}T12:00:00`);
+    const dayName = RO_DAYS[d.getDay()];
+    const date = d.toLocaleDateString("ro-RO", {
+      day: "numeric",
+      month: "short",
+    });
+    return `${dayName}, ${date}`;
+  }
+
+  function scoreFromDirection(actual, ideal, rules) {
+    const delta = angularDifference(actual, ideal);
+    for (const rule of rules) {
+      if (delta <= rule.maxDelta) return rule.score;
+    }
+    return 1;
+  }
+
+  function scoreWind(wind, scoring) {
+    const directionScore = scoreFromDirection(
+      wind.direction,
+      scoring.offshoreWind,
+      scoring.windDirectionScores,
+    );
+    let speedScore;
+    if (wind.speed < 8) speedScore = 10;
+    else if (wind.speed < 15) speedScore = 8;
+    else if (wind.speed < 20) speedScore = 6;
+    else if (wind.speed < 28) speedScore = 4;
+    else speedScore = 2;
+    if (wind.gusts > 35) speedScore = Math.max(1, speedScore - 2);
+    else if (wind.gusts > 25) speedScore = Math.max(2, speedScore - 1);
+    return Math.round((directionScore * 0.6 + speedScore * 0.4) * 10) / 10;
+  }
+
+  function scoreBlackSeaSize(height) {
+    if (height < 0.15) return 1;
+    if (height < 0.3) return 1 + ((height - 0.15) / 0.15) * 1.5;
+    if (height < 0.5) return 2.5 + ((height - 0.3) / 0.2) * 1.5;
+    if (height < 0.8) return 4 + ((height - 0.5) / 0.3) * 2;
+    if (height < 1.1) return 6 + ((height - 0.8) / 0.3) * 2.5;
+    if (height <= 1.5) {
+      const peak = 1.3;
+      if (height <= peak) return 8.5 + ((height - 1.1) / (peak - 1.1)) * 1.5;
+      return 10 - ((height - peak) / (1.5 - peak)) * 2;
+    }
+    if (height <= 2.2) return 8 - ((height - 1.5) / 0.7) * 3;
+    return Math.max(2, 5 - (height - 2.2));
+  }
+
+  function scoreBlackSeaPeriod(period) {
+    if (period < 4) return 2;
+    if (period < 5) return 3.5;
+    if (period < 6) return 5;
+    if (period < 7) return 6;
+    if (period < 8) return 7.5;
+    if (period < 10) return 8.5;
+    if (period < 12) return 9.5;
+    return 10;
+  }
+
+  function scoreBlackSeaCleanliness(swellHeight, totalHeight) {
+    if (totalHeight <= 0) return 1;
+    const ratio = swellHeight / totalHeight;
+    if (ratio > 0.75) return 8;
+    if (ratio > 0.55) return 6;
+    if (ratio > 0.4) return 4;
+    return 3;
+  }
+
+  function maxScoreForHeight(height) {
+    if (height < 0.25) return 2;
+    if (height < 0.35) return 3;
+    if (height < 0.45) return 4.5;
+    if (height < 0.5) return 4.9;
+    if (height < 0.65) return 6;
+    if (height < 0.85) return 7.5;
+    if (height < 1.05) return 9;
+    if (height < 1.25) return 9.8;
+    return 10;
+  }
+
+
+  function scoreSize(height, range) {
+    if (height < range.tooSmall) {
+      return Math.max(1, Math.round((height / range.tooSmall) * 3));
+    }
+    if (height < range.idealMin) {
+      const t = (height - range.tooSmall) / (range.idealMin - range.tooSmall);
+      return Math.round(3 + t * 3);
+    }
+    if (height <= range.idealMax) {
+      const mid = (range.idealMin + range.idealMax) / 2;
+      const dist = Math.abs(height - mid) / (range.idealMax - range.idealMin);
+      return Math.round(9 - dist * 2);
+    }
+    if (height <= range.tooBig) {
+      const t = (height - range.idealMax) / (range.tooBig - range.idealMax);
+      return Math.round(7 - t * 3);
+    }
+    return Math.max(2, Math.round(5 - (height - range.tooBig)));
+  }
+
+  function scorePeriod(period) {
+    if (period < 6) return 2;
+    if (period < 8) return 5;
+    if (period < 12) return 7;
+    if (period < 16) return 9;
+    return 10;
+  }
+
+  function scoreCleanliness(swellHeight, totalHeight) {
+    if (totalHeight <= 0) return 1;
+    const ratio = swellHeight / totalHeight;
+    if (ratio > 0.8) return 9;
+    if (ratio > 0.65) return 7;
+    if (ratio > 0.5) return 5;
+    if (ratio > 0.35) return 3;
+    return 2;
+  }
+
+  function calculateStandardScore(marine, wind, scoring) {
+    const height = marine.waveHeight * (scoring.shelterFactor || 1);
+    const weights = scoring.weights;
+    const breakdown = {
+      size: scoreSize(height, scoring.sizeRange),
+      period: scorePeriod(marine.swellPeriod || marine.wavePeriod),
+      cleanliness: scoreCleanliness(marine.swellHeight, marine.waveHeight),
+      wind: scoreWind(wind, scoring),
+      swellDirection: scoreFromDirection(
+        marine.swellDirection,
+        scoring.idealSwellDirection,
+        scoring.swellDirectionScores,
+      ),
+    };
+    const overall =
+      breakdown.size * weights.size +
+      breakdown.period * weights.period +
+      breakdown.cleanliness * weights.cleanliness +
+      breakdown.wind * weights.wind +
+      breakdown.swellDirection * weights.swellDirection;
+    return Math.round(overall * 10) / 10;
+  }
+
+  function calculateBlackSeaScore(marine, wind) {
+    const height = marine.waveHeight;
+    const period = marine.swellPeriod || marine.wavePeriod;
+    const scoring = BLACK_SEA_SCORING;
+    const breakdown = {
+      size: scoreBlackSeaSize(height),
+      period: scoreBlackSeaPeriod(period),
+      cleanliness: scoreBlackSeaCleanliness(marine.swellHeight, marine.waveHeight),
+      wind: scoreWind(wind, scoring),
+      swellDirection: scoreFromDirection(
+        marine.swellDirection,
+        scoring.idealSwellDirection,
+        scoring.swellDirectionScores,
+      ),
+    };
+    let overall =
+      breakdown.size * 0.52 +
+      breakdown.period * 0.18 +
+      breakdown.cleanliness * 0.05 +
+      breakdown.wind * 0.22 +
+      breakdown.swellDirection * 0.03;
+    overall = Math.min(overall, maxScoreForHeight(height));
+    if (height >= 1.15 && height <= 1.5 && period >= 8 && breakdown.wind >= 8) {
+      overall = Math.min(10, overall + 0.5);
+    }
+    if (overall >= 9.5 && (period < 7 || breakdown.wind < 7)) {
+      overall = Math.min(overall, 8.5);
+    }
+    if (overall >= 9 && height < 1.1) overall = Math.min(overall, 8);
+    return Math.round(overall * 10) / 10;
+  }
+
+  function calculateScore(marine, wind) {
+    if (activeLocation.id === "bali") {
+      return calculateStandardScore(marine, wind, activeLocation.scoring);
+    }
+    return calculateBlackSeaScore(marine, wind);
+  }
+
+  function dayLabel(isoDate) {
+    return RO_DAYS[new Date(`${isoDate.slice(0, 10)}T12:00:00`).getDay()];
+  }
+
+  function seedFrom(daily) {
+    let s = 7;
+    for (const d of daily) {
+      s += Math.round((d.score ?? 0) * 13 + (d.waveHeightMax ?? 0) * 97);
+    }
+    return s;
+  }
+
+  function pick(items, seed, salt = 0) {
+    return items[Math.abs(seed + salt) % items.length];
+  }
+
+  function hasRealWaves(day) {
+    return (day.waveHeightMax ?? 0) >= 0.5;
+  }
+
+  function isGoodDay(day) {
+    const wave = day.waveHeightMax ?? 0;
+    const wind = day.windSpeedMax ?? 999;
+    const score = day.score ?? 0;
+    if (wave < 0.5) return false;
+    if (wave >= 1.0 && score >= 6 && wind <= 35) return true;
+    if (wave >= 0.85 && score >= 5.5 && wind <= 35) return true;
+    if (wave >= 0.5 && score >= 5 && wind <= 38) return true;
+    return false;
+  }
+
+  function isMarginalDay(day) {
+    const wave = day.waveHeightMax ?? 0;
+    if (wave < 0.35) return false;
+    if (wave < 0.5) return true;
+    return hasRealWaves(day) && !isGoodDay(day);
+  }
+
+  function findLongestGoodStreak(days) {
+    let best = { start: -1, end: -1, len: 0 };
+    let i = 0;
+    while (i < days.length) {
+      if (!isGoodDay(days[i])) {
+        i++;
+        continue;
+      }
+      const start = i;
+      while (i < days.length && isGoodDay(days[i])) i++;
+      const len = i - start;
+      if (len > best.len) best = { start, end: i - 1, len };
+    }
+    return best;
+  }
+
+  function computeVerdict(daily) {
+    const days = daily.slice(0, 8);
+    const seed = seedFrom(days);
+    if (!days.length) return { text: pick(NAH, seed), tier: "nah" };
+
+    const realDays = days.filter(hasRealWaves).length;
+    const maxWave = Math.max(...days.map((d) => d.waveHeightMax ?? 0));
+
+    if (maxWave < 0.5 || realDays === 0) {
+      return { text: pick(NAH, seed, 1), tier: "nah" };
+    }
+
+    const streak = findLongestGoodStreak(days);
+    if (streak.len >= 2 && realDays >= 2) {
+      const end = dayLabel(days[streak.end].time);
+      if (streak.start === 0) return { text: pick(YES_FROM_TODAY, seed)(end), tier: "yes" };
+      if (streak.start === 1) return { text: pick(YES_FROM_TOMORROW, seed)(end), tier: "yes" };
+      if (streak.start >= 5) return { text: pick(YES_NEXT_WEEK, seed), tier: "yes" };
+      const start = dayLabel(days[streak.start].time);
+      return { text: pick(YES_STREAK, seed)(start, end), tier: "yes" };
+    }
+    if (days.some(isGoodDay)) return { text: pick(YES_SINGLE, seed), tier: "yes" };
+    if (days.some(isMarginalDay) || (maxWave >= 0.35 && maxWave < 0.5)) {
+      return { text: pick(MAYBE, seed), tier: "maybe" };
+    }
+    return { text: pick(NAH, seed, 2), tier: "nah" };
+  }
+
+  function isThreeHourSlot(iso) {
+    return new Date(iso).getHours() % 3 === 0;
+  }
+
+  function isDaylightHour(hour) {
+    if (hour.isDay !== null) return hour.isDay;
+    const h = new Date(hour.time).getHours();
+    return h >= 6 && h <= 20;
+  }
+
+  function hoursForDay(hourly, date) {
+    return hourly
+      .filter((h) => h.time.slice(0, 10) === date)
+      .filter((h) => isThreeHourSlot(h.time))
+      .filter(isDaylightHour);
+  }
+
+  function hourlyVal(hourly, key, index) {
+    const values = hourly[key];
+    return Array.isArray(values) ? values[index] : undefined;
+  }
+
+  function dailyVal(daily, key, index) {
+    const values = daily[key];
+    return Array.isArray(values) ? values[index] : undefined;
+  }
+
+  function parseMarineCurrent(raw) {
+    return {
+      time: String(raw.time),
+      waveHeight: raw.wave_height,
+      waveDirection: raw.wave_direction,
+      wavePeriod: raw.wave_period,
+      swellHeight: raw.swell_wave_height,
+      swellDirection: raw.swell_wave_direction,
+      swellPeriod: raw.swell_wave_period,
+      swellPeakPeriod: num(raw.swell_wave_peak_period),
+      windWaveHeight: raw.wind_wave_height,
+      windWaveDirection: raw.wind_wave_direction,
+      seaSurfaceTemperature: raw.sea_surface_temperature,
+    };
+  }
+
+  function parseWindCurrent(raw) {
+    return {
+      time: String(raw.time),
+      speed: raw.wind_speed_10m,
+      direction: raw.wind_direction_10m,
+      gusts: raw.wind_gusts_10m,
+    };
+  }
+
+  function buildHourly(marineHourly, weatherHourly) {
+    const times = arr(marineHourly, "time");
+    const wTimes = arr(weatherHourly, "time");
+    const wIndex = new Map(wTimes.map((t, i) => [t, i]));
+
+    return times.map((time, i) => {
+      const wi = wIndex.get(time);
+      const waveHeight = num(hourlyVal(marineHourly, "wave_height", i));
+      const swellHeight = num(hourlyVal(marineHourly, "swell_wave_height", i));
+      let score = null;
+
+      if (waveHeight !== null && swellHeight !== null && wi !== undefined) {
+        const marine = {
+          time,
+          waveHeight,
+          waveDirection: hourlyVal(marineHourly, "wave_direction", i),
+          wavePeriod: hourlyVal(marineHourly, "wave_period", i),
+          swellHeight,
+          swellDirection: hourlyVal(marineHourly, "swell_wave_direction", i),
+          swellPeriod: hourlyVal(marineHourly, "swell_wave_period", i),
+          swellPeakPeriod: num(hourlyVal(marineHourly, "swell_wave_peak_period", i)),
+          windWaveHeight: hourlyVal(marineHourly, "wind_wave_height", i),
+          windWaveDirection: hourlyVal(marineHourly, "wind_wave_direction", i),
+          seaSurfaceTemperature: hourlyVal(marineHourly, "sea_surface_temperature", i),
+        };
+        const wind = {
+          time,
+          speed: hourlyVal(weatherHourly, "wind_speed_10m", wi),
+          direction: hourlyVal(weatherHourly, "wind_direction_10m", wi),
+          gusts: hourlyVal(weatherHourly, "wind_gusts_10m", wi),
+        };
+        score = calculateScore(marine, wind);
+      }
+
+      return {
+        time,
+        waveHeight,
+        wavePeriod: num(hourlyVal(marineHourly, "wave_period", i)),
+        windSpeed: wi !== undefined ? num(hourlyVal(weatherHourly, "wind_speed_10m", wi)) : null,
+        windDirection:
+          wi !== undefined ? num(hourlyVal(weatherHourly, "wind_direction_10m", wi)) : null,
+        score,
+        isDay: wi !== undefined ? hourlyVal(weatherHourly, "is_day", wi) === 1 : null,
+      };
+    });
+  }
+
+  function buildDaily(marineDaily, weatherDaily) {
+    const times = arr(marineDaily, "time");
+    return times.map((time, i) => {
+      const waveHeightMax = num(dailyVal(marineDaily, "wave_height_max", i));
+      const swellHeightMax = num(dailyVal(marineDaily, "swell_wave_height_max", i));
+      const windSpeedMax = num(dailyVal(weatherDaily, "wind_speed_10m_max", i));
+      const windDirectionDominant = num(
+        dailyVal(weatherDaily, "wind_direction_10m_dominant", i),
+      );
+      let score = null;
+
+      if (
+        waveHeightMax !== null &&
+        swellHeightMax !== null &&
+        windSpeedMax !== null &&
+        windDirectionDominant !== null
+      ) {
+        const marine = {
+          time,
+          waveHeight: waveHeightMax,
+          waveDirection: dailyVal(marineDaily, "wave_direction_dominant", i),
+          wavePeriod: dailyVal(marineDaily, "wave_period_max", i),
+          swellHeight: swellHeightMax,
+          swellDirection: dailyVal(marineDaily, "swell_wave_direction_dominant", i),
+          swellPeriod: dailyVal(marineDaily, "swell_wave_period_max", i),
+          swellPeakPeriod: null,
+          windWaveHeight: dailyVal(marineDaily, "wind_wave_height_max", i),
+          windWaveDirection: 0,
+          seaSurfaceTemperature: 0,
+        };
+        const wind = {
+          time,
+          speed: windSpeedMax,
+          direction: windDirectionDominant,
+          gusts: windSpeedMax,
+        };
+        score = calculateScore(marine, wind);
+      }
+
+      return { time, waveHeightMax, windSpeedMax, score };
+    });
+  }
+
+  async function fetchForecast() {
+    const marineParams = new URLSearchParams({
+      latitude: String(activeLocation.latitude),
+      longitude: String(activeLocation.longitude),
+      cell_selection: "sea",
+      timezone: activeLocation.timezone,
+      forecast_days: String(FORECAST_DAYS),
+      hourly: [
+        "wave_height",
+        "wave_direction",
+        "wave_period",
+        "swell_wave_height",
+        "swell_wave_direction",
+        "swell_wave_period",
+        "swell_wave_peak_period",
+        "wind_wave_height",
+        "wind_wave_direction",
+        "sea_surface_temperature",
+      ].join(","),
+      daily: [
+        "wave_height_max",
+        "wave_direction_dominant",
+        "wave_period_max",
+        "swell_wave_height_max",
+        "swell_wave_direction_dominant",
+        "swell_wave_period_max",
+        "wind_wave_height_max",
+      ].join(","),
+      current: [
+        "wave_height",
+        "wave_direction",
+        "wave_period",
+        "swell_wave_height",
+        "swell_wave_direction",
+        "swell_wave_period",
+        "swell_wave_peak_period",
+        "wind_wave_height",
+        "wind_wave_direction",
+        "sea_surface_temperature",
+      ].join(","),
+    });
+
+    const weatherParams = new URLSearchParams({
+      latitude: String(activeLocation.latitude),
+      longitude: String(activeLocation.longitude),
+      timezone: activeLocation.timezone,
+      forecast_days: String(FORECAST_DAYS),
+      hourly: "wind_speed_10m,wind_direction_10m,wind_gusts_10m,is_day",
+      daily: "wind_speed_10m_max,wind_direction_10m_dominant,sunrise,sunset",
+      current: "wind_speed_10m,wind_direction_10m,wind_gusts_10m",
+    });
+
+    const [marineRes, weatherRes] = await Promise.all([
+      fetch(`${MARINE_URL}?${marineParams}`),
+      fetch(`${WEATHER_URL}?${weatherParams}`),
+    ]);
+
+    if (!marineRes.ok || !weatherRes.ok) {
+      throw new Error("Nu am putut lua prognoza.");
+    }
+
+    const marine = await marineRes.json();
+    const weather = await weatherRes.json();
+    if (marine.error || weather.error) {
+      throw new Error(marine.reason || weather.reason || "Eroare Open-Meteo.");
+    }
+
+    const currentMarine = parseMarineCurrent(marine.current);
+    const currentWind = parseWindCurrent(weather.current);
+    const currentScore = calculateScore(currentMarine, currentWind);
+
+    return {
+      current: { marine: currentMarine, wind: currentWind, score: currentScore },
+      hourly: buildHourly(marine.hourly, weather.hourly),
+      daily: buildDaily(marine.daily, weather.daily),
+    };
+  }
+
+  function scoreClass(score) {
+    if (score == null) return "score--empty";
+    if (score >= 7) return "score--good";
+    if (score >= 5) return "score--ok";
+    if (score >= 3) return "score--mid";
+    return "score--low";
+  }
+
+  function windArrowSvg(direction, className) {
+    const blowTo = (direction + 180) % 360;
+    return `<svg viewBox="0 0 48 48" class="${className}" aria-hidden="true"><g transform="rotate(${blowTo} 24 24)"><path d="M24 12 L24 34 M24 12 L18 20 M24 12 L30 20" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></g></svg>`;
+  }
+
+  function renderCurrent(data) {
+    const { marine, wind, score } = data.current;
+    const wave = marine.waveHeight != null ? formatHeight(marine.waveHeight) : "—";
+    const period =
+      marine.wavePeriod != null
+        ? `<span class="muted"> · ${marine.wavePeriod.toFixed(0)}s</span>`
+        : "";
+    const windHtml =
+      wind.speed != null && wind.direction != null
+        ? `<span class="wind-inline">${windArrowSvg(wind.direction, "wind-arrow")}<span>${formatWind(wind.speed)}</span><span class="muted">${degreesToCompass(wind.direction)}</span></span>`
+        : "—";
+
+    return `<span>Acum <strong>${wave}</strong>${period}</span><span class="dot">·</span>${windHtml}<span class="dot">·</span><span class="score">${score.toFixed(1)}/10</span>`;
+  }
+
+  function renderHourCard(hour) {
+    const wave = hour.waveHeight != null ? formatHeight(hour.waveHeight) : "—";
+    const period = hour.wavePeriod != null ? `${hour.wavePeriod.toFixed(0)}s` : "—";
+    const wind =
+      hour.windSpeed != null && hour.windDirection != null
+        ? `${windArrowSvg(hour.windDirection, "wind-arrow")}<span>${formatWind(hour.windSpeed)}</span>`
+        : "—";
+    const score = hour.score != null ? Math.round(hour.score) : "—";
+
+    return `<article class="hour-card">
+      <div class="hour-time">${formatHourRo(hour.time)}</div>
+      <div class="hour-wave">${wave}</div>
+      <div class="hour-period">${period}</div>
+      <div class="hour-wind">${wind}</div>
+      <div class="hour-score ${scoreClass(hour.score)}">${score}</div>
+    </article>`;
+  }
+
+  function applyLocationChrome() {
+    document.getElementById("eyebrow").textContent = activeLocation.eyebrow;
+    document.getElementById("title").textContent = activeLocation.title;
+    document.body.className = activeLocation.theme || "";
+  }
+
+  function render(data) {
+    applyLocationChrome();
+    const verdict = computeVerdict(data.daily);
+    const verdictEl = document.getElementById("verdict");
+    verdictEl.textContent = verdict.text;
+    verdictEl.className = `verdict verdict--${verdict.tier}`;
+
+    const escapeWrap = document.getElementById("escape-wrap");
+    escapeWrap.hidden = !(activeLocation.id === "blacksea" && verdict.tier === "nah");
+    document.getElementById("reality-wrap").hidden = activeLocation.id !== "bali";
+
+    document.getElementById("current").innerHTML = renderCurrent(data);
+
+    const daysEl = document.getElementById("days");
+    daysEl.innerHTML = data.daily
+      .map((day, i) => {
+        const date = day.time.slice(0, 10);
+        const hours = hoursForDay(data.hourly, date);
+        if (!hours.length) return "";
+        const label = i === 0 ? "Azi" : formatRoDate(day.time);
+        return `<section>
+          <h2 class="day-title">${label}</h2>
+          <div class="day-row">${hours.map(renderHourCard).join("")}</div>
+        </section>`;
+      })
+      .join("");
+  }
+
+  async function loadForecast() {
+    const verdictEl = document.getElementById("verdict");
+    verdictEl.textContent = "Se incarca...";
+    verdictEl.className = "verdict verdict--loading";
+    document.getElementById("escape-wrap").hidden = true;
+    document.getElementById("reality-wrap").hidden = true;
+    document.getElementById("days").innerHTML = "";
+    document.getElementById("current").innerHTML = "";
+    try {
+      const data = await fetchForecast();
+      render(data);
+    } catch (err) {
+      verdictEl.textContent = err.message || "Ceva n-a mers.";
+      verdictEl.className = "verdict error";
+    }
+  }
+
+  async function switchToBali() {
+    activeLocation = LOCATIONS.bali;
+    await loadForecast();
+  }
+
+  async function switchToBlackSea() {
+    activeLocation = LOCATIONS.blacksea;
+    await loadForecast();
+  }
+
+  document.getElementById("escape-btn").addEventListener("click", switchToBali);
+  document.getElementById("reality-btn").addEventListener("click", switchToBlackSea);
+
+  loadForecast();
+})();
+
+    </script>
+  </body>
+</html>

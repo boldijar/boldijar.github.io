@@ -289,6 +289,7 @@
 <pre class="line"></pre>
 <pre class="line">LinkedIn  <a class="link" href="https://linkedin.com/in/boldijar" target="_blank" rel="noopener">linkedin.com/in/boldijar</a></pre>
 <pre class="line">inpostor  <a class="link" href="inpostor">joc social — cine te mintește?</a></pre>
+<pre class="line">marea-neagra  <a class="link" href="marea-neagra">prognoza surf — Plaja Modern, Constanța</a></pre>
 <pre class="line"></pre>
         <div class="input-line disabled" id="inputLine">
           <span class="prompt"><span class="user">boldijar</span><span class="at">@</span><span class="host">macbook</span></span>:<span class="path">~</span>$ <input type="text" id="termInput" autocomplete="off" placeholder="scroll down to type" readonly />
@@ -325,6 +326,17 @@
         <span class="btn min"></span>
         <span class="btn max"></span>
         <span class="title">inpostor — joc social de petrecere, cine te mintește?</span>
+      </div>
+      <div class="app-body">
+        <span>open →</span>
+      </div>
+    </a>
+    <a class="app-window" href="marea-neagra">
+      <div class="title-bar">
+        <span class="btn close"></span>
+        <span class="btn min"></span>
+        <span class="btn max"></span>
+        <span class="title">marea-neagra — facem surf? prognoza Plaja Modern</span>
       </div>
       <div class="app-body">
         <span>open →</span>
@@ -424,6 +436,12 @@
           input.value = '';
           document.querySelector('.terminal-body').scrollTop = document.querySelector('.terminal-body').scrollHeight;
           window.location.href = 'inpostor';
+          return;
+        }
+        if (cmd.toLowerCase().indexOf('marea-neagra') !== -1 || cmd.toLowerCase().indexOf('marea neagra') !== -1) {
+          input.value = '';
+          document.querySelector('.terminal-body').scrollTop = document.querySelector('.terminal-body').scrollHeight;
+          window.location.href = 'marea-neagra';
           return;
         }
         if (cmd.toLowerCase().indexOf('legacy') !== -1) {
