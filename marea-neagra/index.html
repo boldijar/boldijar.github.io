@@ -146,35 +146,54 @@ a {
 
 .day-row {
   display: flex;
+  align-items: stretch;
   gap: 0.75rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x proximity;
+  padding-bottom: 0.5rem;
+  margin-left: -1.25rem;
+  margin-right: -1.25rem;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
 }
 
 @media (min-width: 640px) {
   .day-row {
     gap: 1rem;
+    margin-left: -2rem;
+    margin-right: -2rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
   }
 }
 
 .hour-card {
-  flex: 1;
-  min-width: 7rem;
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 10.5rem;
   padding: 1.25rem 1rem 1.5rem;
   border-radius: 1rem;
   border: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(255, 255, 255, 0.06);
   text-align: center;
+  scroll-snap-align: start;
 }
 
 @media (min-width: 640px) {
   .hour-card {
-    min-width: 8.5rem;
+    width: 11.25rem;
     padding: 1.5rem 1.25rem 1.75rem;
   }
 }
 
 @media (min-width: 1024px) {
   .hour-card {
-    min-width: 9.5rem;
+    width: 12rem;
     padding: 1.75rem 1.25rem 2rem;
   }
 }
@@ -184,6 +203,7 @@ a {
   font-weight: 700;
   font-variant-numeric: tabular-nums;
   color: rgba(255, 255, 255, 0.5);
+  white-space: nowrap;
 }
 
 @media (min-width: 640px) {
@@ -192,12 +212,31 @@ a {
   }
 }
 
-.hour-wave {
+.hour-swell {
   margin-top: 0.75rem;
-  font-size: clamp(1.875rem, 4vw, 3rem);
+  font-size: clamp(1.6rem, 3.5vw, 2.5rem);
   font-weight: 900;
   line-height: 1;
   font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.hour-swell-label {
+  margin-top: 0.2rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(186, 230, 253, 0.7);
+}
+
+.hour-wave-total {
+  margin-top: 0.45rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: rgba(255, 255, 255, 0.45);
+  white-space: nowrap;
 }
 
 .hour-period {
@@ -206,6 +245,16 @@ a {
   font-weight: 600;
   font-variant-numeric: tabular-nums;
   color: rgba(255, 255, 255, 0.45);
+  white-space: nowrap;
+}
+
+.hour-wind-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.45);
+  line-height: 1.25;
+  max-width: 100%;
+  word-break: break-word;
 }
 
 @media (min-width: 640px) {
@@ -219,25 +268,35 @@ a {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-start;
   gap: 0.25rem;
   font-size: 1rem;
   font-weight: 700;
   color: rgba(255, 255, 255, 0.7);
+  min-height: 4.75rem;
+  width: 100%;
 }
 
 @media (min-width: 640px) {
   .hour-wind {
     font-size: 1.125rem;
+    min-height: 5rem;
   }
 }
 
 .hour-wind .wind-arrow {
   width: 1.75rem;
   height: 1.75rem;
+  flex-shrink: 0;
+}
+
+.hour-wind > span:not(.hour-wind-label) {
+  white-space: nowrap;
 }
 
 .hour-score {
-  margin-top: 1rem;
+  margin-top: auto;
+  padding-top: 1rem;
   font-size: clamp(1.5rem, 3vw, 2.25rem);
   font-weight: 900;
   line-height: 1;
@@ -368,6 +427,37 @@ body.theme-bali .footer a:last-of-type {
   color: rgba(94, 234, 212, 0.85);
 }
 
+.surf-game {
+  display: none;
+  margin-top: 2rem;
+  margin-bottom: -2.5rem;
+  width: 100vw;
+  max-width: 100vw;
+  margin-left: calc(50% - 50vw);
+  background: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+  cursor: pointer;
+}
+
+.surf-game.is-ready {
+  display: block;
+}
+
+.surf-game canvas {
+  display: block;
+  width: 100%;
+  height: 185px;
+  vertical-align: bottom;
+  background: transparent;
+}
+
+@media (min-width: 640px) {
+  .surf-game canvas {
+    height: 210px;
+  }
+}
 
     </style>
   </head>
@@ -395,6 +485,10 @@ body.theme-bali .footer a:last-of-type {
           <a href="https://buymeacoffee.com/bolnizar" target="_blank" rel="noopener noreferrer">ia-mi o cafea</a>.
         </p>
       </footer>
+
+      <section class="surf-game" id="surf-game" aria-label="Surf jump game">
+        <canvas id="surf-canvas" width="800" height="170"></canvas>
+      </section>
     </main>
     <script>
 /* eslint-disable no-unused-vars */
@@ -447,6 +541,7 @@ body.theme-bali .footer a:last-of-type {
       longitude: 28.6563829,
       timezone: "Europe/Bucharest",
       theme: "",
+      offshoreWind: BLACK_SEA_SCORING.offshoreWind,
     },
     bali: {
       id: "bali",
@@ -457,6 +552,7 @@ body.theme-bali .footer a:last-of-type {
       timezone: "Asia/Makassar",
       theme: "theme-bali",
       scoring: BALI_SCORING,
+      offshoreWind: BALI_SCORING.offshoreWind,
     },
   };
 
@@ -601,12 +697,37 @@ body.theme-bali .footer a:last-of-type {
     return COMPASS[Math.round(normalized / 22.5) % 16];
   }
 
-  function formatHeight(meters) {
-    return `${meters.toFixed(1)} m`;
+  const COMPASS_LONG = [
+    "north", "north-east", "east", "south-east",
+    "south", "south-west", "west", "north-west",
+  ];
+
+  function degreesToCompassLong(degrees) {
+    const normalized = ((degrees % 360) + 360) % 360;
+    return COMPASS_LONG[Math.round(normalized / 45) % 8];
   }
 
-  function formatWind(speedKmh) {
-    return `${speedKmh.toFixed(0)} km/h`;
+  /** Meteorological wind dir = where it comes FROM. offshoreWind = ideal FROM direction. */
+  function windShoreLabel(direction, offshoreDeg) {
+    if (direction == null || offshoreDeg == null) return "";
+    const delta = angularDifference(direction, offshoreDeg);
+    const compass = degreesToCompassLong(direction);
+    if (delta <= 35) return "offshore";
+    if (delta >= 145) return "onshore";
+    if (delta <= 80) return compass + "-offshore";
+    if (delta >= 100) return compass + "-onshore";
+    return compass + "-cross";
+  }
+
+  function formatHeight(meters) {
+    return `${meters.toFixed(1)}\u00a0m`;
+  }
+
+  function formatWind(speedKmh, direction) {
+    const speed = `${speedKmh.toFixed(0)} km/h`;
+    if (direction == null) return speed;
+    const label = windShoreLabel(direction, activeLocation.offshoreWind);
+    return label ? `${speed} ${label}` : speed;
   }
 
   function formatHourRo(iso) {
@@ -738,7 +859,7 @@ body.theme-bali .footer a:last-of-type {
   }
 
   function calculateStandardScore(marine, wind, scoring) {
-    const height = marine.waveHeight * (scoring.shelterFactor || 1);
+    const height = (marine.swellHeight ?? marine.waveHeight) * (scoring.shelterFactor || 1);
     const weights = scoring.weights;
     const breakdown = {
       size: scoreSize(height, scoring.sizeRange),
@@ -761,7 +882,7 @@ body.theme-bali .footer a:last-of-type {
   }
 
   function calculateBlackSeaScore(marine, wind) {
-    const height = marine.waveHeight;
+    const height = marine.swellHeight ?? marine.waveHeight;
     const period = marine.swellPeriod || marine.wavePeriod;
     const scoring = BLACK_SEA_SCORING;
     const breakdown = {
@@ -808,11 +929,11 @@ body.theme-bali .footer a:last-of-type {
   }
 
   function hasRealWaves(day) {
-    return (day.waveHeightMax ?? 0) >= WAVE_MIN;
+    return (day.swellHeightMax ?? day.waveHeightMax ?? 0) >= WAVE_MIN;
   }
 
   function isGoodDay(day) {
-    const wave = day.waveHeightMax ?? 0;
+    const wave = day.swellHeightMax ?? day.waveHeightMax ?? 0;
     const wind = day.windSpeedMax ?? 999;
     const score = day.score ?? 0;
     if (wave < WAVE_MIN) return false;
@@ -823,7 +944,7 @@ body.theme-bali .footer a:last-of-type {
   }
 
   function isMarginalDay(day) {
-    const wave = day.waveHeightMax ?? 0;
+    const wave = day.swellHeightMax ?? day.waveHeightMax ?? 0;
     if (wave < WAVE_MIN) return false;
     if (wave < 0.55) return true;
     return hasRealWaves(day) && !isGoodDay(day);
@@ -850,7 +971,7 @@ body.theme-bali .footer a:last-of-type {
     if (!days.length) return { text: pickRandom(NAH), tier: "nah" };
 
     const realDays = days.filter(hasRealWaves).length;
-    const maxWave = Math.max(...days.map((d) => d.waveHeightMax ?? 0));
+    const maxWave = Math.max(...days.map((d) => d.swellHeightMax ?? d.waveHeightMax ?? 0));
 
     if (maxWave < WAVE_MIN || realDays === 0) {
       return { text: pickRandom(NAH), tier: "nah" };
@@ -961,6 +1082,8 @@ body.theme-bali .footer a:last-of-type {
       return {
         time,
         waveHeight,
+        swellHeight,
+        swellPeriod: num(hourlyVal(marineHourly, "swell_wave_period", i)),
         wavePeriod: num(hourlyVal(marineHourly, "wave_period", i)),
         windSpeed: wi !== undefined ? num(hourlyVal(weatherHourly, "wind_speed_10m", wi)) : null,
         windDirection:
@@ -1010,7 +1133,7 @@ body.theme-bali .footer a:last-of-type {
         score = calculateScore(marine, wind);
       }
 
-      return { time, waveHeightMax, windSpeedMax, score };
+      return { time, waveHeightMax, swellHeightMax, windSpeedMax, score };
     });
   }
 
@@ -1107,31 +1230,43 @@ body.theme-bali .footer a:last-of-type {
 
   function renderCurrent(data) {
     const { marine, wind, score } = data.current;
-    const wave = marine.waveHeight != null ? formatHeight(marine.waveHeight) : "—";
+    const swell =
+      marine.swellHeight != null ? formatHeight(marine.swellHeight) : "—";
+    const wave =
+      marine.waveHeight != null ? formatHeight(marine.waveHeight) : "—";
+    const periodVal = marine.swellPeriod ?? marine.wavePeriod;
     const period =
-      marine.wavePeriod != null
-        ? `<span class="muted"> · ${marine.wavePeriod.toFixed(0)}s</span>`
+      periodVal != null
+        ? `<span class="muted"> · ${periodVal.toFixed(0)}s</span>`
         : "";
     const windHtml =
       wind.speed != null && wind.direction != null
-        ? `<span class="wind-inline">${windArrowSvg(wind.direction, "wind-arrow")}<span>${formatWind(wind.speed)}</span><span class="muted">${degreesToCompass(wind.direction)}</span></span>`
+        ? `<span class="wind-inline">${windArrowSvg(wind.direction, "wind-arrow")}<span>${formatWind(wind.speed, wind.direction)}</span></span>`
         : "—";
 
-    return `<span>Acum <strong>${wave}</strong>${period}</span><span class="dot">·</span>${windHtml}<span class="dot">·</span><span class="score">${score.toFixed(1)}/10</span>`;
+    return `<span>Acum swell <strong>${swell}</strong>${period}</span><span class="dot">·</span><span class="muted">wave ${wave}</span><span class="dot">·</span>${windHtml}<span class="dot">·</span><span class="score">${score.toFixed(1)}/10</span>`;
   }
 
   function renderHourCard(hour) {
+    const swell = hour.swellHeight != null ? formatHeight(hour.swellHeight) : "—";
     const wave = hour.waveHeight != null ? formatHeight(hour.waveHeight) : "—";
-    const period = hour.wavePeriod != null ? `${hour.wavePeriod.toFixed(0)}s` : "—";
+    const periodVal = hour.swellPeriod ?? hour.wavePeriod;
+    const period = periodVal != null ? `${periodVal.toFixed(0)}s` : "—";
+    const windLabel =
+      hour.windDirection != null
+        ? windShoreLabel(hour.windDirection, activeLocation.offshoreWind)
+        : "";
     const wind =
       hour.windSpeed != null && hour.windDirection != null
-        ? `${windArrowSvg(hour.windDirection, "wind-arrow")}<span>${formatWind(hour.windSpeed)}</span>`
+        ? `${windArrowSvg(hour.windDirection, "wind-arrow")}<span>${hour.windSpeed.toFixed(0)} km/h</span>${windLabel ? `<span class="hour-wind-label">${windLabel}</span>` : ""}`
         : "—";
     const score = hour.score != null ? Math.round(hour.score) : "—";
 
     return `<article class="hour-card">
       <div class="hour-time">${formatHourRo(hour.time)}</div>
-      <div class="hour-wave">${wave}</div>
+      <div class="hour-swell">${swell}</div>
+      <div class="hour-swell-label">swell</div>
+      <div class="hour-wave-total">wave ${wave}</div>
       <div class="hour-period">${period}</div>
       <div class="hour-wind">${wind}</div>
       <div class="hour-score ${scoreClass(hour.score)}">${score}</div>
@@ -1174,18 +1309,28 @@ body.theme-bali .footer a:last-of-type {
 
   async function loadForecast() {
     const verdictEl = document.getElementById("verdict");
+    const surfGame = document.getElementById("surf-game");
     verdictEl.textContent = "Se incarca...";
     verdictEl.className = "verdict verdict--loading";
     document.getElementById("escape-wrap").hidden = true;
     document.getElementById("reality-wrap").hidden = true;
     document.getElementById("days").innerHTML = "";
     document.getElementById("current").innerHTML = "";
+    if (surfGame) surfGame.classList.remove("is-ready");
     try {
       const data = await fetchForecast();
       render(data);
+      if (surfGame) {
+        surfGame.classList.add("is-ready");
+        window.dispatchEvent(new Event("surf-game-ready"));
+      }
     } catch (err) {
       verdictEl.textContent = err.message || "Ceva n-a mers.";
       verdictEl.className = "verdict error";
+      if (surfGame) {
+        surfGame.classList.add("is-ready");
+        window.dispatchEvent(new Event("surf-game-ready"));
+      }
     }
   }
 
@@ -1203,6 +1348,488 @@ body.theme-bali .footer a:last-of-type {
   document.getElementById("reality-btn").addEventListener("click", switchToBlackSea);
 
   loadForecast();
+})();
+
+(function surfJumpGame() {
+  "use strict";
+
+  const canvas = document.getElementById("surf-canvas");
+  const wrap = document.getElementById("surf-game");
+  if (!canvas || !wrap) return;
+
+  const ctx = canvas.getContext("2d");
+  const STORAGE_KEY = "marea-neagra-surf-best";
+  const GROUND_Y = 168;
+  const GRAVITY = 0.38;
+  const JUMP_V = -9.6;
+  const STAND_H = 38;
+  const DUCK_H = 18;
+  const BASE_SPEED = 3.6;
+
+  let best = 0;
+  try {
+    best = Number(localStorage.getItem(STORAGE_KEY)) || 0;
+  } catch (e) {
+    best = 0;
+  }
+
+  let running = false;
+  let dead = false;
+  let score = 0;
+  let speed = BASE_SPEED;
+  let frame = 0;
+  let spawnIn = 50;
+  let obstacles = [];
+  let ducking = false;
+  let player = {
+    x: 70,
+    y: GROUND_Y,
+    vy: 0,
+    w: 30,
+    h: STAND_H,
+    onGround: true,
+  };
+  let touchStartY = null;
+  let holdDuck = false;
+
+  function resize() {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const cssW = wrap.clientWidth || 800;
+    const cssH = canvas.clientHeight || 210;
+    canvas.width = Math.floor(cssW * dpr);
+    canvas.height = Math.floor(cssH * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    canvas._cssW = cssW;
+    canvas._cssH = cssH;
+  }
+
+  function resetGame() {
+    running = true;
+    dead = false;
+    score = 0;
+    speed = BASE_SPEED;
+    frame = 0;
+    spawnIn = 90;
+    obstacles = [];
+    ducking = false;
+    holdDuck = false;
+    player.y = GROUND_Y;
+    player.vy = 0;
+    player.onGround = true;
+    player.h = STAND_H;
+  }
+
+  function setDuck(on) {
+    if (!running || dead) return;
+    if (!player.onGround && on) return;
+    ducking = !!on;
+    player.h = ducking ? DUCK_H : STAND_H;
+  }
+
+  function jump() {
+    if (dead) {
+      resetGame();
+      return;
+    }
+    if (!running) {
+      resetGame();
+      return;
+    }
+    if (ducking) setDuck(false);
+    if (player.onGround) {
+      player.vy = JUMP_V;
+      player.onGround = false;
+      player.h = STAND_H;
+    }
+  }
+
+  function spawnObstacle() {
+    const w = canvas._cssW || 800;
+    // early game: only ground surfers, easy spacing
+    const allowGull = score >= 50;
+    const roll = Math.random();
+
+    if (allowGull && roll < 0.2) {
+      // gull alone — enough space, never stacked on a surfer
+      obstacles.push({
+        kind: "gull",
+        x: w + 40,
+        y: GROUND_Y - 52,
+        w: 34,
+        h: 20,
+        passed: false,
+      });
+      return;
+    }
+
+    const sit = Math.random() > 0.45;
+    obstacles.push({
+      kind: "surfer",
+      x: w + 30,
+      y: GROUND_Y,
+      w: sit ? 34 : 26,
+      h: sit ? 22 : 30,
+      sit: sit,
+      passed: false,
+    });
+    // no surfer+gull combo — that was unfair (jump and duck at once)
+  }
+
+  function playerBox() {
+    return {
+      x: player.x + 4,
+      y: player.y,
+      w: player.w - 6,
+      h: player.h,
+    };
+  }
+
+  function hitTest(a, b) {
+    const pad = 5;
+    return (
+      a.x + pad < b.x + b.w - pad &&
+      a.x + a.w - pad > b.x + pad &&
+      a.y - a.h + pad < b.y &&
+      a.y - pad > b.y - b.h
+    );
+  }
+
+  function drawWaveBand(w, h) {
+    const y0 = GROUND_Y + 4;
+    const grad = ctx.createLinearGradient(0, y0 - 24, 0, h);
+    grad.addColorStop(0, "rgba(56, 189, 248, 0.2)");
+    grad.addColorStop(0.4, "rgba(14, 116, 180, 0.65)");
+    grad.addColorStop(1, "rgba(7, 50, 110, 0.95)");
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, y0 - 14, w, h - (y0 - 14));
+
+    ctx.beginPath();
+    ctx.moveTo(0, y0);
+    for (let x = 0; x <= w; x += 8) {
+      const bob = Math.sin((x + frame * 2.4) / 26) * 3.2;
+      ctx.lineTo(x, y0 + bob);
+    }
+    ctx.lineTo(w, h);
+    ctx.lineTo(0, h);
+    ctx.closePath();
+    ctx.fillStyle = "rgba(125, 211, 252, 0.2)";
+    ctx.fill();
+
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.45)";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    for (let x = 0; x <= w; x += 6) {
+      const bob = Math.sin((x + frame * 3) / 18) * 2 + Math.sin((x + frame) / 9) * 1.1;
+      if (x === 0) ctx.moveTo(x, y0 - 1 + bob);
+      else ctx.lineTo(x, y0 - 1 + bob);
+    }
+    ctx.stroke();
+  }
+
+  function drawPlayer() {
+    const x = player.x;
+    const y = player.y;
+    const bob = player.onGround && !ducking ? Math.sin(frame / 6) * 1.2 : 0;
+    const boardY = y - 2 + bob;
+
+    // board — nose right, tail left
+    ctx.fillStyle = "#fde68a";
+    ctx.beginPath();
+    ctx.ellipse(x + 16, boardY, 19, 4.5, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = "rgba(0,0,0,0.25)";
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    // foam fixed on left tail
+    if (player.onGround) {
+      const tailX = x - 2;
+      ctx.fillStyle = "rgba(255,255,255,0.85)";
+      for (let i = 0; i < 6; i++) {
+        const fx = tailX + (i % 3) * 3.2 + Math.sin(frame / 3 + i) * 1.2;
+        const fy = boardY + 3 + Math.floor(i / 3) * 2.5 + (i % 2);
+        ctx.beginPath();
+        ctx.arc(fx, fy, 2.4 + (i % 2) * 0.5, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    if (ducking && player.onGround) {
+      // crouched on board
+      ctx.fillStyle = "#0ea5e9";
+      ctx.fillRect(x + 8, y - 14 + bob, 16, 10);
+      ctx.beginPath();
+      ctx.arc(x + 14, y - 18 + bob, 5, 0, Math.PI * 2);
+      ctx.fillStyle = "#fcd34d";
+      ctx.fill();
+      ctx.strokeStyle = "#fcd34d";
+      ctx.lineWidth = 2.5;
+      ctx.lineCap = "round";
+      ctx.beginPath();
+      ctx.moveTo(x + 8, y - 10 + bob);
+      ctx.lineTo(x + 2, y - 4 + bob);
+      ctx.moveTo(x + 22, y - 10 + bob);
+      ctx.lineTo(x + 28, y - 5 + bob);
+      ctx.stroke();
+      return;
+    }
+
+    const by = y - 8 + bob;
+    ctx.fillStyle = "#0ea5e9";
+    ctx.fillRect(x + 11, by - 18, 8, 16);
+    ctx.beginPath();
+    ctx.arc(x + 15, by - 22, 5.5, 0, Math.PI * 2);
+    ctx.fillStyle = "#fcd34d";
+    ctx.fill();
+    ctx.strokeStyle = "#fcd34d";
+    ctx.lineWidth = 2.5;
+    ctx.lineCap = "round";
+    ctx.beginPath();
+    ctx.moveTo(x + 11, by - 14);
+    ctx.lineTo(x + 3, by - 8 + (player.onGround ? 0 : -4));
+    ctx.moveTo(x + 19, by - 14);
+    ctx.lineTo(x + 27, by - 10 + (player.onGround ? 0 : -6));
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(x + 13, by - 2);
+    ctx.lineTo(x + 9, y - 3 + bob);
+    ctx.moveTo(x + 17, by - 2);
+    ctx.lineTo(x + 21, y - 3 + bob);
+    ctx.stroke();
+  }
+
+  function drawSittingSurfer(o) {
+    const x = o.x;
+    const y = o.y;
+    ctx.fillStyle = "#fb7185";
+    ctx.beginPath();
+    ctx.ellipse(x + o.w / 2, y - 1, o.w / 2 + 2, 3.5, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    if (o.sit) {
+      ctx.fillStyle = "#38bdf8";
+      ctx.fillRect(x + 8, y - 16, 14, 10);
+      ctx.beginPath();
+      ctx.arc(x + 15, y - 20, 5, 0, Math.PI * 2);
+      ctx.fillStyle = "#fcd34d";
+      ctx.fill();
+      ctx.strokeStyle = "#fcd34d";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(x + 10, y - 7);
+      ctx.lineTo(x + 4, y - 2);
+      ctx.moveTo(x + 20, y - 7);
+      ctx.lineTo(x + 26, y - 2);
+      ctx.stroke();
+    } else {
+      ctx.fillStyle = "#a78bfa";
+      ctx.fillRect(x + 6, y - 22, 12, 16);
+      ctx.beginPath();
+      ctx.arc(x + 12, y - 26, 5, 0, Math.PI * 2);
+      ctx.fillStyle = "#fcd34d";
+      ctx.fill();
+    }
+  }
+
+  function drawGull(o) {
+    const x = o.x;
+    const y = o.y - o.h / 2;
+    const flap = Math.sin(frame / 4 + o.x / 20) * 5;
+    ctx.strokeStyle = "rgba(255,255,255,0.9)";
+    ctx.fillStyle = "rgba(241,245,249,0.95)";
+    ctx.lineWidth = 2;
+    ctx.lineCap = "round";
+    // body
+    ctx.beginPath();
+    ctx.ellipse(x + 16, y + 10, 7, 4, 0, 0, Math.PI * 2);
+    ctx.fill();
+    // wings
+    ctx.beginPath();
+    ctx.moveTo(x + 16, y + 10);
+    ctx.quadraticCurveTo(x + 4, y + 4 - flap, x - 4, y + 8);
+    ctx.moveTo(x + 16, y + 10);
+    ctx.quadraticCurveTo(x + 28, y + 4 + flap, x + 38, y + 8);
+    ctx.stroke();
+    // beak
+    ctx.fillStyle = "#fbbf24";
+    ctx.beginPath();
+    ctx.moveTo(x + 22, y + 10);
+    ctx.lineTo(x + 28, y + 11);
+    ctx.lineTo(x + 22, y + 12);
+    ctx.fill();
+  }
+
+  function drawHud(w) {
+    if (!running && !dead) return;
+    ctx.textAlign = "right";
+    ctx.font = "600 13px system-ui, sans-serif";
+    ctx.fillStyle = "rgba(255,255,255,0.55)";
+    ctx.fillText(score + "   record: " + best, w - 18, 20);
+  }
+
+  function drawIdleHint(w) {
+    ctx.textAlign = "center";
+    ctx.font = "600 14px system-ui, sans-serif";
+    ctx.fillStyle = "rgba(255,255,255,0.6)";
+    if (dead) {
+      ctx.fillText("wipeout · " + score, w / 2, 28);
+      ctx.fillText("apasa space sau tap sa sari", w / 2, 48);
+      ctx.font = "600 12px system-ui, sans-serif";
+      ctx.fillStyle = "rgba(186,230,253,0.75)";
+      ctx.fillText("record: " + best, w / 2, 68);
+    } else {
+      ctx.fillText("apasa space sau tap sa sari", w / 2, 36);
+      ctx.font = "600 12px system-ui, sans-serif";
+      ctx.fillStyle = "rgba(186,230,253,0.7)";
+      ctx.fillText("record: " + best, w / 2, 56);
+    }
+  }
+
+  function update() {
+    frame++;
+    if (!running) return;
+
+    if (holdDuck && player.onGround) setDuck(true);
+    else if (!holdDuck && ducking) setDuck(false);
+
+    player.vy += GRAVITY;
+    player.y += player.vy;
+    if (player.y >= GROUND_Y) {
+      player.y = GROUND_Y;
+      player.vy = 0;
+      player.onGround = true;
+    }
+
+    spawnIn--;
+    if (spawnIn <= 0) {
+      spawnObstacle();
+      // more space early, tighter later
+      const ease = Math.min(1, score / 180);
+      spawnIn = Math.floor(75 - ease * 28 + Math.random() * (40 - ease * 12));
+      if (spawnIn < 42) spawnIn = 42;
+    }
+
+    // soft ramp: slow start → medium
+    speed = BASE_SPEED + Math.min(2.8, score / 280);
+
+    const box = playerBox();
+    for (let i = obstacles.length - 1; i >= 0; i--) {
+      const o = obstacles[i];
+      o.x -= speed * (o.kind === "gull" ? 1.05 : 1);
+      if (!o.passed && o.x + o.w < player.x) {
+        o.passed = true;
+        score += o.kind === "gull" ? 3 : 2;
+      }
+      const ob = { x: o.x, y: o.y, w: o.w, h: o.h };
+      if (hitTest(box, ob)) {
+        running = false;
+        dead = true;
+        ducking = false;
+        holdDuck = false;
+        if (score > best) {
+          best = score;
+          try {
+            localStorage.setItem(STORAGE_KEY, String(best));
+          } catch (e) { /* ignore */ }
+        }
+      }
+      if (o.x + o.w < -50) obstacles.splice(i, 1);
+    }
+
+    if (!running) return;
+
+    if (frame % 7 === 0) score += 1;
+  }
+
+  function draw() {
+    if (!wrap.classList.contains("is-ready")) return;
+    const w = canvas._cssW || wrap.clientWidth;
+    const h = canvas._cssH || 210;
+    ctx.clearRect(0, 0, w, h);
+
+    drawWaveBand(w, h);
+    drawPlayer();
+    for (const o of obstacles) {
+      if (o.kind === "gull") drawGull(o);
+      else drawSittingSurfer(o);
+    }
+
+    drawHud(w);
+    if (!running) drawIdleHint(w);
+  }
+
+  function loop() {
+    update();
+    draw();
+    requestAnimationFrame(loop);
+  }
+
+  function onKeyDown(e) {
+    if (e.target && /input|textarea|button|a/i.test(e.target.tagName)) return;
+    if (e.code === "Space" || e.key === " ") {
+      e.preventDefault();
+      jump();
+      return;
+    }
+    if (e.code === "ArrowDown" || e.key === "s" || e.key === "S") {
+      e.preventDefault();
+      holdDuck = true;
+      if (!running && !dead) resetGame();
+      else setDuck(true);
+    }
+  }
+
+  function onKeyUp(e) {
+    if (e.code === "ArrowDown" || e.key === "s" || e.key === "S") {
+      holdDuck = false;
+      setDuck(false);
+    }
+  }
+
+  function onPointerDown(e) {
+    e.preventDefault();
+    touchStartY = e.clientY;
+    if (!running || dead) {
+      jump();
+      return;
+    }
+    // brief tap vs hold handled on up / move
+  }
+
+  function onPointerMove(e) {
+    if (touchStartY == null || !running || dead) return;
+    const dy = e.clientY - touchStartY;
+    if (dy > 28) {
+      holdDuck = true;
+      setDuck(true);
+    }
+  }
+
+  function onPointerUp(e) {
+    if (touchStartY == null) return;
+    const dy = e.clientY - touchStartY;
+    touchStartY = null;
+    if (holdDuck) {
+      holdDuck = false;
+      setDuck(false);
+      return;
+    }
+    if (running && !dead && dy < 18 && dy > -40) jump();
+  }
+
+  resize();
+  window.addEventListener("resize", resize);
+  window.addEventListener("surf-game-ready", function () {
+    resize();
+    draw();
+  });
+  window.addEventListener("keydown", onKeyDown);
+  window.addEventListener("keyup", onKeyUp);
+  wrap.addEventListener("pointerdown", onPointerDown);
+  wrap.addEventListener("pointermove", onPointerMove);
+  wrap.addEventListener("pointerup", onPointerUp);
+  wrap.addEventListener("pointercancel", onPointerUp);
+  requestAnimationFrame(loop);
 })();
 
     </script>
