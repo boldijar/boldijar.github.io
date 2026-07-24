@@ -10,6 +10,29 @@
     <link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32" />
     <link rel="icon" href="favicon.ico" sizes="any" />
     <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+    <!-- MailerLite Universal -->
+    <script>
+      (function (w, d, e, u, f, l, n) {
+        w[f] =
+          w[f] ||
+          function () {
+            (w[f].q = w[f].q || []).push(arguments);
+          };
+        l = d.createElement(e);
+        l.async = 1;
+        l.src = u;
+        n = d.getElementsByTagName(e)[0];
+        n.parentNode.insertBefore(l, n);
+      })(
+        window,
+        document,
+        "script",
+        "https://assets.mailerlite.com/js/universal.js",
+        "ml"
+      );
+      ml("account", "2530813");
+    </script>
+    <!-- End MailerLite Universal -->
     <style>
 *,
 *::before,
@@ -410,8 +433,25 @@ a {
   color: #fff;
 }
 
-.footer a:last-of-type {
+.footer a.coffee {
   color: rgba(186, 230, 253, 0.8);
+}
+
+.footer .ml-onclick-form {
+  appearance: none;
+  background: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  font-weight: 700;
+  color: rgba(186, 230, 253, 0.8);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.footer .ml-onclick-form:hover {
+  color: #fff;
 }
 
 .error {
@@ -479,8 +519,13 @@ body.theme-bali .score--good {
   color: #86efac;
 }
 
-body.theme-bali .footer a:last-of-type {
+body.theme-bali .footer a.coffee,
+body.theme-bali .footer .ml-onclick-form {
   color: rgba(94, 234, 212, 0.85);
+}
+
+body.theme-bali .footer .ml-onclick-form:hover {
+  color: #fff;
 }
 
 .surf-game {
@@ -538,7 +583,9 @@ body.theme-bali .footer a:last-of-type {
           <a href="https://open-meteo.com/en/docs/marine-weather-api" target="_blank" rel="noopener noreferrer">Open-Meteo Marine</a>,
           <a href="https://open-meteo.com/en/docs" target="_blank" rel="noopener noreferrer">Open-Meteo Weather</a>.
           Daca iti place si ai chef,
-          <a href="https://buymeacoffee.com/bolnizar" target="_blank" rel="noopener noreferrer">ia-mi o cafea</a>.
+          <a class="coffee" href="https://buymeacoffee.com/bolnizar" target="_blank" rel="noopener noreferrer">ia-mi o cafea</a>.
+          <button type="button" class="ml-onclick-form" onclick="ml('show', 'DKXYEw', true)">Aboneaza-te</button>
+          sa primesti prognoza in fiecare luni dimineata.
         </p>
       </footer>
 
