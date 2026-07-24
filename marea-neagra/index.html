@@ -137,11 +137,62 @@ a {
 
 .day-title {
   margin: 0 0 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.55rem;
   font-size: clamp(1.125rem, 2.5vw, 1.5rem);
   font-weight: 900;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.55);
+}
+
+.day-title--good {
+  color: rgba(253, 230, 138, 0.9);
+}
+
+.day-title__board {
+  flex-shrink: 0;
+  width: 3.85rem;
+  height: 1.15rem;
+  display: block;
+  filter: drop-shadow(0 0 4px rgba(251, 191, 36, 0.55))
+    drop-shadow(0 0 10px rgba(245, 158, 11, 0.35));
+  animation: board-shine 2.4s ease-in-out infinite;
+}
+
+.day-title__board .board-body {
+  fill: url(#gold-board-grad);
+}
+
+.day-title__board .board-gloss {
+  fill: rgba(255, 255, 255, 0.55);
+  animation: gloss-slide 2.4s ease-in-out infinite;
+}
+
+@keyframes board-shine {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 3px rgba(251, 191, 36, 0.4))
+      drop-shadow(0 0 8px rgba(245, 158, 11, 0.25));
+    transform: translateY(0);
+  }
+  50% {
+    filter: drop-shadow(0 0 7px rgba(253, 224, 71, 0.85))
+      drop-shadow(0 0 14px rgba(251, 191, 36, 0.55));
+    transform: translateY(-1px);
+  }
+}
+
+@keyframes gloss-slide {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.85;
+  }
 }
 
 .day-row {
@@ -578,104 +629,196 @@ body.theme-bali .footer a:last-of-type {
   ];
 
   const YES_STREAK = [
-    (a, b) => `Da. De ${a} pana ${b}.`,
-    (a, b) => `Merge. ${a}–${b}, cum rar prindem.`,
-    (a, b) => `Da! ${a} pana ${b}. Suna pe cineva cu longboard.`,
-    (a, b) => `Da. ${a}–${b}. In sfarsit ceva serios.`,
-    (a, b) => `Facem. ${a} pana ${b}.`,
-    (a, b) => `${a}–${b}: valuri! Nu glumim.`,
-    (a, b) => `Da, ${a} pana ${b}. Wetsuit-ul tremura de bucurie.`,
-    (a, b) => `Serios acum: ${a}–${b}. Ia tabla si pleaca.`,
-    (a, b) => `Window deschis ${a}–${b}. Instagram-ul iti multumeste.`,
-    (a, b) => `De ${a} la ${b} chiar merita sa te trezesti devreme.`,
+    (a, b) => `Baga o fisa de ${a} pana ${b}.`,
+    (a, b) => `Poseidon a zis: ${a}–${b}.`,
+    (a, b) => `Fram, trebe sa-ti iei cazare la CT ${a}–${b}.`,
+    (a, b) => `${a}–${b}. Vericule, asta e rar.`,
+    (a, b) => `Boss, ${a} pana ${b}. Scoate tabla.`,
+    (a, b) => `Sefu, ${a}–${b}. Nu e loft, e apa.`,
+    (a, b) => `Barosso, ${a}–${b}. Bodyboard-ul poate sta acasa.`,
+    (a, b) => `${a} pana ${b}. Tub? Visam, dar merita iesit.`,
+    (a, b) => `Da. ${a}–${b}. Fara story pe dig, te rog.`,
+    (a, b) => `${a}–${b}. Vama poate astepta — aici e treaba.`,
+    (a, b) => `Fram, ${a} pana ${b}. Wetsuit, nu outfit de loft.`,
+    (a, b) => `Poseidon: ${a}–${b}. Rareori e asa generos.`,
+    (a, b) => `Baga fisa ${a}–${b}. Sefu are dreptate.`,
+    (a, b) => `${a} pana ${b}. Nu e tub, e Black Sea — tot e ceva.`,
+    (a, b) => `Vericule, ${a}–${b}. Cine sta pe grup minteste.`,
+    (a, b) => `${a}–${b}. Barosso, miscarea e acum.`,
+    (a, b) => `Da. De ${a} la ${b}. Fara «pozez si plec».`,
+    (a, b) => `CT ${a}–${b}. Trebe. Serios.`,
+    (a, b) => `${a} pana ${b}. Longboard > bodyboard azi.`,
+    (a, b) => `Sefu a confirmat: ${a}–${b}.`,
+    (a, b) => `${a}–${b}. Boss.`,
+    (a, b) => `Fram, ${a}–${b}. Trebe.`,
   ];
   const YES_FROM_TOMORROW = [
-    (b) => `Da! De maine pana ${b}.`,
-    (b) => `De maine pana ${b}. Pare bine.`,
-    (b) => `Maine incepe. Pana ${b} e ok.`,
-    (b) => `Maine nu mai sta pe plaja cu prosopul. Pana ${b}.`,
-    (b) => `De maine pana ${b} — in sfarsit ceva de surf, nu de stat la soare.`,
-    (b) => `Maine e ziua. Pana ${b} nu te intoarce la cafea.`,
+    (b) => `Maine–${b}. Baga fisa.`,
+    (b) => `Poseidon: de maine pana ${b}.`,
+    (b) => `Fram, maine pana ${b}. Trebe.`,
+    (b) => `Vericule, maine–${b}. Nu loft.`,
+    (b) => `Boss, de maine pana ${b}.`,
+    (b) => `Sefu, maine pana ${b}. Tabla, nu story pe dig.`,
+    (b) => `Barosso, maine–${b}. Bodyboarders: linistit.`,
+    (b) => `De maine pana ${b}. Tub? Nu. Sesiune? Da.`,
+    (b) => `Maine–${b}. Vama poate astepta.`,
+    (b) => `Fram, maine pana ${b}. Trebe sa te trezesti.`,
+    (b) => `Poseidon a zis maine–${b}.`,
+    (b) => `Baga o fisa: maine pana ${b}.`,
+    (b) => `Sefu, maine–${b}.`,
+    (b) => `Boss, maine pana ${b}. Fara «checking» pe dig.`,
   ];
   const YES_FROM_TODAY = [
-    (b) => `Da. De azi pana ${b}.`,
-    (b) => `Azi–${b}. Nu amana.`,
-    (b) => `De azi pana ${b}. Rar asa.`,
-    (b) => `Azi incepe. Pana ${b} — du cearceaful si tabla.`,
-    (b) => `De azi pana ${b}. Boss-ul poate astepta.`,
-    (b) => `Azi–${b}. Valurile nu asteapta pe nimeni.`,
+    (b) => `Azi–${b}. Acum, sefu.`,
+    (b) => `Baga fisa azi pana ${b}.`,
+    (b) => `Poseidon: azi–${b}.`,
+    (b) => `Fram, azi pana ${b}. Trebe sa pleci.`,
+    (b) => `Vericule, azi–${b}. Fara loft in plan.`,
+    (b) => `Boss, de azi pana ${b}.`,
+    (b) => `Sefu, azi–${b}. Story dupa, nu in loc.`,
+    (b) => `Barosso, azi pana ${b}.`,
+    (b) => `Azi–${b}. Tub in CT e mit — totusi iesi.`,
+    (b) => `De azi pana ${b}. Vama e pentru altceva.`,
+    (b) => `Fram, azi–${b}. Trebe. Acum.`,
+    (b) => `CT azi pana ${b}. Gata cu scuzele.`,
+    (b) => `Boss, azi–${b}.`,
+    (b) => `Sefu, azi pana ${b}. Bodyboard optional.`,
   ];
   const YES_NEXT_WEEK = [
-    "Da. Saptamana viitoare.",
-    "Saptamana viitoare. Pana atunci, genuflexiuni.",
-    "Da, dar nu acum. Urmatoarea saptamana arata decent.",
-    "Lunea viitoare incepe ceva. Rabdare.",
-    "Nu azi, dar saptamana viitoare da. Fa push-up-uri intre timp.",
-    "Valurile vin, dar cu intarziere. Saptamana viitoare.",
+    "Saptamana viitoare. Pana atunci: loft? Poate.",
+    "Da, dar saptamana viitoare. Fram, rabdare.",
+    "Vericule, nu azi. Saptamana viitoare ceva se misca.",
+    "Boss, asteapta. Saptamana viitoare.",
+    "Sefu, nu e zero — e «saptamana viitoare».",
+    "Poseidon e ocupat. Revenire saptamana viitoare.",
+    "Barosso, nu baga fisa azi.",
+    "Saptamana viitoare. Vama Veche e deschisa daca te plictisesti.",
+    "Nu acum. Saptamana viitoare. Fara story cu checking.",
+    "Fram, trebe sa astepti.",
+    "Da — mai tarziu. Bodyboard-ul poate astepta si el.",
+    "Saptamana viitoare. Azi verifici si taci.",
+    "Vericule, calendarul bate marea.",
+    "Boss, nu e tub saptamana asta.",
+    "Sefu, saptamana viitoare.",
+    "Nah azi. Poate saptamana viitoare.",
   ];
   const YES_SINGLE = [
-    "O zi. Una singura. Nu complica.",
-    "Da, dar scurt. Foarte scurt.",
-    "O fereastra mica. Prinde-o.",
-    "Da. O zi. Atat.",
-    "O zi buna. Ca o cafea buna — rara, dar merita.",
-    "Fereastra scurta. Daca n-o prinzi, plangi in dus.",
-    "Da, o zi. Destul cat sa minti ca surf-ezi des.",
-    "O singura zi decenta. Profita inainte sa vina vantul.",
+    "O zi. Baga fisa.",
+    "Da. O zi. Sefu.",
+    "O fereastra. Vericule, nu clipi.",
+    "Boss, o zi. Atat.",
+    "Fram, o zi. Trebe prinsa.",
+    "Poseidon da o zi. Nu e tub, e bonus.",
+    "O zi. Intai apa, apoi loft — daca trebuie.",
+    "Barosso, o zi. Bodyboarders welcome, egouri nu.",
+    "O zi. Story dupa sesiune, nu in loc.",
+    "Da. O zi. Vama poate astepta.",
+    "Sefu, un slot. Ratezi = taci pe grup.",
+    "O zi ok. Nu e Indo. E CT.",
+    "Fram, o zi. Trebe.",
+    "Vericule, scurt si real.",
+    "Boss, o zi.",
+    "O zi. Tub? Visam. Iesim? Da.",
+    "Poseidon: o zi.",
+    "Baga fisa pe o zi.",
+    "O zi. Cine vine doar pentru dig — stai acasa.",
+    "Sefu, o zi. Nu complica.",
+    "Barosso, o zi. Gata.",
+    "O zi. Fara «pozez si plec».",
   ];
   const MAYBE = [
-    "Poate. Cu salupa langa.",
-    "Borderline. Bodyboard si sperante.",
-    "Se misca ceva. Destul cat sa te lasi tentat.",
-    "Poate. Vantul are pareri.",
-    "Incert. Du wetsuit si zen.",
-    "Poate cu salupa. Sau cu prieten cu barca.",
-    "Poate. Sau poate doar te uiti si zici «era mai mare ieri».",
-    "Borderline. Ca o relatie complicata — poate merge, poate nu.",
-    "Se misca ceva. Destul pentru story, nu pentru legend.",
-    "Poate. Daca esti optimist si nu te uiti la prognoza de maine.",
-    "Incert. Bodyboard + prieten care zice «merge, am mai vazut mai rau».",
-    "Poate. Valul e acolo, dar si vantul e acolo.",
-    "Borderline. Merita dus wetsuit-ul in masina, nu neaparat in apa.",
-    "Poate. Surf de «am incercat» nu de «am reusit».",
-    "Se misca. Ca Marea Neagra in general — cu speranta.",
-    "Poate. Daca ai 30 de ani si inca crezi in miracole locale.",
-    "Incert. Ca un swipe pe Tinder — poate surprinde.",
-    "Poate cu salupa. Sau cu multa imaginatie.",
-    "Borderline. Perfect pentru «am fost la mare» nu pentru «am prins val».",
-    "Poate. Nu e Bali, dar nici piscina nu e.",
+    "Poate. Bodyboard si sperante.",
+    "Borderline, sefu.",
+    "Poate. Vericule, nu te lauda.",
+    "Boss, 50/50.",
+    "Fram, poate. Trebe vazut pe loc.",
+    "Poate. Vantul decide.",
+    "Barosso, borderline. Fara story pe dig inca.",
+    "Poate. Tub? Nu. Udat? Poate.",
+    "Incert. Sefu nu semneaza.",
+    "Poate. Perfect pentru bodyboarders cu ego de surfer.",
+    "Borderline. Loft e plan B onest.",
+    "Poate. Vama Veche e mai predictibila azi.",
+    "Vericule, se misca. Nu e sesiune, e vizita.",
+    "Poate. Story da, legenda nu.",
+    "Boss, incert.",
+    "Fram, poate. Trebe asteptari de Black Sea.",
+    "Poate. Cine zice «merge» minteste politicos.",
+    "Borderline. Dig + poza = sport national.",
+    "Poate. Nu e nu. Nu e da. Barosso.",
+    "Sefu, 50/50.",
+    "Poate. Bodyboard > iluzii de tub.",
+    "Incert. Poseidon e pe read.",
+    "Poate. Daca vii doar pentru loft, spune din start.",
+    "Vericule, borderline.",
+    "Poate. Masina da, apa optional.",
+    "Boss, se misca.",
+    "Fram, poate. Trebe onestitate.",
+    "Poate. Nu posta checking daca n-ai intrat.",
+    "Borderline. CT being CT.",
+    "Sefu, poate. Sau Vama, daca vrei alte obiective.",
+    "Poate. Doar poza? Nah.",
+    "Barosso, incert.",
+    "Poate.",
+    "Borderline.",
+    "50/50, vericule.",
+    "Incert, boss.",
   ];
   const NAH = [
     "Nah.",
     "Nu.",
-    "Plansa e mai buna.",
-    "Sub 0.4m nu e surf. E zgarda la mal.",
-    "Nu merit. Stai acasa.",
-    "Marea e calma. Prea calma.",
-    "Nope. Poate la piscina.",
-    "Valurile sunt in concediu.",
-    "Nu. Marea doarme.",
-    "Nah. Chiar si pestii sunt plictisiti.",
-    "Nu. Du-te la mall, e mai agitat acolo.",
-    "Plaja Modern e moderna, valurile nu.",
-    "0.4m? Aia e spuma, nu val.",
-    "Nu. Singurul wipeout e al sperantelor tale.",
-    "Nope. Wetsuit-ul poate sta in dulap.",
-    "Nu merit. Netflix > Marea Neagra azi.",
-    "Valurile au dat ignore la cererea ta.",
-    "Nah. Surf-ul e offline.",
-    "Nu. Chiar si un caine pe plaja s-ar plictisi.",
-    "Marea zice: «poate maine, dragule».",
-    "Nu. Bodyboard-ul plange in garaj.",
-    "Nope. Prognoza zice: prosop, bere, gata.",
-    "Nu. Singura unda e cea din cafeaua ta.",
-    "Nah. Constanța are mare, nu valuri.",
-    "Nu. Du-te la sala. Macar acolo simti ceva.",
-    "Valurile sunt la cumparaturi. Revin altadata.",
-    "Nu. Chiar si o meduza s-ar plictisi.",
-    "Nope. Azi e zi de stat pe prosop, onest.",
-    "Nu. Marea e ca un elevator stricat — nu se misca.",
-    "Nah. Instagram-ul poate astepta.",
+    "Nope.",
+    "Zero, sefu.",
+    "Nah, vericule.",
+    "Boss, nu.",
+    "Fram, nu. Trebe alt plan.",
+    "Poseidon: nu azi.",
+    "Barosso, offline.",
+    "Nu. Bodyboard-ul plange in dulap.",
+    "Nah. Dig + story = maximul zilei.",
+    "Nu. Loft e deschis. Marea nu.",
+    "Sefu, zero. Mai bine Vama — gasesti pereche, nu val.",
+    "Nu. Mai bine Vama Veche sa gasesti pereche.",
+    "Nah. Tub in CT azi e science fiction.",
+    "Nu. Vericule, stai acasa.",
+    "Boss, prosop.",
+    "Fram, nu. Trebe Netflix.",
+    "Zero. Bodyboarders: si voi stati.",
+    "Nah. Checking pe dig nu conteaza.",
+    "Nu. Poseidon e pe mute.",
+    "Sefu, nu.",
+    "Nu. Barosso, alta data.",
+    "Nah. Spuma cu ambitii.",
+    "Nu. Loft > apa azi, onest.",
+    "Vericule, nu e sesiune.",
+    "Nu. Mai bine Vama sa socializezi.",
+    "Boss, zero.",
+    "Fram, nu merita. Trebe acceptat.",
+    "Nah. Story pe dig fara apa = sport olimpic.",
+    "Nu. Bodyboard in masina e deja prea optimist.",
+    "Sefu, marea doarme.",
+    "Nu. Tub? Vis. Realitate? Calm.",
+    "Barosso, nu baga fisa.",
+    "Nah. CT are mare. Azi cam atat.",
+    "Nu. Vericule, inchide tab-ul.",
+    "Boss, piscina are mai multa actiune.",
+    "Fram, nu. Trebe alt hobby azi.",
+    "Zero. Poseidon si-a luat liber.",
+    "Nu. Digul e plin, apa e goala.",
+    "Nah. Cine vine doar pentru poza — e ziua voastra.",
+    "Sefu, nu.",
+    "Nu. Vama e planul onest.",
+    "Barosso, nah.",
+    "Nu. Wetsuit dry.",
+    "Vericule, zero.",
+    "Nah. Loft te asteapta.",
+    "Boss, nu e wipeout. E absenta.",
+    "Fram, trebe sa accepti: nu.",
+    "Nu. Bodyboard, tabla, dig — inutile azi.",
+    "Nah.",
+    "Zero.",
+    "Nu azi, sefu.",
+    "Offline, barosso.",
   ];
 
   const WAVE_MIN = 0.4;
@@ -1292,15 +1435,72 @@ body.theme-bali .footer a:last-of-type {
 
     document.getElementById("current").innerHTML = renderCurrent(data);
 
-    const daysEl = document.getElementById("days");
-    daysEl.innerHTML = data.daily
+    // unique gradient ids if multiple boards on page
+    let boardUid = 0;
+
+    const dayEntries = data.daily
       .map((day, i) => {
         const date = day.time.slice(0, 10);
         const hours = hoursForDay(data.hourly, date);
-        if (!hours.length) return "";
+        if (!hours.length) return null;
+        const hourScores = hours.map((h) => h.score).filter((s) => s != null);
+        const dayScore =
+          day.score != null
+            ? day.score
+            : hourScores.length
+              ? Math.max(...hourScores)
+              : null;
+        return { day, i, date, hours, dayScore };
+      })
+      .filter(Boolean);
+
+    // Board: all days > 7; if none, only the single best day among 5–6
+    const hotDays = dayEntries.filter((d) => d.dayScore != null && d.dayScore > 7);
+    let boardIndices = new Set();
+    if (hotDays.length) {
+      hotDays.forEach((d) => boardIndices.add(d.i));
+    } else {
+      const midDays = dayEntries.filter(
+        (d) => d.dayScore != null && d.dayScore >= 5 && d.dayScore <= 7
+      );
+      if (midDays.length) {
+        const best = Math.max(...midDays.map((d) => d.dayScore));
+        const firstBest = midDays.find((d) => d.dayScore === best);
+        if (firstBest) boardIndices.add(firstBest.i);
+      }
+    }
+
+    const daysEl = document.getElementById("days");
+    daysEl.innerHTML = dayEntries
+      .map(({ day, i, hours }) => {
         const label = i === 0 ? "Azi" : formatRoDate(day.time);
+        const good = boardIndices.has(i);
+        const uid = ++boardUid;
+        const board = good
+          ? `<svg class="day-title__board" viewBox="0 0 96 24" aria-label="conditii bune" role="img">
+              <defs>
+                <linearGradient id="gold-board-grad-${uid}" x1="0%" y1="50%" x2="100%" y2="50%">
+                  <stop offset="0%" stop-color="#fef9c3"/>
+                  <stop offset="28%" stop-color="#fbbf24"/>
+                  <stop offset="55%" stop-color="#f59e0b"/>
+                  <stop offset="78%" stop-color="#fde68a"/>
+                  <stop offset="100%" stop-color="#d97706"/>
+                </linearGradient>
+              </defs>
+              <path fill="url(#gold-board-grad-${uid})" d="
+                M 2 12
+                C 8 5, 24 2.5, 44 2.5
+                L 92 2.5
+                L 76 12
+                L 92 21.5
+                L 44 21.5
+                C 24 21.5, 8 19, 2 12
+                Z"/>
+              <ellipse class="board-gloss" cx="32" cy="8" rx="15" ry="2.5"/>
+            </svg>`
+          : "";
         return `<section>
-          <h2 class="day-title">${label}</h2>
+          <h2 class="day-title${good ? " day-title--good" : ""}"><span>${label}</span>${board}</h2>
           <div class="day-row">${hours.map(renderHourCard).join("")}</div>
         </section>`;
       })
@@ -1360,8 +1560,8 @@ body.theme-bali .footer a:last-of-type {
   const ctx = canvas.getContext("2d");
   const STORAGE_KEY = "marea-neagra-surf-best";
   const GROUND_Y = 168;
-  const GRAVITY = 0.38;
-  const JUMP_V = -9.6;
+  const GRAVITY = 0.42;
+  const JUMP_V = -7.5;
   const STAND_H = 38;
   const DUCK_H = 18;
   const BASE_SPEED = 3.6;
@@ -1454,7 +1654,7 @@ body.theme-bali .footer a:last-of-type {
       obstacles.push({
         kind: "gull",
         x: w + 40,
-        y: GROUND_Y - 52,
+        y: GROUND_Y - 44,
         w: 34,
         h: 20,
         passed: false,
@@ -1672,11 +1872,8 @@ body.theme-bali .footer a:last-of-type {
     ctx.font = "600 14px system-ui, sans-serif";
     ctx.fillStyle = "rgba(255,255,255,0.6)";
     if (dead) {
-      ctx.fillText("wipeout · " + score, w / 2, 28);
-      ctx.fillText("apasa space sau tap sa sari", w / 2, 48);
-      ctx.font = "600 12px system-ui, sans-serif";
-      ctx.fillStyle = "rgba(186,230,253,0.75)";
-      ctx.fillText("record: " + best, w / 2, 68);
+      ctx.fillText("wipeout · " + score, w / 2, 32);
+      ctx.fillText("apasa space sau tap sa sari", w / 2, 54);
     } else {
       ctx.fillText("apasa space sau tap sa sari", w / 2, 36);
       ctx.font = "600 12px system-ui, sans-serif";
