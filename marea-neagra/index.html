@@ -141,16 +141,53 @@ a {
 }
 
 .day-title {
-  margin: 0 0 1rem;
+  margin: 0;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
   gap: 0.55rem;
   font-size: clamp(1.125rem, 2.5vw, 1.5rem);
   font-weight: 900;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.55);
+}
+
+.day-block {
+  position: relative;
+}
+
+.day-head {
+  position: relative;
+  margin-bottom: 1rem;
+  min-height: 1.5rem;
+  padding-right: 0.25rem;
+}
+
+.day-title__left {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding-right: 0.5rem;
+}
+
+.day-title__meta {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  color: rgba(255, 255, 255, 0.5);
+  white-space: nowrap;
+  padding-left: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .day-title__meta {
+    font-size: 0.875rem;
+  }
 }
 
 .day-title--good {
@@ -410,8 +447,88 @@ a {
   color: #fff;
 }
 
-.footer a.coffee {
+.footer a.coffee,
+.footer a.bot-link {
   color: rgba(186, 230, 253, 0.8);
+}
+
+.bot-prompt {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 40;
+  max-width: 21rem;
+  padding: 1rem 1.1rem;
+  border-radius: 0.85rem;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(10, 45, 92, 0.94);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  backdrop-filter: blur(8px);
+}
+
+.bot-prompt[hidden] {
+  display: none;
+}
+
+.bot-prompt__title {
+  margin: 0 0 0.45rem;
+  font-size: 0.875rem;
+  font-weight: 800;
+  color: #bae6fd;
+}
+
+.bot-prompt p {
+  margin: 0;
+}
+
+.bot-prompt a {
+  font-weight: 700;
+  color: #bae6fd;
+  text-decoration: none;
+}
+
+.bot-prompt a:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
+.bot-prompt__note {
+  margin-top: 0.55rem !important;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.bot-prompt__actions {
+  margin-top: 0.75rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.bot-prompt__btn {
+  appearance: none;
+  cursor: pointer;
+  flex: 1;
+  padding: 0.4rem 0.65rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.75rem;
+  font-weight: 700;
+  font-family: inherit;
+}
+
+.bot-prompt__btn--yes {
+  background: rgba(186, 230, 253, 0.18);
+  border-color: rgba(186, 230, 253, 0.35);
+  color: #bae6fd;
+}
+
+.bot-prompt__btn:hover {
+  background: rgba(255, 255, 255, 0.14);
 }
 
 .error {
@@ -479,7 +596,8 @@ body.theme-bali .score--good {
   color: #86efac;
 }
 
-body.theme-bali .footer a.coffee {
+body.theme-bali .footer a.coffee,
+body.theme-bali .footer a.bot-link {
   color: rgba(94, 234, 212, 0.85);
 }
 
@@ -539,8 +657,26 @@ body.theme-bali .footer a.coffee {
           <a href="https://open-meteo.com/en/docs" target="_blank" rel="noopener noreferrer">Open-Meteo Weather</a>.
           Daca iti place si ai chef,
           <a class="coffee" href="https://buymeacoffee.com/bolnizar" target="_blank" rel="noopener noreferrer">ia-mi o cafea</a>.
+          Bot verificator de valuri bune:
+          <a class="bot-link" href="https://t.me/MareaNeagraBot" target="_blank" rel="noopener noreferrer">@MareaNeagraBot</a>.
         </p>
       </footer>
+
+      <aside id="bot-prompt" class="bot-prompt" hidden aria-live="polite">
+        <p class="bot-prompt__title">Bot Telegram pentru valuri bune</p>
+        <p>
+          Am facut si
+          <a href="https://t.me/MareaNeagraBot" target="_blank" rel="noopener noreferrer">@MareaNeagraBot</a>
+          — un bot pe Telegram care, in fiecare dimineata, verifica singur prognoza pentru urmatoarele 8 zile la Plaja Modern.
+        </p>
+        <p class="bot-prompt__note">
+          Daca gaseste zile cu valuri chiar bune, iti trimite un mesaj scurt. Fara spam, doar cand merita.
+        </p>
+        <div class="bot-prompt__actions">
+          <button type="button" class="bot-prompt__btn bot-prompt__btn--yes" id="bot-prompt-yes">Deschide botul</button>
+          <button type="button" class="bot-prompt__btn" id="bot-prompt-no">Nu, multumesc</button>
+        </div>
+      </aside>
 
       <section class="surf-game" id="surf-game" aria-label="Surf jump game">
         <canvas id="surf-canvas" width="800" height="170"></canvas>
@@ -869,6 +1005,57 @@ body.theme-bali .footer a.coffee {
 
   function formatHeight(meters) {
     return `${meters.toFixed(1)}\u00a0m`;
+  }
+
+  function formatSwellLabel(meters) {
+    return meters == null ? "—" : `SWELL: ${meters.toFixed(1)}m`;
+  }
+
+  function formatTemp(celsius) {
+    return celsius == null ? null : `${Math.round(celsius)}°`;
+  }
+
+  function weatherCodeEmoji(code) {
+    if (code == null) return "🌡️";
+    if (code === 0) return "☀️";
+    if (code <= 3) return "🌤️";
+    if (code <= 48) return "🌫️";
+    if (code <= 57) return "🌦️";
+    if (code <= 67) return "🌧️";
+    if (code <= 77) return "🌨️";
+    if (code <= 82) return "🌧️";
+    if (code <= 86) return "🌨️";
+    return "⛈️";
+  }
+
+  function seaTempByDate(hourly) {
+    const buckets = new Map();
+    for (const hour of hourly) {
+      if (hour.seaSurfaceTemperature == null) continue;
+      const date = hour.time.slice(0, 10);
+      if (!buckets.has(date)) buckets.set(date, []);
+      buckets.get(date).push(hour.seaSurfaceTemperature);
+    }
+    const result = new Map();
+    for (const [date, temps] of buckets) {
+      result.set(date, temps.reduce((a, b) => a + b, 0) / temps.length);
+    }
+    return result;
+  }
+
+  function renderDayMeta(day) {
+    const parts = [];
+    const sea = formatTemp(day.seaSurfaceTemp);
+    if (sea) parts.push(`🌊 ${sea}`);
+    const min = formatTemp(day.tempMin);
+    const max = formatTemp(day.tempMax);
+    if (min && max) {
+      parts.push(`${weatherCodeEmoji(day.weatherCode)} ${min}/${max}`);
+    } else if (min || max) {
+      parts.push(`${weatherCodeEmoji(day.weatherCode)} ${min || max}`);
+    }
+    if (!parts.length) return "";
+    return `<span class="day-title__meta">${parts.join(" · ")}</span>`;
   }
 
   function formatWind(speedKmh, direction) {
@@ -1236,6 +1423,8 @@ body.theme-bali .footer a.coffee {
         windSpeed: wi !== undefined ? num(hourlyVal(weatherHourly, "wind_speed_10m", wi)) : null,
         windDirection:
           wi !== undefined ? num(hourlyVal(weatherHourly, "wind_direction_10m", wi)) : null,
+        seaSurfaceTemperature:
+          num(hourlyVal(marineHourly, "sea_surface_temperature", i)),
         score,
         isDay: wi !== undefined ? hourlyVal(weatherHourly, "is_day", wi) === 1 : null,
       };
@@ -1281,7 +1470,16 @@ body.theme-bali .footer a.coffee {
         score = calculateScore(marine, wind);
       }
 
-      return { time, waveHeightMax, swellHeightMax, windSpeedMax, score };
+      return {
+        time,
+        waveHeightMax,
+        swellHeightMax,
+        windSpeedMax,
+        tempMin: num(dailyVal(weatherDaily, "temperature_2m_min", i)),
+        tempMax: num(dailyVal(weatherDaily, "temperature_2m_max", i)),
+        weatherCode: num(dailyVal(weatherDaily, "weather_code", i)),
+        score,
+      };
     });
   }
 
@@ -1332,9 +1530,10 @@ body.theme-bali .footer a.coffee {
       longitude: String(activeLocation.longitude),
       timezone: activeLocation.timezone,
       forecast_days: String(FORECAST_DAYS),
-      hourly: "wind_speed_10m,wind_direction_10m,wind_gusts_10m,is_day",
-      daily: "wind_speed_10m_max,wind_direction_10m_dominant,sunrise,sunset",
-      current: "wind_speed_10m,wind_direction_10m,wind_gusts_10m",
+      hourly: "wind_speed_10m,wind_direction_10m,wind_gusts_10m,is_day,temperature_2m,weather_code",
+      daily:
+        "wind_speed_10m_max,wind_direction_10m_dominant,sunrise,sunset,temperature_2m_max,temperature_2m_min,weather_code",
+      current: "wind_speed_10m,wind_direction_10m,wind_gusts_10m,temperature_2m,weather_code",
     });
 
     const [marineRes, weatherRes] = await Promise.all([
@@ -1355,11 +1554,17 @@ body.theme-bali .footer a.coffee {
     const currentMarine = parseMarineCurrent(marine.current);
     const currentWind = parseWindCurrent(weather.current);
     const currentScore = calculateScore(currentMarine, currentWind);
+    const hourly = buildHourly(marine.hourly, weather.hourly);
+    const seaTemps = seaTempByDate(hourly);
+    const daily = buildDaily(marine.daily, weather.daily).map((day) => ({
+      ...day,
+      seaSurfaceTemp: seaTemps.get(day.time.slice(0, 10)) ?? null,
+    }));
 
     return {
       current: { marine: currentMarine, wind: currentWind, score: currentScore },
-      hourly: buildHourly(marine.hourly, weather.hourly),
-      daily: buildDaily(marine.daily, weather.daily),
+      hourly,
+      daily,
     };
   }
 
@@ -1396,8 +1601,8 @@ body.theme-bali .footer a.coffee {
   }
 
   function renderHourCard(hour) {
-    const swell = hour.swellHeight != null ? formatHeight(hour.swellHeight) : "—";
     const wave = hour.waveHeight != null ? formatHeight(hour.waveHeight) : "—";
+    const swellLabel = formatSwellLabel(hour.swellHeight);
     const periodVal = hour.swellPeriod ?? hour.wavePeriod;
     const period = periodVal != null ? `${periodVal.toFixed(0)}s` : "—";
     const windLabel =
@@ -1412,9 +1617,9 @@ body.theme-bali .footer a.coffee {
 
     return `<article class="hour-card">
       <div class="hour-time">${formatHourRo(hour.time)}</div>
-      <div class="hour-swell">${swell}</div>
-      <div class="hour-swell-label">swell</div>
-      <div class="hour-wave-total">wave ${wave}</div>
+      <div class="hour-swell">${wave}</div>
+      <div class="hour-swell-label">wave</div>
+      <div class="hour-wave-total">${swellLabel}</div>
       <div class="hour-period">${period}</div>
       <div class="hour-wind">${wind}</div>
       <div class="hour-score ${scoreClass(hour.score)}">${score}</div>
@@ -1504,13 +1709,45 @@ body.theme-bali .footer a.coffee {
               <ellipse class="board-gloss" cx="32" cy="8" rx="15" ry="2.5"/>
             </svg>`
           : "";
-        return `<section>
-          <h2 class="day-title${good ? " day-title--good" : ""}"><span>${label}</span>${board}</h2>
+        return `<section class="day-block">
+          <div class="day-head">
+            <h2 class="day-title${good ? " day-title--good" : ""}">
+              <span class="day-title__left"><span>${label}</span>${board}</span>
+            </h2>
+            ${renderDayMeta(day)}
+          </div>
           <div class="day-row">${hours.map(renderHourCard).join("")}</div>
         </section>`;
       })
       .join("");
+
+    alignDayMetas();
   }
+
+  function alignDayMetas() {
+    document.querySelectorAll(".day-block").forEach((block) => {
+      const row = block.querySelector(".day-row");
+      const meta = block.querySelector(".day-title__meta");
+      const cards = row?.querySelectorAll(".hour-card");
+      if (!row || !meta || !cards?.length) return;
+
+      meta.style.right = "0";
+      const blockRect = block.getBoundingClientRect();
+      const overflows = row.scrollWidth > row.clientWidth + 2;
+
+      if (overflows) return;
+
+      const lastRect = cards[cards.length - 1].getBoundingClientRect();
+      const inset = blockRect.right - lastRect.right;
+      meta.style.right = `${Math.max(0, inset)}px`;
+    });
+  }
+
+  let alignDayMetasTimer = null;
+  window.addEventListener("resize", () => {
+    clearTimeout(alignDayMetasTimer);
+    alignDayMetasTimer = setTimeout(alignDayMetas, 100);
+  });
 
   async function loadForecast() {
     const verdictEl = document.getElementById("verdict");
@@ -1552,6 +1789,51 @@ body.theme-bali .footer a.coffee {
   document.getElementById("escape-btn").addEventListener("click", switchToBali);
   document.getElementById("reality-btn").addEventListener("click", switchToBlackSea);
 
+  const BOT_URL = "https://t.me/MareaNeagraBot";
+  const BOT_PROMPT_KEY = "marea-neagra-bot-prompt";
+  let botPromptTimer = null;
+
+  function botPromptDismissed() {
+    try {
+      return document.cookie.split(";").some((c) => c.trim().startsWith(`${BOT_PROMPT_KEY}=`));
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function dismissBotPrompt() {
+    const el = document.getElementById("bot-prompt");
+    if (el) el.hidden = true;
+    try {
+      document.cookie = `${BOT_PROMPT_KEY}=1; max-age=31536000; path=/; SameSite=Lax`;
+    } catch (e) {
+      /* ignore */
+    }
+  }
+
+  function scheduleBotPrompt() {
+    if (botPromptDismissed()) return;
+    const el = document.getElementById("bot-prompt");
+    if (!el) return;
+    if (botPromptTimer) clearTimeout(botPromptTimer);
+    botPromptTimer = setTimeout(() => {
+      if (!botPromptDismissed()) el.hidden = false;
+    }, 20000);
+  }
+
+  const botPromptYes = document.getElementById("bot-prompt-yes");
+  const botPromptNo = document.getElementById("bot-prompt-no");
+  if (botPromptYes) {
+    botPromptYes.addEventListener("click", () => {
+      dismissBotPrompt();
+      window.open(BOT_URL, "_blank", "noopener,noreferrer");
+    });
+  }
+  if (botPromptNo) {
+    botPromptNo.addEventListener("click", dismissBotPrompt);
+  }
+
+  scheduleBotPrompt();
   loadForecast();
 })();
 
