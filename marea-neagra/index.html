@@ -80,6 +80,14 @@ a {
   color: #bae6fd;
 }
 
+.verdict--tap {
+  cursor: pointer;
+}
+
+.verdict--tap:hover {
+  color: #e0f2fe;
+}
+
 .verdict--maybe {
   color: #fde68a;
 }
@@ -154,6 +162,7 @@ a {
 
 .day-block {
   position: relative;
+  scroll-margin-top: 1rem;
 }
 
 .day-head {
@@ -1301,6 +1310,20 @@ body.theme-bali .footer a.bot-link {
     return best;
   }
 
+  function findBestGoodDayIndex(days) {
+    let best = -1;
+    let bestScore = -1;
+    days.slice(0, 8).forEach((day, i) => {
+      if (!isGoodDay(day)) return;
+      const score = day.score ?? 0;
+      if (score > bestScore) {
+        bestScore = score;
+        best = i;
+      }
+    });
+    return best;
+  }
+
   function computeVerdict(daily) {
     const days = daily.slice(0, 8);
     if (!days.length) return { text: pickRandom(NAH), tier: "nah" };
@@ -1636,8 +1659,25 @@ body.theme-bali .footer a.bot-link {
     applyLocationChrome();
     const verdict = computeVerdict(data.daily);
     const verdictEl = document.getElementById("verdict");
+    const bestGoodDay = findBestGoodDayIndex(data.daily);
     verdictEl.textContent = verdict.text;
     verdictEl.className = `verdict verdict--${verdict.tier}`;
+    if (verdict.tier === "yes" && bestGoodDay >= 0) {
+      verdictEl.classList.add("verdict--tap");
+      verdictEl.dataset.dayIndex = String(bestGoodDay);
+      verdictEl.setAttribute("role", "button");
+      verdictEl.setAttribute("tabindex", "0");
+      verdictEl.setAttribute(
+        "aria-label",
+        `${verdict.text}. Apasa pentru a vedea cea mai buna zi.`,
+      );
+    } else {
+      verdictEl.classList.remove("verdict--tap");
+      delete verdictEl.dataset.dayIndex;
+      verdictEl.removeAttribute("role");
+      verdictEl.removeAttribute("tabindex");
+      verdictEl.removeAttribute("aria-label");
+    }
 
     const escapeWrap = document.getElementById("escape-wrap");
     escapeWrap.hidden = !(activeLocation.id === "blacksea" && verdict.tier === "nah");
@@ -1709,7 +1749,7 @@ body.theme-bali .footer a.bot-link {
               <ellipse class="board-gloss" cx="32" cy="8" rx="15" ry="2.5"/>
             </svg>`
           : "";
-        return `<section class="day-block">
+        return `<section class="day-block" id="day-${i}">
           <div class="day-head">
             <h2 class="day-title${good ? " day-title--good" : ""}">
               <span class="day-title__left"><span>${label}</span>${board}</span>
@@ -1788,6 +1828,23 @@ body.theme-bali .footer a.bot-link {
 
   document.getElementById("escape-btn").addEventListener("click", switchToBali);
   document.getElementById("reality-btn").addEventListener("click", switchToBlackSea);
+
+  const verdictEl = document.getElementById("verdict");
+  function scrollToBestDayFromVerdict() {
+    if (!verdictEl.classList.contains("verdict--tap")) return;
+    const idx = verdictEl.dataset.dayIndex;
+    if (idx == null) return;
+    document.getElementById(`day-${idx}`)?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  }
+  verdictEl.addEventListener("click", scrollToBestDayFromVerdict);
+  verdictEl.addEventListener("keydown", (e) => {
+    if (e.key !== "Enter" && e.key !== " ") return;
+    e.preventDefault();
+    scrollToBestDayFromVerdict();
+  });
 
   const BOT_URL = "https://t.me/MareaNeagraBot";
   const BOT_PROMPT_KEY = "marea-neagra-bot-prompt";
