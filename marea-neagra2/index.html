@@ -907,17 +907,10 @@ function renderCompareCharts(dayIso) {
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      interaction: { mode: "index", intersect: false },
+      events: [],
       plugins: {
         legend: { display: false },
-        tooltip: {
-          callbacks: {
-            label(ctx) {
-              const v = ctx.parsed.y;
-              return `${ctx.dataset.label}: ${v != null ? v.toFixed(2) + " m" : "—"}`;
-            },
-          },
-        },
+        tooltip: { enabled: false },
       },
       scales: {
         x: { grid: { display: false }, ticks: { color: muted, maxRotation: 0, autoSkip: true, maxTicksLimit: 8 } },
