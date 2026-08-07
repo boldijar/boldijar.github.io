@@ -411,13 +411,7 @@
     </div>
 
     <div class="panel">
-      <h2>Quiver / Vector Plot</h2>
-      <p class="desc">Axa orizontala = orele zilei; 3 randuri: vant, val, swell (directia dinspre care vin)</p>
-      <div class="legend">
-        <span><span class="dot" style="background:#0B2545"></span>Vant</span>
-        <span><span class="dot" style="background:#1B998B"></span>Val</span>
-        <span><span class="dot" style="background:#E8871E"></span>Swell</span>
-      </div>
+      <h2>Directie</h2>
       <div class="quiver-wrap" id="quiverPlot"></div>
     </div>
 
@@ -442,7 +436,7 @@ Chart.defaults.animation = false;
 const LOCATIONS = [
   ["Plaja Modern", 44.1809304, 28.6563829],
   ["2 Mai", 43.7850455, 28.5754977],
-  ["Shabla, Bulgaria", 43.5445151, 28.6044139],
+  ["Shabla, BG", 43.5445151, 28.6044139],
 ];
 
 const COMPARE_COLORS = [
@@ -869,7 +863,7 @@ function renderCompareCharts(dayIso) {
     if (!cache) return;
     const hours = buildHours(dayIso, cache.marine, cache.weather);
     if (!hours.length) return;
-    if (!labels.length) labels = hours.map((h) => fmtHour(h.time));
+    if (!labels.length) labels = chartHourLabels(hours.map((h) => h.time));
 
     const color = compareColor(index);
     const waveValues = hours.map((h) => h.marine?.waveHeight ?? null);
@@ -1015,6 +1009,26 @@ function fmtHour(iso) {
   return iso.slice(11, 16);
 }
 
+const CHART_TIGHT_MQ = window.matchMedia("(max-width: 639px)");
+
+function fmtChartHour(iso, compact = CHART_TIGHT_MQ.matches) {
+  if (compact) return String(parseInt(iso.slice(11, 13), 10));
+  return fmtHour(iso);
+}
+
+function chartHourLabels(times) {
+  const compact = CHART_TIGHT_MQ.matches;
+  return times.map((t) => fmtChartHour(t, compact));
+}
+
+function formatWaveInterval(hours, peakIdx, dailyMarine) {
+  const peakPeriod = hours[peakIdx]?.marine?.wavePeriod;
+  const dailyMax = dailyMarine?.wave_period_max;
+  const sec = peakPeriod ?? dailyMax;
+  if (sec == null) return "—";
+  return `${Number(sec).toFixed(1)} s`;
+}
+
 function render(data) {
   try {
     const hours = data.processed && data.processed.hours;
@@ -1031,7 +1045,7 @@ function render(data) {
       (meta.location ? meta.location.name : "Locatie necunoscuta") +
       "<span>" + (meta.label || meta.date || "") + "</span>";
 
-    const labels = hours.map((h) => fmtHour(h.time));
+    const labels = chartHourLabels(hours.map((h) => h.time));
     const waveHeight = hours.map((h) => h.marine ? h.marine.waveHeight : null);
     const swellHeight = hours.map((h) => h.marine ? h.marine.swellHeight : null);
     const windSpeed = hours.map((h) => h.weather ? h.weather.windSpeed : null);
@@ -1046,19 +1060,23 @@ function render(data) {
     const tMax = daily.weather ? daily.weather.temperature_2m_max : Math.max(...temp.filter((v) => v != null));
     const seaTemp = meta.seaSurfaceTempDay;
     const wavePeakIdx = waveHeight.reduce((best, v, i) => ((v ?? -1) > (waveHeight[best] ?? -1) ? i : best), 0);
+    const wavePeakTime = hours[wavePeakIdx]?.time;
 
     const cardsHtml = [
-      ["Val maxim", maxWave != null ? maxWave.toFixed(2) + " m" : "—"],
+      [wavePeakTime ? `Val maxim @ ${fmtHour(wavePeakTime)}` : "Val maxim",
+        waveHeight[wavePeakIdx] != null
+          ? `${waveHeight[wavePeakIdx].toFixed(2)} m`
+          : maxWave != null ? `${maxWave.toFixed(2)} m` : "—"],
       ["Swell max", maxSwell != null ? maxSwell.toFixed(2) + " m" : "—"],
       ["Vant max", maxWind != null ? maxWind.toFixed(1) + " km/h" : "—"],
       ["Temp aer", (tMin != null && tMax != null) ? Math.round(tMin) + "-" + Math.round(tMax) + "°C" : "—"],
       ["Apa", seaTemp != null ? seaTemp.toFixed(1) + "°C" : "—"],
-      ["Val max ora", waveHeight[wavePeakIdx] != null ? labels[wavePeakIdx] + " (" + waveHeight[wavePeakIdx].toFixed(2) + " m)" : "—"],
+      ["Interval", formatWaveInterval(hours, wavePeakIdx, daily.marine)],
     ];
     document.getElementById("metricCards").innerHTML = cardsHtml.map(([label, value], i) => `
       <div class="card">
         <p class="label">${label}</p>
-        <p class="value${i === 0 || i === 5 ? " accent" : ""}">${value}</p>
+        <p class="value${i === 0 ? " accent" : ""}">${value}</p>
       </div>
     `).join("");
 
@@ -1199,7 +1217,7 @@ function renderQuiverPlot(hours) {
 
   hours.forEach((h, i) => {
     if (i % 3 !== 0) return;
-    svg += `<text x="${xAt(i)}" y="${H - 8}" text-anchor="middle" class="quiver-tick">${fmtHour(h.time)}</text>`;
+    svg += `<text x="${xAt(i)}" y="${H - 8}" text-anchor="middle" class="quiver-tick">${fmtChartHour(h.time)}</text>`;
   });
 
   svg += "</svg>";
@@ -1209,6 +1227,10 @@ function renderQuiverPlot(hours) {
 initLocationToggle();
 updateLocationChrome();
 loadAllForecasts();
+
+CHART_TIGHT_MQ.addEventListener("change", () => {
+  if (dashboard.style.display !== "none" && dayPicker.value) showDay(dayPicker.value);
+});
 </script>
 
 </body>
