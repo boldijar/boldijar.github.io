@@ -1223,9 +1223,10 @@ function render(data) {
           ? `${waveHeight[wavePeakIdx].toFixed(2)} m`
           : maxWave != null ? `${maxWave.toFixed(2)} m` : "—"],
       ["Swell max", maxSwell != null ? maxSwell.toFixed(2) + " m" : "—"],
-      ["Scor max", bestScore
-        ? `${bestScore.total.toFixed(1)} @${fmtHour(hours[bestScore.index].time)}`
-        : "—"],
+      [bestScore
+        ? `Scor max @${fmtHour(hours[bestScore.index].time)}`
+        : "Scor max",
+        bestScore ? bestScore.total.toFixed(1) : "—"],
       ["Vant max", maxWind != null ? maxWind.toFixed(1) + " km/h" : "—"],
       ["Temp aer", (tMin != null && tMax != null) ? Math.round(tMin) + "-" + Math.round(tMax) + "°C" : "—"],
       ["Apa", seaTemp != null ? seaTemp.toFixed(1) + "°C" : "—"],
