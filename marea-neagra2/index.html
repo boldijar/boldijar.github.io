@@ -208,20 +208,65 @@
 
   .compass-grid{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(70px,1fr));
+    grid-template-columns:repeat(auto-fit,minmax(118px,1fr));
     gap:8px;
     margin-bottom:12px;
   }
   .compass-cell{
     background:var(--fog);
     border-radius:10px;
-    padding:8px 4px;
+    padding:8px 6px 10px;
+    text-align:left;
+  }
+  .compass-cell .h{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    color:var(--muted);
+    margin:0 0 8px;
     text-align:center;
   }
-  .compass-cell .h{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--muted); margin:0 0 6px;}
-  .compass-arrows{position:relative; height:30px; display:flex; align-items:center; justify-content:center;}
+  .compass-arrows{
+    position:relative;
+    height:30px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-bottom:8px;
+  }
   .arrow{position:absolute; width:14px; height:14px;}
-  .compass-cell .info{font-size:10.5px; color:var(--slate); margin:6px 0 0;}
+  .compass-rows{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+  }
+  .compass-row{
+    display:flex;
+    align-items:baseline;
+    gap:5px;
+    font-size:10px;
+    line-height:1.35;
+    color:var(--slate);
+  }
+  .compass-dot{
+    width:7px;
+    height:7px;
+    border-radius:2px;
+    flex-shrink:0;
+    margin-top:2px;
+  }
+  .compass-dot--wind{background:#0B2545;}
+  .compass-dot--wave{background:#1B998B;}
+  .compass-dot--swell{background:#E8871E;}
+  .compass-label{
+    font-weight:600;
+    color:var(--muted);
+    min-width:2.1rem;
+  }
+  .compass-row strong{
+    font-family:'IBM Plex Mono',monospace;
+    font-weight:500;
+    color:var(--navy);
+  }
 
   footer{
     text-align:center;
@@ -803,6 +848,16 @@ function degToCompass(d) {
   return dirs[Math.round(((d % 360) + 360) % 360 / 45) % 8];
 }
 
+function formatDirection(deg) {
+  if (deg == null) return "—";
+  return `<strong>${degToCompass(deg)}</strong> · ${Math.round(deg)}°`;
+}
+
+function compassRow(label, dotClass, directionHtml, extra) {
+  const extraPart = extra ? ` · ${extra}` : "";
+  return `<div class="compass-row"><span class="compass-dot ${dotClass}"></span><span class="compass-label">${label}</span> ${directionHtml}${extraPart}</div>`;
+}
+
 function fmtHour(iso) {
   return iso.slice(11, 16);
 }
@@ -926,7 +981,11 @@ function render(data) {
           ${wave != null ? arrowSvg("#1B998B", wave, 8) : ""}
           ${swell != null ? arrowSvg("#E8871E", swell, -8) : ""}
         </div>
-        <p class="info">${wind != null ? degToCompass(wind) : "—"}${speed != null ? " · " + speed.toFixed(0) + " km/h" : ""}</p>
+        <div class="compass-rows">
+          ${compassRow("Vant", "compass-dot--wind", wind != null ? formatDirection(wind) : "—", speed != null ? `${speed.toFixed(0)} km/h` : "")}
+          ${compassRow("Val", "compass-dot--wave", wave != null ? formatDirection(wave) : "—", "")}
+          ${compassRow("Swell", "compass-dot--swell", swell != null ? formatDirection(swell) : "—", "")}
+        </div>
       `;
       compassGrid.appendChild(cell);
     }
