@@ -437,6 +437,8 @@
 <footer>Datele vin direct din Open-Meteo in browser — nu se uploadeaza nimic.</footer>
 
 <script>
+Chart.defaults.animation = false;
+
 const LOCATIONS = [
   ["Plaja Modern", 44.1809304, 28.6563829],
   ["2 Mai", 43.7850455, 28.5754977],
@@ -522,6 +524,53 @@ let daySummaries = new Map();
 dayPicker.addEventListener("change", () => showDay(dayPicker.value));
 reloadBtn.addEventListener("click", () => loadAllForecasts(dayPicker.value || null));
 
+function selectLocation(index) {
+  if (index < 0 || index >= LOCATIONS.length || index === activeLocationIndex) return;
+  if (locationToggle.querySelector("button")?.disabled) return;
+  activeLocationIndex = index;
+  syncLocationToggle();
+  updateLocationChrome();
+  applyActiveLocation(dayPicker.value || null);
+}
+
+function changeDay(delta) {
+  if (dayPicker.disabled || !dayPicker.options.length) return;
+  const nextIndex = dayPicker.selectedIndex + delta;
+  if (nextIndex < 0 || nextIndex >= dayPicker.options.length) return;
+  dayPicker.selectedIndex = nextIndex;
+  showDay(dayPicker.value);
+}
+
+function shouldIgnoreKeyboardShortcuts(event) {
+  const tag = event.target.tagName;
+  if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return true;
+  if (event.target.isContentEditable) return true;
+  if (event.ctrlKey || event.metaKey || event.altKey) return true;
+  return false;
+}
+
+document.addEventListener("keydown", (event) => {
+  if (shouldIgnoreKeyboardShortcuts(event)) return;
+  switch (event.key) {
+    case "ArrowLeft":
+      selectLocation(activeLocationIndex - 1);
+      event.preventDefault();
+      break;
+    case "ArrowRight":
+      selectLocation(activeLocationIndex + 1);
+      event.preventDefault();
+      break;
+    case "ArrowUp":
+      changeDay(-1);
+      event.preventDefault();
+      break;
+    case "ArrowDown":
+      changeDay(1);
+      event.preventDefault();
+      break;
+  }
+});
+
 function initLocationToggle() {
   locationToggle.innerHTML = "";
   LOCATIONS.forEach(([name], index) => {
@@ -529,13 +578,7 @@ function initLocationToggle() {
     btn.type = "button";
     btn.textContent = name;
     btn.classList.toggle("is-active", index === activeLocationIndex);
-    btn.addEventListener("click", () => {
-      if (index === activeLocationIndex) return;
-      activeLocationIndex = index;
-      syncLocationToggle();
-      updateLocationChrome();
-      applyActiveLocation(dayPicker.value || null);
-    });
+    btn.addEventListener("click", () => selectLocation(index));
     locationToggle.appendChild(btn);
   });
 }
