@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prognoza surf — Plaja Modern</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{
+    --navy:#0B2545;
+    --navy-deep:#071A33;
+    --teal:#1B998B;
+    --teal-light:#5FC3B5;
+    --sand:#E8DAB2;
+    --coral:#E8871E;
+    --fog:#F5F7F8;
+    --slate:#6B8CAE;
+    --ink:#0B2545;
+    --muted:#5A6B80;
+    --line:rgba(11,37,69,0.12);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Inter',sans-serif;
+    background:var(--fog);
+    color:var(--ink);
+    min-height:100vh;
+  }
+  header{
+    background:var(--navy);
+    color:#fff;
+    padding:2.5rem 1.5rem 3rem;
+    position:relative;
+    overflow:hidden;
+  }
+  header::after{
+    content:"";
+    position:absolute;
+    bottom:0; left:0; right:0;
+    height:36px;
+    background:repeating-linear-gradient(115deg, var(--teal) 0 40px, var(--navy) 40px 80px);
+    opacity:0.35;
+  }
+  .header-inner{max-width:960px; margin:0 auto; position:relative; z-index:1;}
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--teal-light);
+    margin:0 0 8px;
+  }
+  h1{
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:700;
+    font-size:32px;
+    margin:0 0 6px;
+  }
+  .subhead{
+    color:#C7D4E3;
+    font-size:15px;
+    margin:0;
+  }
+  main{max-width:960px; margin:-1.5rem auto 3rem; padding:0 1.5rem;}
+
+  .picker-panel{
+    background:#fff;
+    border-radius:16px;
+    border:1px solid var(--line);
+    padding:1.25rem 1.35rem;
+    margin-top:1.5rem;
+  }
+  .picker-panel label{
+    display:block;
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:500;
+    font-size:15px;
+    margin:0 0 10px;
+  }
+  .picker-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    align-items:center;
+  }
+  #dayPicker{
+    flex:1 1 280px;
+    min-width:0;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:13px;
+    padding:11px 12px;
+    border-radius:10px;
+    border:1px solid var(--line);
+    background:#fff;
+    color:var(--ink);
+  }
+  #dayPicker:disabled{opacity:0.6; cursor:wait;}
+  button.reload{
+    font-family:'Inter',sans-serif;
+    font-size:13px;
+    background:var(--navy);
+    color:#fff;
+    border:none;
+    border-radius:8px;
+    padding:10px 14px;
+    cursor:pointer;
+  }
+  button.reload:hover{background:#12325a;}
+  button.reload:disabled{opacity:0.55; cursor:wait;}
+  .picker-hint{
+    margin:10px 0 0;
+    font-size:13px;
+    color:var(--muted);
+  }
+  .picker-preview{
+    margin-top:12px;
+    padding:12px 14px;
+    border-radius:10px;
+    background:var(--fog);
+    font-family:'IBM Plex Mono',monospace;
+    font-size:13px;
+    color:var(--navy);
+    display:none;
+  }
+  .picker-preview strong{color:var(--coral); font-weight:500;}
+  .err{
+    background:#FBE9E9;
+    border:1px solid #E0A0A0;
+    color:#8A2020;
+    border-radius:10px;
+    padding:12px 16px;
+    font-size:14px;
+    margin-top:12px;
+    display:none;
+  }
+
+  #dashboard{display:none;}
+
+  .toolbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin:1.5rem 0 1rem;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  .location{
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:700;
+    font-size:20px;
+  }
+  .location span{
+    display:block;
+    font-family:'IBM Plex Mono',monospace;
+    font-weight:400;
+    font-size:12px;
+    color:var(--muted);
+    margin-top:2px;
+  }
+
+  .cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    gap:12px;
+    margin-bottom:1.75rem;
+  }
+  .card{
+    background:#fff;
+    border-radius:14px;
+    padding:16px 18px;
+    border:1px solid var(--line);
+  }
+  .card .label{font-size:12px; color:var(--muted); margin:0 0 6px;}
+  .card .value{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:24px;
+    font-weight:500;
+    margin:0;
+    color:var(--navy);
+  }
+  .card .value.accent{color:var(--coral);}
+
+  .panel{
+    background:#fff;
+    border-radius:16px;
+    border:1px solid var(--line);
+    padding:20px 20px 8px;
+    margin-bottom:1.5rem;
+  }
+  .panel h2{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:16px;
+    font-weight:500;
+    margin:0 0 4px;
+  }
+  .panel .desc{font-size:13px; color:var(--muted); margin:0 0 16px;}
+  .legend{
+    display:flex; flex-wrap:wrap; gap:14px;
+    font-size:12px; color:var(--muted);
+    margin-bottom:8px;
+  }
+  .legend span{display:flex; align-items:center; gap:5px;}
+  .dot{width:9px;height:9px;border-radius:2px;display:inline-block;}
+  .chart-wrap{position:relative; width:100%; height:210px; margin-bottom:12px;}
+
+  .compass-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(70px,1fr));
+    gap:8px;
+    margin-bottom:12px;
+  }
+  .compass-cell{
+    background:var(--fog);
+    border-radius:10px;
+    padding:8px 4px;
+    text-align:center;
+  }
+  .compass-cell .h{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--muted); margin:0 0 6px;}
+  .compass-arrows{position:relative; height:30px; display:flex; align-items:center; justify-content:center;}
+  .arrow{position:absolute; width:14px; height:14px;}
+  .compass-cell .info{font-size:10.5px; color:var(--slate); margin:6px 0 0;}
+
+  footer{
+    text-align:center;
+    color:var(--muted);
+    font-size:12px;
+    padding:1.5rem;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <p class="eyebrow">Plaja Modern · Constanta</p>
+    <h1>Val, vant, temperatura</h1>
+    <p class="subhead">Prognoza live din Open-Meteo — aceeasi logica ca botul Marea Neagra.</p>
+  </div>
+</header>
+
+<main>
+  <div class="picker-panel">
+    <label for="dayPicker">Alege ziua</label>
+    <div class="picker-row">
+      <select id="dayPicker" disabled aria-label="Alege ziua prognozei"></select>
+      <button type="button" class="reload" id="reloadBtn" disabled>Reincarca</button>
+    </div>
+    <p class="picker-hint" id="pickerHint">Se incarca prognoza pentru urmatoarele 8 zile…</p>
+    <div class="picker-preview" id="pickerPreview"></div>
+  </div>
+  <div class="err" id="errBox"></div>
+
+  <div id="dashboard">
+    <div class="toolbar">
+      <div class="location" id="locationLabel">—<span id="dateLabel"></span></div>
+    </div>
+
+    <div class="cards" id="metricCards"></div>
+
+    <div class="panel">
+      <h2>Inaltime val si swell</h2>
+      <p class="desc">Metri, pe ore</p>
+      <div class="legend">
+        <span><span class="dot" style="background:#1B998B"></span>Val</span>
+        <span><span class="dot" style="background:#E8871E"></span>Swell</span>
+        <span><span class="dot" style="background:#2A78D6; border-radius:50%;"></span>Minim</span>
+        <span><span class="dot" style="background:#E24B4A; border-radius:50%;"></span>Maxim</span>
+      </div>
+      <div class="chart-wrap"><canvas id="waveChart" role="img" aria-label="Inaltimea valurilor si a swell-ului pe ore"></canvas></div>
+    </div>
+
+    <div class="panel">
+      <h2>Vant</h2>
+      <p class="desc">Viteza si rafale, km/h</p>
+      <div class="legend">
+        <span><span class="dot" style="background:#0B2545"></span>Vant</span>
+        <span><span class="dot" style="background:#E24B4A"></span>Rafale</span>
+        <span><span class="dot" style="background:#2A78D6; border-radius:50%;"></span>Minim</span>
+        <span><span class="dot" style="background:#E24B4A; border-radius:50%;"></span>Maxim</span>
+      </div>
+      <div class="chart-wrap"><canvas id="windChart" role="img" aria-label="Viteza vantului si rafale pe ore"></canvas></div>
+    </div>
+
+    <div class="panel">
+      <h2>Scor surf</h2>
+      <p class="desc">Scor 0-10 calculat pentru fiecare ora</p>
+      <div class="legend">
+        <span><span class="dot" style="background:#2A78D6; border-radius:50%;"></span>Minim</span>
+        <span><span class="dot" style="background:#E24B4A; border-radius:50%;"></span>Maxim</span>
+      </div>
+      <div class="chart-wrap"><canvas id="scoreChart" role="img" aria-label="Scorul orar de calitate a surfului"></canvas></div>
+    </div>
+
+    <div class="panel">
+      <h2>Temperatura aerului</h2>
+      <p class="desc">Grade Celsius, pe ore</p>
+      <div class="legend">
+        <span><span class="dot" style="background:#2A78D6; border-radius:50%;"></span>Minim</span>
+        <span><span class="dot" style="background:#E24B4A; border-radius:50%;"></span>Maxim</span>
+      </div>
+      <div class="chart-wrap"><canvas id="tempChart" role="img" aria-label="Temperatura aerului pe ore"></canvas></div>
+    </div>
+
+    <div class="panel">
+      <h2>Directie vant, val, swell</h2>
+      <p class="desc">Sagetile arata directia dinspre care vin</p>
+      <div class="legend">
+        <span><span class="dot" style="background:#0B2545"></span>Vant</span>
+        <span><span class="dot" style="background:#1B998B"></span>Val</span>
+        <span><span class="dot" style="background:#E8871E"></span>Swell</span>
+      </div>
+      <div class="compass-grid" id="compassGrid"></div>
+    </div>
+  </div>
+</main>
+
+<footer>Datele vin direct din Open-Meteo in browser — nu se uploadeaza nimic.</footer>
+
+<script>
+const LAT = 44.1809304;
+const LON = 28.6563829;
+const TIMEZONE = "Europe/Bucharest";
+const FORECAST_DAYS = 8;
+const MARINE_URL = "https://marine-api.open-meteo.com/v1/marine";
+const WEATHER_URL = "https://api.open-meteo.com/v1/forecast";
+
+const MARINE_HOURLY = [
+  "wave_height", "wave_direction", "wave_period",
+  "swell_wave_height", "swell_wave_direction", "swell_wave_period", "swell_wave_peak_period",
+  "wind_wave_height", "wind_wave_direction", "sea_surface_temperature",
+];
+const MARINE_DAILY = [
+  "wave_height_max", "wave_direction_dominant", "wave_period_max",
+  "swell_wave_height_max", "swell_wave_direction_dominant", "swell_wave_period_max",
+  "wind_wave_height_max",
+];
+const WEATHER_HOURLY = [
+  "wind_speed_10m", "wind_direction_10m", "wind_gusts_10m",
+  "is_day", "temperature_2m", "weather_code",
+];
+const WEATHER_DAILY = [
+  "wind_speed_10m_max", "wind_direction_10m_dominant",
+  "sunrise", "sunset", "temperature_2m_max", "temperature_2m_min", "weather_code",
+];
+const WEATHER_CURRENT = [
+  "wind_speed_10m", "wind_direction_10m", "wind_gusts_10m",
+  "temperature_2m", "weather_code",
+];
+
+const RO_DAYS = ["Duminica", "Luni", "Marti", "Miercuri", "Joi", "Vineri", "Sambata"];
+const RO_MONTHS = ["", "ian.", "feb.", "mar.", "apr.", "mai", "iun.", "iul.", "aug.", "sept.", "oct.", "nov.", "dec."];
+
+const BLACK_SEA_SCORING = {
+  offshoreWind: 270,
+  idealSwellDirection: 45,
+  swellDirectionScores: [
+    { maxDelta: 30, score: 10 },
+    { maxDelta: 60, score: 7 },
+    { maxDelta: 120, score: 4 },
+    { maxDelta: 180, score: 2 },
+  ],
+  windDirectionScores: [
+    { maxDelta: 30, score: 10 },
+    { maxDelta: 70, score: 6 },
+    { maxDelta: 120, score: 3 },
+    { maxDelta: 180, score: 1 },
+  ],
+};
+
+const dayPicker = document.getElementById("dayPicker");
+const pickerHint = document.getElementById("pickerHint");
+const pickerPreview = document.getElementById("pickerPreview");
+const reloadBtn = document.getElementById("reloadBtn");
+const errBox = document.getElementById("errBox");
+const dashboard = document.getElementById("dashboard");
+let charts = [];
+let forecastCache = null;
+let daySummaries = new Map();
+
+dayPicker.addEventListener("change", () => showDay(dayPicker.value));
+reloadBtn.addEventListener("click", () => loadForecast());
+
+function num(v) {
+  if (typeof v === "number" && !Number.isNaN(v)) return v;
+  return null;
+}
+
+function angularDifference(a, b) {
+  return Math.abs(((a - b + 180) % 360) - 180);
+}
+
+function scoreFromDirection(actual, ideal, rules) {
+  const delta = angularDifference(actual, ideal);
+  for (const rule of rules) {
+    if (delta <= rule.maxDelta) return rule.score;
+  }
+  return 1;
+}
+
+function scoreWind(wind, scoring) {
+  const directionScore = scoreFromDirection(
+    wind.direction,
+    scoring.offshoreWind,
+    scoring.windDirectionScores,
+  );
+  let speedScore;
+  if (wind.speed < 8) speedScore = 10;
+  else if (wind.speed < 15) speedScore = 8;
+  else if (wind.speed < 20) speedScore = 6;
+  else if (wind.speed < 28) speedScore = 4;
+  else speedScore = 2;
+  if (wind.gusts > 35) speedScore = Math.max(1, speedScore - 2);
+  else if (wind.gusts > 25) speedScore = Math.max(2, speedScore - 1);
+  return Math.round((directionScore * 0.6 + speedScore * 0.4) * 10) / 10;
+}
+
+function scoreBlackSeaSize(height) {
+  if (height < 0.15) return 1;
+  if (height < 0.3) return 1 + ((height - 0.15) / 0.15) * 1.5;
+  if (height < 0.5) return 2.5 + ((height - 0.3) / 0.2) * 1.5;
+  if (height < 0.8) return 4 + ((height - 0.5) / 0.3) * 2;
+  if (height < 1.1) return 6 + ((height - 0.8) / 0.3) * 2.5;
+  if (height <= 1.5) {
+    const peak = 1.3;
+    if (height <= peak) return 8.5 + ((height - 1.1) / (peak - 1.1)) * 1.5;
+    return 10 - ((height - peak) / (1.5 - peak)) * 2;
+  }
+  if (height <= 2.2) return 8 - ((height - 1.5) / 0.7) * 3;
+  return Math.max(2, 5 - (height - 2.2));
+}
+
+function scoreBlackSeaPeriod(period) {
+  if (period < 4) return 2;
+  if (period < 5) return 3.5;
+  if (period < 6) return 5;
+  if (period < 7) return 6;
+  if (period < 8) return 7.5;
+  if (period < 10) return 8.5;
+  if (period < 12) return 9.5;
+  return 10;
+}
+
+function scoreBlackSeaCleanliness(swellHeight, totalHeight) {
+  if (totalHeight <= 0) return 1;
+  const ratio = swellHeight / totalHeight;
+  if (ratio > 0.75) return 8;
+  if (ratio > 0.55) return 6;
+  if (ratio > 0.4) return 4;
+  return 3;
+}
+
+function maxScoreForHeight(height) {
+  if (height < 0.25) return 2;
+  if (height < 0.35) return 3;
+  if (height < 0.45) return 4.5;
+  if (height < 0.5) return 4.9;
+  if (height < 0.65) return 6;
+  if (height < 0.85) return 7.5;
+  if (height < 1.05) return 9;
+  if (height < 1.25) return 9.8;
+  return 10;
+}
+
+function calculateBlackSeaScore(marine, wind) {
+  const height = marine.swellHeight ?? marine.waveHeight;
+  const period = marine.swellPeriod || marine.wavePeriod || 0;
+  const scoring = BLACK_SEA_SCORING;
+  const breakdown = {
+    size: scoreBlackSeaSize(height),
+    period: scoreBlackSeaPeriod(period),
+    cleanliness: scoreBlackSeaCleanliness(marine.swellHeight, marine.waveHeight),
+    wind: scoreWind(wind, scoring),
+    swellDirection: scoreFromDirection(
+      marine.swellDirection,
+      scoring.idealSwellDirection,
+      scoring.swellDirectionScores,
+    ),
+  };
+  let overall =
+    breakdown.size * 0.52 +
+    breakdown.period * 0.18 +
+    breakdown.cleanliness * 0.05 +
+    breakdown.wind * 0.22 +
+    breakdown.swellDirection * 0.03;
+  overall = Math.min(overall, maxScoreForHeight(height));
+  if (height >= 1.15 && height <= 1.5 && period >= 8 && breakdown.wind >= 8) {
+    overall = Math.min(10, overall + 0.5);
+  }
+  if (overall >= 9.5 && (period < 7 || breakdown.wind < 7)) overall = Math.min(overall, 8.5);
+  if (overall >= 9 && height < 1.1) overall = Math.min(overall, 8);
+  return Math.round(overall * 10) / 10;
+}
+
+function formatRoDate(iso) {
+  const d = new Date(`${iso.slice(0, 10)}T12:00:00`);
+  return `${RO_DAYS[d.getDay()]}, ${d.getDate()} ${RO_MONTHS[d.getMonth() + 1]}`;
+}
+
+function todayIso() {
+  return new Date().toLocaleDateString("sv-SE", { timeZone: TIMEZONE });
+}
+
+function hourlyVal(hourly, key, index) {
+  const values = hourly[key];
+  if (!Array.isArray(values) || index >= values.length) return undefined;
+  return values[index];
+}
+
+function dailyVal(daily, key, index) {
+  const values = daily[key];
+  if (!Array.isArray(values) || index >= values.length) return undefined;
+  return values[index];
+}
+
+function weatherIndexByTime(weatherHourly) {
+  const times = weatherHourly.time || [];
+  return new Map(times.map((t, i) => [t, i]));
+}
+
+function buildHours(dayIso, marine, weather) {
+  const marineHourly = marine.hourly || {};
+  const weatherHourly = weather.hourly || {};
+  const marineTimes = marineHourly.time || [];
+  const weatherByTime = weatherIndexByTime(weatherHourly);
+  const hours = [];
+
+  for (let i = 0; i < marineTimes.length; i++) {
+    const timeStr = marineTimes[i];
+    if (!String(timeStr).startsWith(dayIso)) continue;
+
+    const wi = weatherByTime.get(timeStr);
+    const waveHeight = num(hourlyVal(marineHourly, "wave_height", i));
+    const swellHeight = num(hourlyVal(marineHourly, "swell_wave_height", i));
+    const windSpeed = wi != null ? num(hourlyVal(weatherHourly, "wind_speed_10m", wi)) : null;
+    const windDirection = wi != null ? num(hourlyVal(weatherHourly, "wind_direction_10m", wi)) : null;
+    const windGusts = wi != null ? num(hourlyVal(weatherHourly, "wind_gusts_10m", wi)) : null;
+
+    let score = null;
+    if (waveHeight != null && swellHeight != null && windSpeed != null && windDirection != null) {
+      score = calculateBlackSeaScore(
+        {
+          waveHeight,
+          wavePeriod: hourlyVal(marineHourly, "wave_period", i),
+          swellHeight,
+          swellDirection: hourlyVal(marineHourly, "swell_wave_direction", i),
+          swellPeriod: hourlyVal(marineHourly, "swell_wave_period", i),
+        },
+        {
+          speed: windSpeed,
+          direction: windDirection,
+          gusts: windGusts ?? windSpeed,
+        },
+      );
+    }
+
+    hours.push({
+      time: timeStr,
+      score,
+      marine: {
+        waveHeight,
+        waveDirection: hourlyVal(marineHourly, "wave_direction", i),
+        wavePeriod: num(hourlyVal(marineHourly, "wave_period", i)),
+        swellHeight,
+        swellDirection: hourlyVal(marineHourly, "swell_wave_direction", i),
+        swellPeriod: num(hourlyVal(marineHourly, "swell_wave_period", i)),
+        swellPeakPeriod: num(hourlyVal(marineHourly, "swell_wave_peak_period", i)),
+        windWaveHeight: hourlyVal(marineHourly, "wind_wave_height", i),
+        windWaveDirection: hourlyVal(marineHourly, "wind_wave_direction", i),
+        seaSurfaceTemperature: hourlyVal(marineHourly, "sea_surface_temperature", i),
+      },
+      weather: {
+        windSpeed,
+        windDirection,
+        windGusts,
+        temperature: wi != null ? num(hourlyVal(weatherHourly, "temperature_2m", wi)) : null,
+        weatherCode: wi != null ? num(hourlyVal(weatherHourly, "weather_code", wi)) : null,
+        isDay: wi != null ? hourlyVal(weatherHourly, "is_day", wi) === 1 : null,
+      },
+    });
+  }
+  return hours;
+}
+
+function buildDailySlice(dayIso, marine, weather) {
+  const marineDaily = marine.daily || {};
+  const weatherDaily = weather.daily || {};
+  const times = marineDaily.time || [];
+  const i = times.indexOf(dayIso);
+  if (i < 0) return null;
+
+  const waveHeightMax = num(dailyVal(marineDaily, "wave_height_max", i));
+  const swellHeightMax = num(dailyVal(marineDaily, "swell_wave_height_max", i));
+  const windSpeedMax = num(dailyVal(weatherDaily, "wind_speed_10m_max", i));
+  const windDirectionDominant = num(dailyVal(weatherDaily, "wind_direction_10m_dominant", i));
+
+  let score = null;
+  if (waveHeightMax != null && swellHeightMax != null && windSpeedMax != null && windDirectionDominant != null) {
+    score = calculateBlackSeaScore(
+      {
+        waveHeight: waveHeightMax,
+        wavePeriod: dailyVal(marineDaily, "wave_period_max", i),
+        swellHeight: swellHeightMax,
+        swellDirection: dailyVal(marineDaily, "swell_wave_direction_dominant", i),
+        swellPeriod: dailyVal(marineDaily, "swell_wave_period_max", i),
+      },
+      {
+        speed: windSpeedMax,
+        direction: windDirectionDominant,
+        gusts: windSpeedMax,
+      },
+    );
+  }
+
+  const marineOut = {};
+  MARINE_DAILY.forEach((key) => { marineOut[key] = dailyVal(marineDaily, key, i); });
+  const weatherOut = {};
+  WEATHER_DAILY.forEach((key) => { weatherOut[key] = dailyVal(weatherDaily, key, i); });
+
+  return {
+    time: dayIso,
+    label: formatRoDate(dayIso),
+    score,
+    marine: marineOut,
+    weather: weatherOut,
+  };
+}
+
+function buildPayload(dayIso, marine, weather) {
+  const hours = buildHours(dayIso, marine, weather);
+  const seaTemps = hours.map((h) => num(h.marine.seaSurfaceTemperature)).filter((t) => t != null);
+  return {
+    meta: {
+      date: dayIso,
+      label: formatRoDate(dayIso),
+      location: {
+        name: "Plaja Modern",
+        latitude: LAT,
+        longitude: LON,
+        timezone: TIMEZONE,
+      },
+      fetchedAt: new Date().toISOString(),
+      sources: [MARINE_URL, WEATHER_URL],
+      hourCount: hours.length,
+      seaSurfaceTempDay: seaTemps.length
+        ? Math.round((seaTemps.reduce((a, b) => a + b, 0) / seaTemps.length) * 10) / 10
+        : null,
+    },
+    marine,
+    weather,
+    processed: {
+      hours,
+      daily: buildDailySlice(dayIso, marine, weather),
+    },
+  };
+}
+
+async function fetchForecast() {
+  const marineParams = new URLSearchParams({
+    latitude: String(LAT),
+    longitude: String(LON),
+    cell_selection: "sea",
+    timezone: TIMEZONE,
+    forecast_days: String(FORECAST_DAYS),
+    hourly: MARINE_HOURLY.join(","),
+    daily: MARINE_DAILY.join(","),
+    current: MARINE_HOURLY.join(","),
+  });
+  const weatherParams = new URLSearchParams({
+    latitude: String(LAT),
+    longitude: String(LON),
+    timezone: TIMEZONE,
+    forecast_days: String(FORECAST_DAYS),
+    hourly: WEATHER_HOURLY.join(","),
+    daily: WEATHER_DAILY.join(","),
+    current: WEATHER_CURRENT.join(","),
+  });
+
+  const [marineRes, weatherRes] = await Promise.all([
+    fetch(`${MARINE_URL}?${marineParams}`),
+    fetch(`${WEATHER_URL}?${weatherParams}`),
+  ]);
+  if (!marineRes.ok || !weatherRes.ok) throw new Error("Nu am putut lua prognoza de la Open-Meteo.");
+
+  const marine = await marineRes.json();
+  const weather = await weatherRes.json();
+  if (marine.error || weather.error) {
+    throw new Error(marine.reason || weather.reason || "Eroare Open-Meteo.");
+  }
+  return { marine, weather };
+}
+
+function formatWaveMax(v) {
+  if (v == null) return "—";
+  const rounded = Math.round(v * 10) / 10;
+  return Number.isInteger(rounded) ? `${rounded}m` : `${rounded.toFixed(1)}m`;
+}
+
+function formatScore(v) {
+  return v != null ? v.toFixed(1) : "—";
+}
+
+function populatePicker(marine, weather) {
+  daySummaries.clear();
+  dayPicker.innerHTML = "";
+  const times = marine.daily?.time || [];
+  const today = todayIso();
+
+  times.forEach((dayIso) => {
+    const daily = buildDailySlice(dayIso, marine, weather);
+    daySummaries.set(dayIso, daily);
+    const opt = document.createElement("option");
+    opt.value = dayIso;
+    const tag = dayIso === today ? " (azi)" : "";
+    const waveMax = daily?.marine?.wave_height_max;
+    const score = daily?.score;
+    opt.textContent = `${formatRoDate(dayIso)}${tag} — scor ${formatScore(score)} · val max ${formatWaveMax(waveMax)}`;
+    dayPicker.appendChild(opt);
+  });
+}
+
+function updatePickerPreview(dayIso) {
+  const daily = daySummaries.get(dayIso);
+  if (!daily) {
+    pickerPreview.style.display = "none";
+    return;
+  }
+  const waveMax = daily.marine?.wave_height_max;
+  const score = daily.score;
+  pickerPreview.innerHTML =
+    `Ziua aleasa: <strong>scor ${formatScore(score)}</strong> · val max <strong>${formatWaveMax(waveMax)}</strong>`;
+  pickerPreview.style.display = "block";
+}
+
+function showDay(dayIso) {
+  if (!forecastCache || !dayIso) return;
+  updatePickerPreview(dayIso);
+  const payload = buildPayload(dayIso, forecastCache.marine, forecastCache.weather);
+  render(payload);
+}
+
+async function loadForecast() {
+  errBox.style.display = "none";
+  dayPicker.disabled = true;
+  reloadBtn.disabled = true;
+  pickerHint.textContent = "Se incarca prognoza pentru urmatoarele 8 zile…";
+  pickerPreview.style.display = "none";
+
+  try {
+    forecastCache = await fetchForecast();
+    populatePicker(forecastCache.marine, forecastCache.weather);
+    dayPicker.disabled = false;
+    reloadBtn.disabled = false;
+    pickerHint.textContent = "Alege o zi — scorul si valul maxim apar in lista.";
+    const selected = dayPicker.value || forecastCache.marine.daily?.time?.[0];
+    if (selected) {
+      dayPicker.value = selected;
+      showDay(selected);
+    }
+  } catch (e) {
+    showError(e.message || "Eroare la incarcare.");
+    pickerHint.textContent = "Incerc din nou sau apasa Reincarca.";
+    reloadBtn.disabled = false;
+  }
+}
+
+function showError(msg) {
+  errBox.textContent = msg;
+  errBox.style.display = "block";
+}
+
+const MIN_COLOR = "#2A78D6";
+const MAX_COLOR = "#E24B4A";
+
+function minMaxPointStyle(values, baseColor) {
+  const valid = values.map((v, i) => [v, i]).filter(([v]) => v != null);
+  if (!valid.length) {
+    return {
+      minIdx: -1, maxIdx: -1,
+      pointRadius: values.map(() => 0),
+      pointHoverRadius: values.map(() => 3),
+      pointBackgroundColor: values.map(() => baseColor),
+      pointBorderColor: values.map(() => "#fff"),
+      pointBorderWidth: values.map(() => 0),
+    };
+  }
+  const minIdx = valid.reduce((a, b) => (b[0] < a[0] ? b : a))[1];
+  const maxIdx = valid.reduce((a, b) => (b[0] > a[0] ? b : a))[1];
+  return {
+    minIdx, maxIdx,
+    pointRadius: values.map((v, i) => (i === minIdx || i === maxIdx) ? 6 : 0),
+    pointHoverRadius: values.map((v, i) => (i === minIdx || i === maxIdx) ? 7 : 3),
+    pointBackgroundColor: values.map((v, i) => i === minIdx ? MIN_COLOR : i === maxIdx ? MAX_COLOR : baseColor),
+    pointBorderColor: values.map(() => "#fff"),
+    pointBorderWidth: values.map((v, i) => (i === minIdx || i === maxIdx) ? 2 : 0),
+  };
+}
+
+function degToCompass(d) {
+  const dirs = ["N", "NE", "E", "SE", "S", "SV", "V", "NV"];
+  return dirs[Math.round(((d % 360) + 360) % 360 / 45) % 8];
+}
+
+function fmtHour(iso) {
+  return iso.slice(11, 16);
+}
+
+function render(data) {
+  try {
+    const hours = data.processed && data.processed.hours;
+    if (!Array.isArray(hours) || hours.length === 0) {
+      showError('Nu am gasit ore pentru ziua aleasa.');
+      return;
+    }
+
+    charts.forEach((c) => c.destroy());
+    charts = [];
+
+    const meta = data.meta || {};
+    document.getElementById("locationLabel").innerHTML =
+      (meta.location ? meta.location.name : "Locatie necunoscuta") +
+      "<span>" + (meta.label || meta.date || "") + "</span>";
+
+    const labels = hours.map((h) => fmtHour(h.time));
+    const waveHeight = hours.map((h) => h.marine ? h.marine.waveHeight : null);
+    const swellHeight = hours.map((h) => h.marine ? h.marine.swellHeight : null);
+    const windSpeed = hours.map((h) => h.weather ? h.weather.windSpeed : null);
+    const windGusts = hours.map((h) => h.weather ? h.weather.windGusts : null);
+    const temp = hours.map((h) => h.weather ? h.weather.temperature : null);
+    const score = hours.map((h) => h.score);
+
+    const daily = data.processed.daily || {};
+    const maxWave = daily.marine ? daily.marine.wave_height_max : Math.max(...waveHeight.filter((v) => v != null));
+    const maxWind = daily.weather ? daily.weather.wind_speed_10m_max : Math.max(...windSpeed.filter((v) => v != null));
+    const tMin = daily.weather ? daily.weather.temperature_2m_min : Math.min(...temp.filter((v) => v != null));
+    const tMax = daily.weather ? daily.weather.temperature_2m_max : Math.max(...temp.filter((v) => v != null));
+    const seaTemp = meta.seaSurfaceTempDay;
+    const bestIdx = score.reduce((best, s, i) => ((s ?? -1) > (score[best] ?? -1) ? i : best), 0);
+
+    const cardsHtml = [
+      ["Scor zi", daily.score != null ? daily.score.toFixed(1) + "/10" : "—"],
+      ["Val maxim", maxWave != null ? maxWave.toFixed(2) + " m" : "—"],
+      ["Vant max", maxWind != null ? maxWind.toFixed(1) + " km/h" : "—"],
+      ["Temp aer", (tMin != null && tMax != null) ? Math.round(tMin) + "-" + Math.round(tMax) + "°C" : "—"],
+      ["Apa", seaTemp != null ? seaTemp.toFixed(1) + "°C" : "—"],
+      ["Ora optima", score[bestIdx] != null ? labels[bestIdx] + " (scor " + score[bestIdx].toFixed(1) + ")" : "—"],
+    ];
+    document.getElementById("metricCards").innerHTML = cardsHtml.map(([label, value], i) => `
+      <div class="card">
+        <p class="label">${label}</p>
+        <p class="value${i === 0 || i === 5 ? " accent" : ""}">${value}</p>
+      </div>
+    `).join("");
+
+    const muted = "#5A6B80";
+    const grid = "rgba(11,37,69,0.08)";
+    const baseOpts = {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: "index", intersect: false },
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { display: false }, ticks: { color: muted, maxRotation: 0, autoSkip: true, maxTicksLimit: 8 } },
+        y: { grid: { color: grid }, ticks: { color: muted } },
+      },
+    };
+
+    const waveMM = minMaxPointStyle(waveHeight, "#1B998B");
+    const swellMM = minMaxPointStyle(swellHeight, "#E8871E");
+    charts.push(new Chart(document.getElementById("waveChart"), {
+      type: "line",
+      data: { labels, datasets: [
+        { label: "Val (m)", data: waveHeight, borderColor: "#1B998B", backgroundColor: "rgba(27,153,139,0.12)", fill: true, borderWidth: 2, tension: 0.3, ...waveMM },
+        { label: "Swell (m)", data: swellHeight, borderColor: "#E8871E", backgroundColor: "transparent", borderWidth: 2, borderDash: [4, 3], tension: 0.3, ...swellMM },
+      ]},
+      options: baseOpts,
+    }));
+
+    const windMM = minMaxPointStyle(windSpeed, "#0B2545");
+    const gustMM = minMaxPointStyle(windGusts, "#E24B4A");
+    charts.push(new Chart(document.getElementById("windChart"), {
+      type: "line",
+      data: { labels, datasets: [
+        { label: "Vant (km/h)", data: windSpeed, borderColor: "#0B2545", backgroundColor: "transparent", borderWidth: 2, tension: 0.3, ...windMM },
+        { label: "Rafale (km/h)", data: windGusts, borderColor: "#E24B4A", backgroundColor: "transparent", borderWidth: 2, borderDash: [4, 3], tension: 0.3, ...gustMM },
+      ]},
+      options: baseOpts,
+    }));
+
+    const tempMM = minMaxPointStyle(temp, "#E8871E");
+    charts.push(new Chart(document.getElementById("tempChart"), {
+      type: "line",
+      data: { labels, datasets: [
+        { label: "Temperatura (°C)", data: temp, borderColor: "#E8871E", backgroundColor: "rgba(232,135,30,0.12)", fill: true, borderWidth: 2, tension: 0.3, ...tempMM },
+      ]},
+      options: baseOpts,
+    }));
+
+    const maxScore = Math.max(...score.filter((s) => s != null), 10);
+    const scoreMinIdx = score.reduce((a, b, i) => ((score[i] ?? 999) < (score[a] ?? 999) ? i : a), 0);
+    const scoreMaxIdx = score.reduce((a, b, i) => ((score[i] ?? -1) > (score[a] ?? -1) ? i : a), 0);
+    charts.push(new Chart(document.getElementById("scoreChart"), {
+      type: "bar",
+      data: { labels, datasets: [
+        { label: "Scor", data: score, backgroundColor: score.map((s, i) => i === scoreMaxIdx ? MAX_COLOR : i === scoreMinIdx ? MIN_COLOR : "rgba(11,37,69,0.3)"), borderRadius: 4, maxBarThickness: 20 },
+      ]},
+      options: { ...baseOpts, scales: { ...baseOpts.scales, y: { ...baseOpts.scales.y, min: 0, max: Math.max(10, Math.ceil(maxScore)) } } },
+    }));
+
+    const step = Math.max(1, Math.ceil(hours.length / 12));
+    const compassGrid = document.getElementById("compassGrid");
+    compassGrid.innerHTML = "";
+    for (let i = 0; i < hours.length; i += step) {
+      const h = hours[i];
+      const wind = h.weather ? h.weather.windDirection : null;
+      const wave = h.marine ? h.marine.waveDirection : null;
+      const swell = h.marine ? h.marine.swellDirection : null;
+      const speed = h.weather ? h.weather.windSpeed : null;
+      const cell = document.createElement("div");
+      cell.className = "compass-cell";
+      cell.innerHTML = `
+        <p class="h">${fmtHour(h.time)}</p>
+        <div class="compass-arrows">
+          ${wind != null ? arrowSvg("#0B2545", wind, 0) : ""}
+          ${wave != null ? arrowSvg("#1B998B", wave, 8) : ""}
+          ${swell != null ? arrowSvg("#E8871E", swell, -8) : ""}
+        </div>
+        <p class="info">${wind != null ? degToCompass(wind) : "—"}${speed != null ? " · " + speed.toFixed(0) + " km/h" : ""}</p>
+      `;
+      compassGrid.appendChild(cell);
+    }
+
+    errBox.style.display = "none";
+    dashboard.style.display = "block";
+  } catch (e) {
+    showError("A aparut o eroare la procesarea datelor: " + e.message);
+  }
+}
+
+function arrowSvg(color, deg, offsetX) {
+  return `<svg class="arrow" style="transform: translateX(${offsetX}px) rotate(${deg}deg);" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="4"></line><polyline points="6 10 12 4 18 10"></polyline></svg>`;
+}
+
+loadForecast();
+</script>
+
+</body>
+</html>
