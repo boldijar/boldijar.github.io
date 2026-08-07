@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Prognoza surf — Plaja Modern</title>
+<title>Prognoza surf — analiza date</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
@@ -73,6 +73,37 @@
     padding:1.25rem 1.35rem;
     margin-top:1.5rem;
   }
+  .location-toggle{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-bottom:1rem;
+  }
+  .location-toggle button{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:13px;
+    font-weight:500;
+    padding:8px 14px;
+    border-radius:999px;
+    border:1px solid var(--line);
+    background:#fff;
+    color:var(--muted);
+    cursor:pointer;
+    transition:background 0.15s, color 0.15s, border-color 0.15s;
+  }
+  .location-toggle button:hover{
+    border-color:var(--slate);
+    color:var(--ink);
+  }
+  .location-toggle button.is-active{
+    background:var(--navy);
+    border-color:var(--navy);
+    color:#fff;
+  }
+  .location-toggle button:disabled{
+    opacity:0.55;
+    cursor:wait;
+  }
   .picker-panel label{
     display:block;
     font-family:'Space Grotesk',sans-serif;
@@ -126,6 +157,17 @@
     display:none;
   }
   .picker-preview strong{color:var(--coral); font-weight:500;}
+  .compare-panel{
+    background:#fff;
+    border-radius:16px;
+    border:1px solid var(--line);
+    padding:1.15rem 1.25rem 1rem;
+    margin-top:1.5rem;
+  }
+  .compare-panel .legend{margin-bottom:10px;}
+  .chart-wrap--compare{height:260px;}
+  .compare-panel[hidden]{display:none;}
+  .compare-panel + .toolbar{margin-top:1rem;}
   .err{
     background:#FBE9E9;
     border:1px solid #E0A0A0;
@@ -304,7 +346,7 @@
 
 <header>
   <div class="header-inner">
-    <p class="eyebrow">Plaja Modern · Constanta</p>
+    <p class="eyebrow" id="headerEyebrow">Plaja Modern · Constanta</p>
     <h1>Val, vant, temperatura</h1>
     <p class="subhead">Prognoza raw din Open-Meteo — vizualizare pentru analiza datelor.</p>
   </div>
@@ -312,6 +354,7 @@
 
 <main>
   <div class="picker-panel">
+    <div class="location-toggle" id="locationToggle" role="group" aria-label="Locatie"></div>
     <label for="dayPicker">Alege ziua</label>
     <div class="picker-row">
       <select id="dayPicker" disabled aria-label="Alege ziua prognozei"></select>
@@ -323,6 +366,10 @@
   <div class="err" id="errBox"></div>
 
   <div id="dashboard">
+    <div class="compare-panel" id="comparePanel" hidden>
+      <div class="legend" id="compareLegend"></div>
+      <div class="chart-wrap chart-wrap--compare"><canvas id="compareChart" role="img" aria-label="Val si swell pe ore, toate plajele"></canvas></div>
+    </div>
     <div class="toolbar">
       <div class="location" id="locationLabel">—<span id="dateLabel"></span></div>
     </div>
@@ -390,12 +437,46 @@
 <footer>Datele vin direct din Open-Meteo in browser — nu se uploadeaza nimic.</footer>
 
 <script>
-const LAT = 44.1809304;
-const LON = 28.6563829;
+const LOCATIONS = [
+  ["Plaja Modern", 44.1809304, 28.6563829],
+  ["2 Mai", 43.7850455, 28.5754977],
+  ["Shabla, Bulgaria", 43.5445151, 28.6044139],
+];
+
+const COMPARE_COLORS = [
+  "#E63946",
+  "#1D3557",
+  "#2A9D8F",
+  "#F4A261",
+  "#9B5DE5",
+  "#FB8500",
+  "#0077B6",
+  "#06D6A0",
+  "#EF476F",
+  "#8338EC",
+];
+
+function compareColor(index) {
+  return COMPARE_COLORS[index % COMPARE_COLORS.length];
+}
+
+function colorAlpha(hex, alpha) {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r},${g},${b},${alpha})`;
+}
 const TIMEZONE = "Europe/Bucharest";
 const FORECAST_DAYS = 8;
 const MARINE_URL = "https://marine-api.open-meteo.com/v1/marine";
 const WEATHER_URL = "https://api.open-meteo.com/v1/forecast";
+
+let activeLocationIndex = 0;
+
+function activeLocation() {
+  const [name, lat, lon] = LOCATIONS[activeLocationIndex];
+  return { name, lat, lon };
+}
 
 const MARINE_HOURLY = [
   "wave_height", "wave_direction", "wave_period",
@@ -424,17 +505,58 @@ const RO_DAYS = ["Duminica", "Luni", "Marti", "Miercuri", "Joi", "Vineri", "Samb
 const RO_MONTHS = ["", "ian.", "feb.", "mar.", "apr.", "mai", "iun.", "iul.", "aug.", "sept.", "oct.", "nov.", "dec."];
 
 const dayPicker = document.getElementById("dayPicker");
+const locationToggle = document.getElementById("locationToggle");
 const pickerHint = document.getElementById("pickerHint");
 const pickerPreview = document.getElementById("pickerPreview");
 const reloadBtn = document.getElementById("reloadBtn");
 const errBox = document.getElementById("errBox");
 const dashboard = document.getElementById("dashboard");
+const comparePanel = document.getElementById("comparePanel");
+const compareLegend = document.getElementById("compareLegend");
 let charts = [];
+let compareChart = null;
+const forecastByLocation = new Map();
 let forecastCache = null;
 let daySummaries = new Map();
 
 dayPicker.addEventListener("change", () => showDay(dayPicker.value));
-reloadBtn.addEventListener("click", () => loadForecast());
+reloadBtn.addEventListener("click", () => loadAllForecasts(dayPicker.value || null));
+
+function initLocationToggle() {
+  locationToggle.innerHTML = "";
+  LOCATIONS.forEach(([name], index) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.textContent = name;
+    btn.classList.toggle("is-active", index === activeLocationIndex);
+    btn.addEventListener("click", () => {
+      if (index === activeLocationIndex) return;
+      activeLocationIndex = index;
+      syncLocationToggle();
+      updateLocationChrome();
+      applyActiveLocation(dayPicker.value || null);
+    });
+    locationToggle.appendChild(btn);
+  });
+}
+
+function syncLocationToggle() {
+  locationToggle.querySelectorAll("button").forEach((btn, index) => {
+    btn.classList.toggle("is-active", index === activeLocationIndex);
+  });
+}
+
+function setLocationControlsDisabled(disabled) {
+  locationToggle.querySelectorAll("button").forEach((btn) => {
+    btn.disabled = disabled;
+  });
+}
+
+function updateLocationChrome() {
+  const { name } = activeLocation();
+  document.getElementById("headerEyebrow").textContent = `${name}`;
+  document.title = `Prognoza surf — ${name}`;
+}
 
 function num(v) {
   if (typeof v === "number" && !Number.isNaN(v)) return v;
@@ -535,14 +657,15 @@ function buildDailySlice(dayIso, marine, weather) {
 function buildPayload(dayIso, marine, weather) {
   const hours = buildHours(dayIso, marine, weather);
   const seaTemps = hours.map((h) => num(h.marine.seaSurfaceTemperature)).filter((t) => t != null);
+  const loc = activeLocation();
   return {
     meta: {
       date: dayIso,
       label: formatRoDate(dayIso),
       location: {
-        name: "Plaja Modern",
-        latitude: LAT,
-        longitude: LON,
+        name: loc.name,
+        latitude: loc.lat,
+        longitude: loc.lon,
         timezone: TIMEZONE,
       },
       fetchedAt: new Date().toISOString(),
@@ -561,10 +684,10 @@ function buildPayload(dayIso, marine, weather) {
   };
 }
 
-async function fetchForecast() {
+async function fetchForecastForLocation(lat, lon) {
   const marineParams = new URLSearchParams({
-    latitude: String(LAT),
-    longitude: String(LON),
+    latitude: String(lat),
+    longitude: String(lon),
     cell_selection: "sea",
     timezone: TIMEZONE,
     forecast_days: String(FORECAST_DAYS),
@@ -573,8 +696,8 @@ async function fetchForecast() {
     current: MARINE_HOURLY.join(","),
   });
   const weatherParams = new URLSearchParams({
-    latitude: String(LAT),
-    longitude: String(LON),
+    latitude: String(lat),
+    longitude: String(lon),
     timezone: TIMEZONE,
     forecast_days: String(FORECAST_DAYS),
     hourly: WEATHER_HOURLY.join(","),
@@ -638,30 +761,163 @@ function showDay(dayIso) {
   updatePickerPreview(dayIso);
   const payload = buildPayload(dayIso, forecastCache.marine, forecastCache.weather);
   render(payload);
+  renderCompareCharts(dayIso);
 }
 
-async function loadForecast() {
+function applyActiveLocation(preserveDayIso) {
+  forecastCache = forecastByLocation.get(activeLocationIndex);
+  if (!forecastCache) return;
+
+  populatePicker(forecastCache.marine, forecastCache.weather);
+  const times = forecastCache.marine.daily?.time || [];
+  const selected =
+    preserveDayIso && times.includes(preserveDayIso)
+      ? preserveDayIso
+      : dayPicker.value && times.includes(dayPicker.value)
+        ? dayPicker.value
+        : times[0];
+  if (selected) {
+    dayPicker.value = selected;
+    showDay(selected);
+  }
+}
+
+function destroyCompareChart() {
+  if (compareChart) {
+    compareChart.destroy();
+    compareChart = null;
+  }
+}
+
+function maxPointStyle(values, pointColor) {
+  const valid = values.map((v, i) => [v, i]).filter(([v]) => v != null);
+  if (!valid.length) {
+    return {
+      pointRadius: values.map(() => 0),
+      pointHoverRadius: values.map(() => 3),
+      pointBackgroundColor: values.map(() => pointColor),
+      pointBorderColor: values.map(() => "#fff"),
+      pointBorderWidth: values.map(() => 0),
+    };
+  }
+  const maxIdx = valid.reduce((a, b) => (b[0] > a[0] ? b : a))[1];
+  return {
+    pointRadius: values.map((v, i) => (i === maxIdx ? 5 : 0)),
+    pointHoverRadius: values.map((v, i) => (i === maxIdx ? 7 : 3)),
+    pointBackgroundColor: values.map((v, i) => (i === maxIdx ? pointColor : pointColor)),
+    pointBorderColor: values.map(() => "#fff"),
+    pointBorderWidth: values.map((v, i) => (i === maxIdx ? 2 : 0)),
+  };
+}
+
+function renderCompareCharts(dayIso) {
+  if (!dayIso || forecastByLocation.size === 0) {
+    comparePanel.hidden = true;
+    return;
+  }
+
+  destroyCompareChart();
+
+  let labels = [];
+  const datasets = [];
+
+  LOCATIONS.forEach(([name], index) => {
+    const cache = forecastByLocation.get(index);
+    if (!cache) return;
+    const hours = buildHours(dayIso, cache.marine, cache.weather);
+    if (!hours.length) return;
+    if (!labels.length) labels = hours.map((h) => fmtHour(h.time));
+
+    const color = compareColor(index);
+    const waveValues = hours.map((h) => h.marine?.waveHeight ?? null);
+    const swellValues = hours.map((h) => h.marine?.swellHeight ?? null);
+    datasets.push({
+      label: `${name} · val`,
+      data: waveValues,
+      borderColor: color,
+      backgroundColor: "transparent",
+      borderWidth: 2,
+      tension: 0.3,
+      ...maxPointStyle(waveValues, color),
+    });
+    datasets.push({
+      label: `${name} · swell`,
+      data: swellValues,
+      borderColor: colorAlpha(color, 0.5),
+      backgroundColor: "transparent",
+      borderWidth: 2,
+      tension: 0.3,
+      borderDash: [5, 4],
+      ...maxPointStyle(swellValues, colorAlpha(color, 0.5)),
+    });
+  });
+
+  if (!labels.length || !datasets.length) {
+    comparePanel.hidden = true;
+    return;
+  }
+
+  compareLegend.innerHTML = LOCATIONS.map(([name], index) => {
+    const c = compareColor(index);
+    return `<span><span class="dot" style="background:${c}"></span>${name}</span>`;
+  }).join("");
+
+  const muted = "#5A6B80";
+  const grid = "rgba(11,37,69,0.08)";
+  compareChart = new Chart(document.getElementById("compareChart"), {
+    type: "line",
+    data: { labels, datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: "index", intersect: false },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label(ctx) {
+              const v = ctx.parsed.y;
+              return `${ctx.dataset.label}: ${v != null ? v.toFixed(2) + " m" : "—"}`;
+            },
+          },
+        },
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { color: muted, maxRotation: 0, autoSkip: true, maxTicksLimit: 8 } },
+        y: { grid: { color: grid }, ticks: { color: muted }, title: { display: true, text: "m", color: muted, font: { size: 11 } } },
+      },
+    },
+  });
+
+  comparePanel.hidden = false;
+}
+
+async function loadAllForecasts(preserveDayIso) {
   errBox.style.display = "none";
   dayPicker.disabled = true;
   reloadBtn.disabled = true;
-  pickerHint.textContent = "Se incarca prognoza pentru urmatoarele 8 zile…";
+  setLocationControlsDisabled(true);
+  pickerHint.textContent = `Se incarca prognoza pentru ${LOCATIONS.length} locatii…`;
   pickerPreview.style.display = "none";
+  dashboard.style.display = "none";
 
   try {
-    forecastCache = await fetchForecast();
-    populatePicker(forecastCache.marine, forecastCache.weather);
+    const results = await Promise.all(
+      LOCATIONS.map(([, lat, lon]) => fetchForecastForLocation(lat, lon)),
+    );
+    forecastByLocation.clear();
+    LOCATIONS.forEach((_, index) => forecastByLocation.set(index, results[index]));
+
     dayPicker.disabled = false;
     reloadBtn.disabled = false;
-    pickerHint.textContent = "Alege o zi — valul maxim apare in lista.";
-    const selected = dayPicker.value || forecastCache.marine.daily?.time?.[0];
-    if (selected) {
-      dayPicker.value = selected;
-      showDay(selected);
-    }
+    setLocationControlsDisabled(false);
+    pickerHint.textContent = "Alege o zi — schimbi locatia fara reload.";
+    applyActiveLocation(preserveDayIso);
   } catch (e) {
     showError(e.message || "Eroare la incarcare.");
     pickerHint.textContent = "Incerc din nou sau apasa Reincarca.";
     reloadBtn.disabled = false;
+    setLocationControlsDisabled(false);
   }
 }
 
@@ -907,7 +1163,9 @@ function renderQuiverPlot(hours) {
   return svg;
 }
 
-loadForecast();
+initLocationToggle();
+updateLocationChrome();
+loadAllForecasts();
 </script>
 
 </body>
