@@ -268,6 +268,30 @@
     color:var(--navy);
   }
 
+  .quiver-wrap{
+    position:relative;
+    width:100%;
+    overflow-x:auto;
+    margin-bottom:12px;
+  }
+  .quiver-svg{
+    display:block;
+    width:100%;
+    min-width:520px;
+    height:auto;
+  }
+  .quiver-row-label{
+    font-family:'Inter',sans-serif;
+    font-size:11px;
+    font-weight:600;
+    fill:var(--muted);
+  }
+  .quiver-tick{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10px;
+    fill:var(--muted);
+  }
+
   footer{
     text-align:center;
     color:var(--muted);
@@ -347,6 +371,17 @@
         <span><span class="dot" style="background:#E24B4A; border-radius:50%;"></span>Maxim</span>
       </div>
       <div class="chart-wrap"><canvas id="tempChart" role="img" aria-label="Temperatura aerului pe ore"></canvas></div>
+    </div>
+
+    <div class="panel">
+      <h2>Quiver / Vector Plot</h2>
+      <p class="desc">Axa orizontala = orele zilei; 3 randuri: vant, val, swell (directia dinspre care vin)</p>
+      <div class="legend">
+        <span><span class="dot" style="background:#0B2545"></span>Vant</span>
+        <span><span class="dot" style="background:#1B998B"></span>Val</span>
+        <span><span class="dot" style="background:#E8871E"></span>Swell</span>
+      </div>
+      <div class="quiver-wrap" id="quiverPlot"></div>
     </div>
 
     <div class="panel">
@@ -964,6 +999,8 @@ function render(data) {
     }));
 
     const step = Math.max(1, Math.ceil(hours.length / 12));
+    document.getElementById("quiverPlot").innerHTML = renderQuiverPlot(hours);
+
     const compassGrid = document.getElementById("compassGrid");
     compassGrid.innerHTML = "";
     for (let i = 0; i < hours.length; i += step) {
@@ -999,6 +1036,67 @@ function render(data) {
 
 function arrowSvg(color, deg, offsetX) {
   return `<svg class="arrow" style="transform: translateX(${offsetX}px) rotate(${deg}deg);" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="4"></line><polyline points="6 10 12 4 18 10"></polyline></svg>`;
+}
+
+const QUIVER_ROWS = [
+  { label: "Vant", color: "#0B2545", getDeg: (h) => h.weather?.windDirection ?? null },
+  { label: "Val", color: "#1B998B", getDeg: (h) => h.marine?.waveDirection ?? null },
+  { label: "Swell", color: "#E8871E", getDeg: (h) => h.marine?.swellDirection ?? null },
+];
+
+function quiverArrow(x, y, deg, color) {
+  return `<g transform="translate(${x},${y}) rotate(${deg})">
+    <line x1="0" y1="7" x2="0" y2="-7" stroke="${color}" stroke-width="2" stroke-linecap="round"/>
+    <polyline points="-3.5,-1 0,-7 3.5,-1" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>`;
+}
+
+function renderQuiverPlot(hours) {
+  const count = hours.length;
+  if (!count) return "";
+
+  const W = Math.max(640, count * 28);
+  const H = 168;
+  const pad = { l: 56, r: 16, t: 12, b: 28 };
+  const plotW = W - pad.l - pad.r;
+  const plotH = H - pad.t - pad.b;
+  const rowH = plotH / QUIVER_ROWS.length;
+  const grid = "rgba(11,37,69,0.08)";
+
+  const xAt = (i) => (count <= 1 ? pad.l + plotW / 2 : pad.l + (i / (count - 1)) * plotW);
+
+  let svg = `<svg viewBox="0 0 ${W} ${H}" class="quiver-svg" role="img" aria-label="Quiver plot directii vant val swell">`;
+
+  for (let r = 0; r <= QUIVER_ROWS.length; r++) {
+    const y = pad.t + r * rowH;
+    svg += `<line x1="${pad.l}" y1="${y}" x2="${W - pad.r}" y2="${y}" stroke="${grid}"/>`;
+  }
+
+  hours.forEach((h, i) => {
+    if (i % 3 !== 0) return;
+    const x = xAt(i);
+    svg += `<line x1="${x}" y1="${pad.t}" x2="${x}" y2="${pad.t + plotH}" stroke="${grid}" stroke-dasharray="3 4"/>`;
+  });
+
+  QUIVER_ROWS.forEach((row, ri) => {
+    const cy = pad.t + rowH * ri + rowH / 2;
+    svg += `<text x="${pad.l - 10}" y="${cy + 4}" text-anchor="end" class="quiver-row-label">${row.label}</text>`;
+    hours.forEach((h, i) => {
+      const deg = row.getDeg(h);
+      if (deg == null) return;
+      svg += quiverArrow(xAt(i), cy, deg, row.color);
+    });
+  });
+
+  svg += `<line x1="${pad.l}" y1="${pad.t + plotH}" x2="${W - pad.r}" y2="${pad.t + plotH}" stroke="rgba(11,37,69,0.18)"/>`;
+
+  hours.forEach((h, i) => {
+    if (i % 3 !== 0) return;
+    svg += `<text x="${xAt(i)}" y="${H - 8}" text-anchor="middle" class="quiver-tick">${fmtHour(h.time)}</text>`;
+  });
+
+  svg += "</svg>";
+  return svg;
 }
 
 loadForecast();
