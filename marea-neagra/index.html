@@ -10,6 +10,12 @@
     <link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32" />
     <link rel="icon" href="favicon.ico" sizes="any" />
     <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bungee&display=swap"
+      rel="stylesheet"
+    />
     <style>
 *,
 *::before,
@@ -172,6 +178,164 @@ a {
   padding-right: 0.25rem;
 }
 
+.day-head--tap {
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.day-head--tap:hover .day-title {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.day-block.is-charts-open .day-head--tap .day-title__left::after {
+  content: "";
+  display: inline-block;
+  width: 0.45rem;
+  height: 0.45rem;
+  margin-left: 0.35rem;
+  border-right: 2px solid rgba(255, 255, 255, 0.35);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.35);
+  transform: rotate(-135deg) translateY(0.1rem);
+  vertical-align: middle;
+}
+
+.day-charts {
+  margin: -0.35rem 0 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  width: 100%;
+}
+
+.day-charts--full {
+  max-width: none !important;
+}
+
+.day-charts[hidden] {
+  display: none !important;
+}
+
+.chart-panel {
+  border-radius: 0.75rem;
+  background: rgba(0, 0, 0, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0.45rem 0.5rem 0.3rem;
+}
+
+body.theme-bali .chart-panel {
+  background: rgba(0, 0, 0, 0.28);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.85rem;
+  margin-bottom: 0.2rem;
+  padding: 0 0.15rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.chart-legend__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.chart-swatch {
+  width: 0.65rem;
+  height: 0.65rem;
+  border-radius: 0.15rem;
+  flex-shrink: 0;
+}
+
+.chart-swatch--line {
+  width: 1rem;
+  height: 0;
+  border-radius: 0;
+  border-top: 2px solid currentColor;
+}
+
+.chart-swatch--dashed {
+  border-top-style: dashed;
+}
+
+.chart-swatch--wave {
+  background: #3b82f6;
+}
+
+.chart-swatch--swell {
+  color: #22c55e;
+}
+
+.chart-swatch--wind {
+  background: #f97316;
+}
+
+.chart-swatch--gusts {
+  color: #ef4444;
+}
+
+.chart-swatch--temp {
+  background: #eab308;
+}
+
+.chart-swatch--score {
+  background: rgba(129, 140, 248, 0.75);
+}
+
+.chart-canvas-wrap {
+  position: relative;
+  height: 8.75rem;
+  width: 100%;
+  cursor: crosshair;
+  touch-action: manipulation;
+}
+
+.chart-canvas-wrap canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.day-chart-detail {
+  padding: 0.65rem 0.85rem;
+  border-radius: 0.65rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.78);
+  min-height: 2.75rem;
+}
+
+.day-chart-detail.is-empty {
+  color: rgba(255, 255, 255, 0.32);
+  font-weight: 500;
+  font-style: italic;
+}
+
+.day-chart-detail strong {
+  color: #fff;
+  font-weight: 800;
+}
+
+.hour-card--highlight {
+  border-color: rgba(186, 230, 253, 0.55);
+  background: rgba(186, 230, 253, 0.12);
+  box-shadow: 0 0 0 1px rgba(186, 230, 253, 0.25);
+}
+
+body.theme-bali .hour-card--highlight {
+  border-color: rgba(94, 234, 212, 0.5);
+  background: rgba(94, 234, 212, 0.1);
+  box-shadow: 0 0 0 1px rgba(94, 234, 212, 0.2);
+}
+
 .day-title__left {
   display: flex;
   align-items: center;
@@ -200,7 +364,125 @@ a {
 }
 
 .day-title--good {
-  color: rgba(253, 230, 138, 0.9);
+  color: inherit;
+}
+
+.day-title--good .day-title__label.fire-text {
+  position: relative;
+  display: inline-block;
+  font-family: "Bungee", system-ui, sans-serif;
+  font-weight: 400;
+  font-size: 1.05em;
+  letter-spacing: 0.04em;
+  line-height: 1.1;
+  color: #fef9c3;
+  text-shadow:
+    0 0 5px rgba(253, 224, 71, 0.55),
+    0 0 12px rgba(245, 158, 11, 0.35),
+    0 0 20px rgba(234, 88, 12, 0.18);
+  animation: fire-core 2.8s ease-in-out infinite alternate;
+}
+
+.day-title--good .fire-text::before,
+.day-title--good .fire-text::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.day-title--good .fire-text::before {
+  z-index: -1;
+  color: #fb923c;
+  filter: blur(6px);
+  opacity: 0.65;
+  animation: fire-glow 3.2s ease-in-out infinite alternate;
+}
+
+.day-title--good .fire-text::after {
+  z-index: -2;
+  color: transparent;
+  text-shadow:
+    0 -2px 5px rgba(251, 191, 36, 0.35),
+    0 -5px 10px rgba(249, 115, 22, 0.28),
+    0 -8px 16px rgba(234, 88, 12, 0.18);
+  animation: fire-rise 3.6s ease-in-out infinite alternate;
+}
+
+@keyframes fire-core {
+  0% {
+    color: #fffbeb;
+    text-shadow:
+      0 0 4px rgba(254, 240, 138, 0.55),
+      0 0 10px rgba(251, 191, 36, 0.32),
+      0 0 18px rgba(245, 158, 11, 0.2);
+    transform: translateY(0);
+  }
+  100% {
+    color: #fde68a;
+    text-shadow:
+      0 0 6px rgba(253, 224, 71, 0.65),
+      0 0 14px rgba(251, 146, 60, 0.4),
+      0 0 22px rgba(234, 88, 12, 0.22);
+    transform: translateY(-0.25px);
+  }
+}
+
+@keyframes fire-glow {
+  0% {
+    opacity: 0.5;
+    filter: blur(5px);
+    transform: scale(1) translateY(0.5px);
+  }
+  100% {
+    opacity: 0.72;
+    filter: blur(7px);
+    transform: scale(1.02) translateY(-0.5px);
+  }
+}
+
+@keyframes fire-rise {
+  0% {
+    opacity: 0.4;
+    transform: translateY(0.5px) scaleX(1);
+  }
+  100% {
+    opacity: 0.65;
+    transform: translateY(-2px) scaleX(1.02);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .day-title--good .day-title__label.fire-text,
+  .day-title--good .fire-text::before,
+  .day-title--good .fire-text::after {
+    animation: none;
+  }
+}
+
+@media (max-width: 639px) {
+  .day-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.35rem 0.75rem;
+  }
+
+  .day-title {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .day-title__meta {
+    position: static;
+    transform: none;
+    padding-left: 0;
+    margin-left: auto;
+    flex-shrink: 0;
+  }
 }
 
 .day-title__board {
@@ -691,6 +973,7 @@ body.theme-bali .footer a.bot-link {
         <canvas id="surf-canvas" width="800" height="170"></canvas>
       </section>
     </main>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
     <script>
 /* eslint-disable no-unused-vars */
 (function () {
@@ -1012,12 +1295,20 @@ body.theme-bali .footer a.bot-link {
     return compass + "-cross";
   }
 
+  function formatMeters(meters, withUnitSpace) {
+    if (meters == null) return "—";
+    const rounded = Math.round(meters * 10) / 10;
+    const isWhole = Math.abs(rounded - Math.round(rounded)) < 0.05;
+    const text = isWhole ? String(Math.round(rounded)) : rounded.toFixed(1);
+    return withUnitSpace ? `${text}\u00a0m` : `${text}m`;
+  }
+
   function formatHeight(meters) {
-    return `${meters.toFixed(1)}\u00a0m`;
+    return formatMeters(meters, true);
   }
 
   function formatSwellLabel(meters) {
-    return meters == null ? "—" : `SWELL: ${meters.toFixed(1)}m`;
+    return meters == null ? "—" : `SWELL: ${formatMeters(meters, false)}`;
   }
 
   function formatTemp(celsius) {
@@ -1351,21 +1642,20 @@ body.theme-bali .footer a.bot-link {
     return { text: pickRandom(NAH), tier: "nah" };
   }
 
-  function isThreeHourSlot(iso) {
-    return new Date(iso).getHours() % 3 === 0;
-  }
+  const SURF_CARD_HOURS = [6, 9, 12, 15, 18];
 
-  function isDaylightHour(hour) {
-    if (hour.isDay !== null) return hour.isDay;
-    const h = new Date(hour.time).getHours();
-    return h >= 6 && h <= 20;
+  function isSurfCardHour(iso) {
+    return SURF_CARD_HOURS.includes(new Date(iso).getHours());
   }
 
   function hoursForDay(hourly, date) {
     return hourly
       .filter((h) => h.time.slice(0, 10) === date)
-      .filter((h) => isThreeHourSlot(h.time))
-      .filter(isDaylightHour);
+      .filter((h) => isSurfCardHour(h.time));
+  }
+
+  function hoursForDayFull(hourly, date) {
+    return hourly.filter((h) => h.time.slice(0, 10) === date);
   }
 
   function hourlyVal(hourly, key, index) {
@@ -1446,6 +1736,8 @@ body.theme-bali .footer a.bot-link {
         windSpeed: wi !== undefined ? num(hourlyVal(weatherHourly, "wind_speed_10m", wi)) : null,
         windDirection:
           wi !== undefined ? num(hourlyVal(weatherHourly, "wind_direction_10m", wi)) : null,
+        windGusts: wi !== undefined ? num(hourlyVal(weatherHourly, "wind_gusts_10m", wi)) : null,
+        airTemp: wi !== undefined ? num(hourlyVal(weatherHourly, "temperature_2m", wi)) : null,
         seaSurfaceTemperature:
           num(hourlyVal(marineHourly, "sea_surface_temperature", i)),
         score,
@@ -1623,7 +1915,532 @@ body.theme-bali .footer a.bot-link {
     return `<span>Acum swell <strong>${swell}</strong>${period}</span><span class="dot">·</span><span class="muted">wave ${wave}</span><span class="dot">·</span>${windHtml}<span class="dot">·</span><span class="score">${score.toFixed(1)}/10</span>`;
   }
 
-  function renderHourCard(hour) {
+  const dayHoursByIndex = new Map();
+  const dayChartHoursByIndex = new Map();
+  const dayChartInstances = new Map();
+  let openChartsDayIndex = null;
+  let selectedChartHour = { dayIndex: null, hourIndex: null, chartKey: null };
+  let chartJsReady = false;
+
+  function peakIndex(values) {
+    let bestI = -1;
+    let bestV = null;
+    values.forEach((v, i) => {
+      if (v == null || Number.isNaN(v)) return;
+      if (bestV === null || v > bestV) {
+        bestV = v;
+        bestI = i;
+      }
+    });
+    return bestI;
+  }
+
+  function formatChartTapLabel(chartKey, hours, idx) {
+    const h = hours[idx];
+    if (!h) return "";
+    switch (chartKey) {
+      case "wave": {
+        const w = h.waveHeight != null ? formatMeters(h.waveHeight, false) : "—";
+        const s = h.swellHeight != null ? formatMeters(h.swellHeight, false) : "—";
+        return `${w} · ${s}`;
+      }
+      case "wind": {
+        const w = h.windSpeed != null ? `${h.windSpeed.toFixed(0)}` : "—";
+        const g = h.windGusts != null ? `${h.windGusts.toFixed(0)}` : "—";
+        return `${w} / ${g} km/h`;
+      }
+      case "temp":
+        return h.airTemp != null ? `${Math.round(h.airTemp)}°C` : "—";
+      case "score":
+        return h.score != null ? h.score.toFixed(1) : "—";
+      default:
+        return "";
+    }
+  }
+
+  function drawChartMarker(ctx, x, y, fill) {
+    ctx.save();
+    ctx.fillStyle = fill;
+    ctx.strokeStyle = "rgba(255,255,255,0.9)";
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.arc(x, y, 4.5, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function drawChartTapLabel(ctx, x, y, text, chartArea) {
+    if (!text) return;
+    ctx.save();
+    ctx.font = "600 10px system-ui,sans-serif";
+    const padX = 6;
+    const w = ctx.measureText(text).width + padX * 2;
+    const h = 16;
+    let left = x - w / 2;
+    let top = y - h - 10;
+    if (left < chartArea.left + 2) left = chartArea.left + 2;
+    if (left + w > chartArea.right - 2) left = chartArea.right - w - 2;
+    if (top < chartArea.top + 2) top = y + 10;
+    ctx.fillStyle = "rgba(15, 23, 42, 0.92)";
+    ctx.strokeStyle = "rgba(255,255,255,0.22)";
+    ctx.lineWidth = 1;
+    if (typeof ctx.roundRect === "function") {
+      ctx.beginPath();
+      ctx.roundRect(left, top, w, h, 4);
+    } else {
+      const r = 4;
+      ctx.beginPath();
+      ctx.moveTo(left + r, top);
+      ctx.lineTo(left + w - r, top);
+      ctx.quadraticCurveTo(left + w, top, left + w, top + r);
+      ctx.lineTo(left + w, top + h - r);
+      ctx.quadraticCurveTo(left + w, top + h, left + w - r, top + h);
+      ctx.lineTo(left + r, top + h);
+      ctx.quadraticCurveTo(left, top + h, left, top + h - r);
+      ctx.lineTo(left, top + r);
+      ctx.quadraticCurveTo(left, top, left + r, top);
+      ctx.closePath();
+    }
+    ctx.fill();
+    ctx.stroke();
+    ctx.fillStyle = "#fff";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(text, left + w / 2, top + h / 2);
+    ctx.restore();
+  }
+
+  function datasetPeakColor(dataset, index) {
+    const c = dataset.borderColor || dataset.backgroundColor;
+    if (Array.isArray(c)) return c[index] ?? c[0] ?? "#a78bfa";
+    return c || "#fff";
+  }
+
+  const dayChartsPlugin = {
+    id: "dayChartsDecor",
+    afterDatasetsDraw(chart) {
+      const { ctx, chartArea } = chart;
+      if (!chartArea) return;
+
+      (chart.$maxIndices || []).forEach((maxI, dsIndex) => {
+        if (maxI < 0) return;
+        const meta = chart.getDatasetMeta(dsIndex);
+        const pt = meta.data[maxI];
+        if (!pt) return;
+        drawChartMarker(ctx, pt.x, pt.y, datasetPeakColor(chart.data.datasets[dsIndex], maxI));
+      });
+
+      const idx = chart.$selectedHour;
+      if (idx == null || chart.$chartKey !== chart.$activeChartKey) return;
+      const meta = chart.getDatasetMeta(0);
+      const pt = meta.data[idx];
+      if (!pt) return;
+      drawChartMarker(ctx, pt.x, pt.y, "#fff");
+      const label = formatChartTapLabel(chart.$chartKey, chart.$hours || [], idx);
+      drawChartTapLabel(ctx, pt.x, pt.y, label, chartArea);
+    },
+    afterDraw(chart) {
+      const idx = chart.$selectedHour;
+      if (idx == null) return;
+      const meta = chart.getDatasetMeta(0);
+      const point = meta.data[idx];
+      if (!point) return;
+      const { top, bottom } = chart.chartArea;
+      const ctx = chart.ctx;
+      ctx.save();
+      ctx.strokeStyle = "rgba(255,255,255,0.38)";
+      ctx.lineWidth = 1;
+      ctx.setLineDash([3, 3]);
+      ctx.beginPath();
+      ctx.moveTo(point.x, top);
+      ctx.lineTo(point.x, bottom);
+      ctx.stroke();
+      ctx.restore();
+    },
+  };
+
+  function ensureChartJs() {
+    if (typeof Chart === "undefined") return false;
+    if (!chartJsReady) {
+      Chart.register(dayChartsPlugin);
+      chartJsReady = true;
+    }
+    return true;
+  }
+
+  function initChartInstance(chart, chartKey, hours) {
+    chart.$chartKey = chartKey;
+    chart.$hours = hours;
+    chart.$maxIndices = chart.data.datasets.map((ds) => peakIndex(ds.data));
+    chart.$activeChartKey = null;
+  }
+
+  function chartLabels(hours) {
+    return hours.map((h) => h.time.slice(11, 13));
+  }
+
+  function chartAxisStyle() {
+    return {
+      x: {
+        grid: { display: false },
+        border: { color: "rgba(255,255,255,0.12)" },
+        ticks: {
+          color: "rgba(255,255,255,0.38)",
+          font: { size: 10, family: "system-ui,sans-serif" },
+          maxRotation: 0,
+          autoSkip: false,
+          callback(value, index) {
+            return index % 3 === 0 ? this.getLabelForValue(value) : "";
+          },
+        },
+      },
+      y: {
+        grid: { color: "rgba(255,255,255,0.08)" },
+        border: { display: false },
+        ticks: {
+          color: "rgba(255,255,255,0.38)",
+          font: { size: 10, family: "system-ui,sans-serif" },
+          maxTicksLimit: 6,
+        },
+      },
+    };
+  }
+
+  function chartClickHandler(block, dayIndex, chartKey) {
+    return (_event, elements) => {
+      if (!elements.length) return;
+      const hourIndex = elements[0].index;
+      selectedChartHour = { dayIndex, hourIndex, chartKey };
+      updateDayChartSelection(dayIndex, hourIndex, chartKey);
+      const hours = dayChartHoursByIndex.get(dayIndex) || [];
+      updateChartDetail(block, dayIndex, hours[hourIndex]);
+      highlightHourCardByTime(block, hours[hourIndex]?.time);
+    };
+  }
+
+  function scoreBarColors(hours, selectedHour) {
+    return hours.map((_, i) =>
+      i === selectedHour ? "rgba(167,139,250,0.95)" : "rgba(129,140,248,0.55)",
+    );
+  }
+
+  function destroyDayCharts(dayIndex) {
+    const instances = dayChartInstances.get(dayIndex);
+    if (!instances) return;
+    Object.values(instances).forEach((chart) => chart?.destroy());
+    dayChartInstances.delete(dayIndex);
+  }
+
+  function updateDayChartSelection(dayIndex, hourIndex, activeChartKey) {
+    const instances = dayChartInstances.get(dayIndex);
+    if (!instances) return;
+    const hours = dayChartHoursByIndex.get(dayIndex) || [];
+    Object.entries(instances).forEach(([key, chart]) => {
+      if (!chart) return;
+      chart.$selectedHour = hourIndex;
+      chart.$activeChartKey = activeChartKey;
+      if (key === "score") {
+        chart.data.datasets[0].backgroundColor = scoreBarColors(hours, hourIndex);
+      }
+      chart.update("none");
+    });
+  }
+
+  function buildDayChartsHtml(dayIndex) {
+    return `<div class="day-charts" hidden data-day-charts="${dayIndex}">
+      <div class="chart-panel" data-chart="wave">
+        <div class="chart-legend">
+          <span class="chart-legend__item"><i class="chart-swatch chart-swatch--wave"></i>Inaltime val (m)</span>
+          <span class="chart-legend__item"><i class="chart-swatch chart-swatch--line chart-swatch--dashed chart-swatch--swell"></i>Swell (m)</span>
+        </div>
+        <div class="chart-canvas-wrap"><canvas data-chart-canvas="wave"></canvas></div>
+      </div>
+      <div class="chart-panel" data-chart="wind">
+        <div class="chart-legend">
+          <span class="chart-legend__item"><i class="chart-swatch chart-swatch--wind"></i>Vant (km/h)</span>
+          <span class="chart-legend__item"><i class="chart-swatch chart-swatch--line chart-swatch--dashed chart-swatch--gusts"></i>Rafale (km/h)</span>
+        </div>
+        <div class="chart-canvas-wrap"><canvas data-chart-canvas="wind"></canvas></div>
+      </div>
+      <div class="chart-panel" data-chart="temp">
+        <div class="chart-legend">
+          <span class="chart-legend__item"><i class="chart-swatch chart-swatch--temp"></i>Temperatura aer (°C)</span>
+        </div>
+        <div class="chart-canvas-wrap"><canvas data-chart-canvas="temp"></canvas></div>
+      </div>
+      <div class="chart-panel" data-chart="score">
+        <div class="chart-legend">
+          <span class="chart-legend__item"><i class="chart-swatch chart-swatch--score"></i>Scor surf (0–10)</span>
+        </div>
+        <div class="chart-canvas-wrap"><canvas data-chart-canvas="score"></canvas></div>
+      </div>
+      <div class="day-chart-detail is-empty" data-day-detail="${dayIndex}">Apasa pe grafic pentru detalii ora cu ora.</div>
+    </div>`;
+  }
+
+  function renderHourDetail(hour) {
+    const wave = hour.waveHeight != null ? formatMeters(hour.waveHeight, false) : "—";
+    const swell = hour.swellHeight != null ? formatMeters(hour.swellHeight, false) : "—";
+    const periodVal = hour.swellPeriod ?? hour.wavePeriod;
+    const period = periodVal != null ? `${periodVal.toFixed(0)}s` : "—";
+    const wind =
+      hour.windSpeed != null
+        ? `${hour.windSpeed.toFixed(0)} km/h${hour.windDirection != null ? ` · ${windShoreLabel(hour.windDirection, activeLocation.offshoreWind) || `${hour.windDirection.toFixed(0)}°`}` : ""}`
+        : "—";
+    const gusts = hour.windGusts != null ? `${hour.windGusts.toFixed(0)} km/h` : "—";
+    const air = hour.airTemp != null ? `${Math.round(hour.airTemp)}°C` : "—";
+    const score = hour.score != null ? hour.score.toFixed(1) : "—";
+    return `<strong>${formatHourRo(hour.time)}</strong> · val ${wave} · swell ${swell} · ${period} · vant ${wind} · rafale ${gusts} · aer ${air} · scor ${score}/10`;
+  }
+
+  function updateChartDetail(block, dayIndex, hour) {
+    const detail = block.querySelector(`[data-day-detail="${dayIndex}"]`);
+    if (!detail) return;
+    if (hour) {
+      detail.classList.remove("is-empty");
+      detail.innerHTML = renderHourDetail(hour);
+    } else {
+      detail.classList.add("is-empty");
+      detail.textContent = "Apasa pe grafic pentru detalii ora cu ora.";
+    }
+  }
+
+  function mountDayCharts(block, dayIndex, selectedHour) {
+    if (!ensureChartJs()) return;
+    destroyDayCharts(dayIndex);
+
+    const hours = dayChartHoursByIndex.get(dayIndex);
+    if (!hours?.length) return;
+
+    const labels = chartLabels(hours);
+    const scales = chartAxisStyle();
+    const instances = {};
+
+    const waveCanvas = block.querySelector('[data-chart-canvas="wave"]');
+    if (waveCanvas) {
+      instances.wave = new Chart(waveCanvas, {
+        type: "line",
+        data: {
+          labels,
+          datasets: [
+            {
+              label: "Inaltime val (m)",
+              data: hours.map((h) => h.waveHeight),
+              borderColor: "#3b82f6",
+              backgroundColor: "rgba(59,130,246,0.14)",
+              fill: true,
+              tension: 0.42,
+              pointRadius: 0,
+              pointHitRadius: 12,
+              borderWidth: 2,
+            },
+            {
+              label: "Swell (m)",
+              data: hours.map((h) => h.swellHeight),
+              borderColor: "#22c55e",
+              borderDash: [5, 4],
+              fill: false,
+              tension: 0.42,
+              pointRadius: 0,
+              pointHitRadius: 12,
+              borderWidth: 2,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: { mode: "index", intersect: false },
+          plugins: { legend: { display: false }, tooltip: { enabled: false } },
+          scales: { ...scales, y: { ...scales.y, beginAtZero: true } },
+          onClick: chartClickHandler(block, dayIndex, "wave"),
+        },
+      });
+      initChartInstance(instances.wave, "wave", hours);
+      instances.wave.$selectedHour = selectedHour;
+    }
+
+    const windCanvas = block.querySelector('[data-chart-canvas="wind"]');
+    if (windCanvas) {
+      instances.wind = new Chart(windCanvas, {
+        type: "line",
+        data: {
+          labels,
+          datasets: [
+            {
+              label: "Vant (km/h)",
+              data: hours.map((h) => h.windSpeed),
+              borderColor: "#f97316",
+              fill: false,
+              tension: 0.42,
+              pointRadius: 0,
+              pointHitRadius: 12,
+              borderWidth: 2,
+            },
+            {
+              label: "Rafale (km/h)",
+              data: hours.map((h) => h.windGusts),
+              borderColor: "#ef4444",
+              borderDash: [5, 4],
+              fill: false,
+              tension: 0.42,
+              pointRadius: 0,
+              pointHitRadius: 12,
+              borderWidth: 2,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: { mode: "index", intersect: false },
+          plugins: { legend: { display: false }, tooltip: { enabled: false } },
+          scales: { ...scales, y: { ...scales.y, beginAtZero: true } },
+          onClick: chartClickHandler(block, dayIndex, "wind"),
+        },
+      });
+      initChartInstance(instances.wind, "wind", hours);
+      instances.wind.$selectedHour = selectedHour;
+    }
+
+    const tempCanvas = block.querySelector('[data-chart-canvas="temp"]');
+    if (tempCanvas) {
+      instances.temp = new Chart(tempCanvas, {
+        type: "line",
+        data: {
+          labels,
+          datasets: [
+            {
+              label: "Temperatura aer (°C)",
+              data: hours.map((h) => h.airTemp),
+              borderColor: "#eab308",
+              backgroundColor: "rgba(234,179,8,0.16)",
+              fill: true,
+              tension: 0.42,
+              pointRadius: 0,
+              pointHitRadius: 12,
+              borderWidth: 2,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: { mode: "index", intersect: false },
+          plugins: { legend: { display: false }, tooltip: { enabled: false } },
+          scales,
+          onClick: chartClickHandler(block, dayIndex, "temp"),
+        },
+      });
+      initChartInstance(instances.temp, "temp", hours);
+      instances.temp.$selectedHour = selectedHour;
+    }
+
+    const scoreCanvas = block.querySelector('[data-chart-canvas="score"]');
+    if (scoreCanvas) {
+      instances.score = new Chart(scoreCanvas, {
+        type: "bar",
+        data: {
+          labels,
+          datasets: [
+            {
+              label: "Scor surf (0–10)",
+              data: hours.map((h) => h.score),
+              backgroundColor: scoreBarColors(hours, selectedHour),
+              borderRadius: { topLeft: 5, topRight: 5, bottomLeft: 0, bottomRight: 0 },
+              borderSkipped: false,
+              maxBarThickness: 14,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: { mode: "index", intersect: false },
+          plugins: { legend: { display: false }, tooltip: { enabled: false } },
+          scales: {
+            ...scales,
+            y: { ...scales.y, min: 0, max: 10, ticks: { ...scales.y.ticks, stepSize: 2 } },
+          },
+          onClick: chartClickHandler(block, dayIndex, "score"),
+        },
+      });
+      initChartInstance(instances.score, "score", hours);
+      instances.score.$selectedHour = selectedHour;
+    }
+
+    dayChartInstances.set(dayIndex, instances);
+    const activeKey =
+      selectedHour != null && selectedChartHour.dayIndex === dayIndex
+        ? selectedChartHour.chartKey
+        : null;
+    if (selectedHour != null) {
+      updateDayChartSelection(dayIndex, selectedHour, activeKey);
+      updateChartDetail(block, dayIndex, hours[selectedHour]);
+    } else {
+      updateChartDetail(block, dayIndex, null);
+    }
+    requestAnimationFrame(() => alignDayCharts(block));
+  }
+
+  function highlightHourCardByTime(block, isoTime) {
+    block.querySelectorAll(".hour-card").forEach((card) => {
+      const match = isoTime && card.dataset.hourTime === isoTime;
+      card.classList.toggle("hour-card--highlight", Boolean(match));
+      if (match) {
+        card.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+      }
+    });
+  }
+
+  function toggleDayCharts(block, dayIndex) {
+    const chartsEl = block.querySelector(".day-charts");
+    if (!chartsEl) return;
+    const isOpen = block.classList.toggle("is-charts-open");
+    chartsEl.hidden = !isOpen;
+    const head = block.querySelector(".day-head");
+    head?.setAttribute("aria-expanded", isOpen ? "true" : "false");
+
+    if (isOpen) {
+      openChartsDayIndex = dayIndex;
+      const keepHour =
+        selectedChartHour.dayIndex === dayIndex ? selectedChartHour.hourIndex : null;
+      mountDayCharts(block, dayIndex, keepHour);
+      if (keepHour != null) {
+        const hours = dayChartHoursByIndex.get(dayIndex) || [];
+        highlightHourCardByTime(block, hours[keepHour]?.time);
+      }
+    } else {
+      destroyDayCharts(dayIndex);
+      if (openChartsDayIndex === dayIndex) openChartsDayIndex = null;
+      if (selectedChartHour.dayIndex === dayIndex) {
+        selectedChartHour = { dayIndex: null, hourIndex: null, chartKey: null };
+      }
+      highlightHourCardByTime(block, null);
+      updateChartDetail(block, dayIndex, null);
+    }
+  }
+
+  function bindDayHeads() {
+    document.querySelectorAll(".day-block").forEach((block) => {
+      const dayIndex = Number(block.id.replace("day-", ""));
+      const head = block.querySelector(".day-head");
+      if (!head || Number.isNaN(dayIndex)) return;
+      head.classList.add("day-head--tap");
+      head.setAttribute("role", "button");
+      head.setAttribute("tabindex", "0");
+      head.setAttribute("aria-expanded", "false");
+      head.addEventListener("click", () => toggleDayCharts(block, dayIndex));
+      head.addEventListener("keydown", (e) => {
+        if (e.key !== "Enter" && e.key !== " ") return;
+        e.preventDefault();
+        toggleDayCharts(block, dayIndex);
+      });
+    });
+  }
+
+  function renderHourCard(hour, hourIndex) {
     const wave = hour.waveHeight != null ? formatHeight(hour.waveHeight) : "—";
     const swellLabel = formatSwellLabel(hour.swellHeight);
     const periodVal = hour.swellPeriod ?? hour.wavePeriod;
@@ -1638,7 +2455,7 @@ body.theme-bali .footer a.bot-link {
         : "—";
     const score = hour.score != null ? Math.round(hour.score) : "—";
 
-    return `<article class="hour-card">
+    return `<article class="hour-card" data-hour-index="${hourIndex}" data-hour-time="${hour.time}">
       <div class="hour-time">${formatHourRo(hour.time)}</div>
       <div class="hour-swell">${wave}</div>
       <div class="hour-swell-label">wave</div>
@@ -1685,8 +2502,7 @@ body.theme-bali .footer a.bot-link {
 
     document.getElementById("current").innerHTML = renderCurrent(data);
 
-    // unique gradient ids if multiple boards on page
-    let boardUid = 0;
+    // unique gradient ids if multiple boards on page (board SVG disabled for now)
 
     const dayEntries = data.daily
       .map((day, i) => {
@@ -1721,50 +2537,68 @@ body.theme-bali .footer a.bot-link {
     }
 
     const daysEl = document.getElementById("days");
+    dayChartInstances.forEach((_v, dayIndex) => destroyDayCharts(dayIndex));
+    dayHoursByIndex.clear();
+    dayChartHoursByIndex.clear();
+    openChartsDayIndex = null;
+    selectedChartHour = { dayIndex: null, hourIndex: null, chartKey: null };
+
     daysEl.innerHTML = dayEntries
-      .map(({ day, i, hours }) => {
+      .map(({ day, i, hours, date }) => {
+        dayHoursByIndex.set(i, hours);
+        dayChartHoursByIndex.set(i, hoursForDayFull(data.hourly, date));
         const label = i === 0 ? "Azi" : formatRoDate(day.time);
         const good = boardIndices.has(i);
-        const uid = ++boardUid;
-        const board = good
-          ? `<svg class="day-title__board" viewBox="0 0 96 24" aria-label="conditii bune" role="img">
-              <defs>
-                <linearGradient id="gold-board-grad-${uid}" x1="0%" y1="50%" x2="100%" y2="50%">
-                  <stop offset="0%" stop-color="#fef9c3"/>
-                  <stop offset="28%" stop-color="#fbbf24"/>
-                  <stop offset="55%" stop-color="#f59e0b"/>
-                  <stop offset="78%" stop-color="#fde68a"/>
-                  <stop offset="100%" stop-color="#d97706"/>
-                </linearGradient>
-              </defs>
-              <path fill="url(#gold-board-grad-${uid})" d="
-                M 2 12
-                C 8 5, 24 2.5, 44 2.5
-                L 92 2.5
-                L 76 12
-                L 92 21.5
-                L 44 21.5
-                C 24 21.5, 8 19, 2 12
-                Z"/>
-              <ellipse class="board-gloss" cx="32" cy="8" rx="15" ry="2.5"/>
-            </svg>`
-          : "";
+        const labelHtml = good
+          ? `<span class="day-title__label fire-text" data-text="${label}">${label}</span>`
+          : `<span class="day-title__label">${label}</span>`;
         return `<section class="day-block" id="day-${i}">
           <div class="day-head">
             <h2 class="day-title${good ? " day-title--good" : ""}">
-              <span class="day-title__left"><span>${label}</span>${board}</span>
+              <span class="day-title__left">${labelHtml}</span>
             </h2>
             ${renderDayMeta(day)}
           </div>
-          <div class="day-row">${hours.map(renderHourCard).join("")}</div>
+          ${buildDayChartsHtml(i)}
+          <div class="day-row">${hours.map((h, hi) => renderHourCard(h, hi)).join("")}</div>
         </section>`;
       })
       .join("");
 
+    bindDayHeads();
     alignDayMetas();
   }
 
+  function alignDayCharts(block) {
+    const row = block.querySelector(".day-row");
+    const charts = block.querySelector(".day-charts");
+    if (!row || !charts || charts.hidden) return;
+
+    charts.style.maxWidth = "";
+    charts.classList.remove("day-charts--full");
+
+    const overflows = row.scrollWidth > row.clientWidth + 2;
+    if (overflows) {
+      charts.classList.add("day-charts--full");
+    } else {
+      const cards = row.querySelectorAll(".hour-card");
+      if (cards.length) {
+        const blockRect = block.getBoundingClientRect();
+        const lastRect = cards[cards.length - 1].getBoundingClientRect();
+        charts.style.maxWidth = `${Math.max(240, lastRect.right - blockRect.left)}px`;
+      }
+    }
+
+    const dayIndex = Number(block.id.replace("day-", ""));
+    const instances = dayChartInstances.get(dayIndex);
+    if (instances) {
+      Object.values(instances).forEach((chart) => chart?.resize());
+    }
+  }
+
   function alignDayMetas() {
+    if (window.matchMedia("(max-width: 639px)").matches) return;
+
     document.querySelectorAll(".day-block").forEach((block) => {
       const row = block.querySelector(".day-row");
       const meta = block.querySelector(".day-title__meta");
@@ -1786,7 +2620,10 @@ body.theme-bali .footer a.bot-link {
   let alignDayMetasTimer = null;
   window.addEventListener("resize", () => {
     clearTimeout(alignDayMetasTimer);
-    alignDayMetasTimer = setTimeout(alignDayMetas, 100);
+    alignDayMetasTimer = setTimeout(() => {
+      alignDayMetas();
+      document.querySelectorAll(".day-block.is-charts-open").forEach(alignDayCharts);
+    }, 100);
   });
 
   async function loadForecast() {
